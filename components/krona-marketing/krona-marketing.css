@@ -1,0 +1,2460 @@
+/* Scoped marketing + auth theme (does not rely on html.dark) */
+.krona-marketing {
+	--km-gradient: linear-gradient(
+		120deg,
+		#6320de 0%,
+		#534fff 34%,
+		#15a1f1 68%,
+		#00bdd3 100%
+	);
+	--km-gradient-hover: linear-gradient(
+		120deg,
+		#7a3af3 0%,
+		#6a66ff 34%,
+		#36b7ff 68%,
+		#38d9ec 100%
+	);
+	--km-banner-gradient: linear-gradient(64deg, #2e2b8b 0%, #151432 100%);
+	--km-shadow: 0 24px 80px rgba(15, 18, 35, 0.45);
+	--km-radius-lg: 24px;
+	--km-radius-xl: 32px;
+	--km-glass-fill: rgba(255, 255, 255, 0.05);
+	--km-glass-stroke: rgba(255, 255, 255, 0.08);
+	font-family: var(--font-geist-sans), 'Poppins', system-ui, sans-serif;
+	/* clip does not create a nested scrollport the way overflow-x: hidden does */
+	overflow-x: clip;
+	transition:
+		background-color 0.35s ease,
+		color 0.35s ease;
+}
+
+.krona-marketing[data-krona-theme='dark'] {
+	--km-bg: #060310;
+	--km-bg-elevated: #121528;
+	--km-surface: #171638;
+	--km-surface-hover: #1c1b42;
+	--km-text: #f4f6fc;
+	--km-text-muted: rgba(255, 255, 255, 0.64);
+	--km-border: rgba(255, 255, 255, 0.05);
+	--km-glass: rgba(6, 3, 16, 0.72);
+	--km-nav-border: rgba(255, 255, 255, 0.04);
+	--km-mockup-bg: #060310;
+	--km-star: #fbbf24;
+	--km-accent: #495dfd;
+	/*
+	 * Auth/upgrade still use Joy + kronaPrimaryButtonSx (--krona-*).
+	 * Pin brand accents here so the in-app season theme cannot leak in.
+	 */
+	--krona-text: var(--km-text);
+	--krona-text-muted: var(--km-text-muted);
+	--krona-text-48: color-mix(in srgb, var(--km-text) 42%, transparent);
+	--krona-placeholder-color: rgba(255, 255, 255, 0.42);
+	--krona-input-border: rgba(255, 255, 255, 0.38);
+	--krona-widget-border-hover: rgba(255, 255, 255, 0.24);
+	--krona-secondary-bg: var(--km-glass-fill);
+	--krona-secondary-border: var(--km-glass-stroke);
+	--krona-accent: #495dfd;
+	--krona-accent-stop-0: #6320de;
+	--krona-accent-stop-34: #534fff;
+	--krona-accent-stop-68: #15a1f1;
+	--krona-accent-stop-100: #00bdd3;
+	--krona-accent-gradient: var(--km-gradient);
+	--krona-accent-gradient-hover: var(--km-gradient-hover);
+	--krona-accent-shadow: 0 8px 32px rgba(99, 32, 222, 0.35);
+	--krona-control-inset-stroke: inset 0 0 0 1px
+		color-mix(in srgb, #15a1f1 64%, transparent);
+	--krona-primary-hover-shadow: var(--krona-control-inset-stroke),
+		0 12px 40px rgba(21, 161, 241, 0.35);
+	--ring: color-mix(in srgb, #495dfd 45%, transparent);
+}
+
+.krona-marketing[data-krona-theme='light'] {
+	--km-bg: #f4f6fb;
+	--km-bg-elevated: #ffffff;
+	--km-surface: #ffffff;
+	--km-surface-hover: #eef1f8;
+	--km-text: #12151f;
+	--km-text-muted: rgba(18, 21, 31, 0.72);
+	--km-border: rgba(18, 21, 31, 0.08);
+	--km-glass: rgba(255, 255, 255, 0.70);
+	--km-glass-fill: rgba(255, 255, 255, 0.72);
+	--km-glass-stroke: rgba(18, 21, 31, 0.1);
+	--km-nav-border: rgba(18, 21, 31, 0.06);
+	--km-mockup-bg: #eef1f8;
+	--km-star: #d97706;
+	background: linear-gradient(135deg, #faf8ff 0%, #eef1f8 50%, #e4edf8 100%);
+	background-attachment: fixed;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.krona-marketing *,
+	.krona-marketing *::before,
+	.krona-marketing *::after {
+		animation-duration: 0.01ms !important;
+		animation-iteration-count: 1 !important;
+		transition-duration: 0.01ms !important;
+	}
+}
+
+/* Unified landing body copy — one size, muted white (64% opacity in dark theme) */
+.krona-landing-body {
+	margin: 0;
+	font-size: 1.0625rem;
+	line-height: 1.625;
+	font-weight: 400;
+	color: var(--km-text-muted);
+}
+
+/* Native wheel/trackpad only. Anchor clicks smooth-scroll in LandingNavbar.
+   `scroll-behavior: smooth` on html makes Safari interpolate every wheel tick. */
+html:has(.krona-marketing) {
+	scroll-behavior: auto;
+}
+
+.krona-marquee {
+	display: flex;
+	width: max-content;
+	gap: 1.25rem;
+	animation: krona-marquee-scroll 48s linear infinite;
+	will-change: transform;
+	transform: translate3d(0, 0, 0);
+	backface-visibility: hidden;
+}
+
+.krona-marquee--paused {
+	animation-play-state: paused !important;
+}
+
+.krona-marquee:hover {
+	animation-play-state: paused;
+}
+
+.krona-landing-reviews-marquee {
+	contain: layout paint style;
+	isolation: isolate;
+	-webkit-mask-image: linear-gradient(
+		to right,
+		transparent 0,
+		#000 3rem,
+		#000 calc(100% - 3rem),
+		transparent 100%
+	);
+	mask-image: linear-gradient(
+		to right,
+		transparent 0,
+		#000 3rem,
+		#000 calc(100% - 3rem),
+		transparent 100%
+	);
+}
+
+@media (min-width: 1024px) {
+	.krona-landing-reviews-marquee {
+		-webkit-mask-image: linear-gradient(
+			to right,
+			transparent 0,
+			#000 5rem,
+			#000 calc(100% - 5rem),
+			transparent 100%
+		);
+		mask-image: linear-gradient(
+			to right,
+			transparent 0,
+			#000 5rem,
+			#000 calc(100% - 5rem),
+			transparent 100%
+		);
+	}
+}
+
+.krona-landing-reviews-marquee .krona-marquee {
+	align-items: stretch;
+	gap: 1.25rem;
+	pointer-events: none;
+}
+
+@media (min-width: 1024px) {
+	.krona-landing-reviews-marquee .krona-marquee {
+		gap: 1.5rem;
+	}
+}
+
+.krona-landing-review-card--marquee {
+	min-height: 240px;
+	height: 240px;
+	/* Solid surface — backdrop-filter on a moving row tanks scroll perf */
+	backdrop-filter: none;
+	-webkit-backdrop-filter: none;
+	background: var(--km-surface);
+}
+
+@keyframes krona-marquee-scroll {
+	0% {
+		transform: translateX(0);
+	}
+	100% {
+		transform: translateX(-50%);
+	}
+}
+
+.krona-fade-up {
+	animation: krona-fade-up 0.7s ease forwards;
+	opacity: 0;
+}
+
+@keyframes krona-fade-up {
+	from {
+		opacity: 0;
+		transform: translateY(16px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+.krona-float-slow {
+	animation: krona-float 7s ease-in-out infinite;
+}
+
+@keyframes krona-float {
+	0%,
+	100% {
+		transform: translateY(0);
+	}
+	50% {
+	transform: translateY(-1px);
+	}
+}
+
+.krona-gradient-text {
+	background: var(--km-gradient);
+	-webkit-background-clip: text;
+	background-clip: text;
+	color: transparent;
+}
+
+/* Nav product switcher — same size as header CTAs, solid label/icon + hover underline */
+.krona-landing-product-link {
+	position: relative;
+	display: none;
+	align-items: center;
+	gap: 0.375rem;
+	padding-bottom: 2px;
+	font-size: 0.875rem;
+	font-weight: 600;
+	line-height: 1.25;
+	text-decoration: none;
+	color: var(--km-text);
+}
+
+@media (min-width: 768px) {
+	.krona-landing-product-link {
+		display: inline-flex;
+	}
+}
+
+.krona-landing-product-link--always {
+	display: inline-flex;
+}
+
+.krona-landing-product-link__label {
+	color: inherit;
+}
+
+.krona-landing-product-link__icon {
+	display: inline-block;
+	width: 16px;
+	height: 16px;
+	flex-shrink: 0;
+	background: currentColor;
+	-webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.25' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M7 17 17 7'/%3E%3Cpath d='M7 7h10v10'/%3E%3C/svg%3E");
+	mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.25' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M7 17 17 7'/%3E%3Cpath d='M7 7h10v10'/%3E%3C/svg%3E");
+	-webkit-mask-size: contain;
+	mask-size: contain;
+	-webkit-mask-repeat: no-repeat;
+	mask-repeat: no-repeat;
+	-webkit-mask-position: center;
+	mask-position: center;
+}
+
+.krona-landing-product-link::after {
+	content: '';
+	position: absolute;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	height: 1.5px;
+	border-radius: 999px;
+	background: currentColor;
+	transform: scaleX(0);
+	transform-origin: left center;
+	transition: transform 0.2s ease;
+}
+
+.krona-landing-product-link:hover::after,
+.krona-landing-product-link:focus-visible::after,
+.krona-landing-product-link:active::after {
+	transform: scaleX(1);
+}
+
+.krona-landing-product-link:focus-visible {
+	outline: none;
+}
+
+
+/* Auth consent checkbox — Krona gradient fill with a white check. */
+.krona-marketing .krona-consent-checkbox {
+	width: 18px;
+	height: 18px;
+	flex-shrink: 0;
+	border-radius: 7px;
+	border: 1.5px solid color-mix(in srgb, var(--km-text) 28%, transparent);
+	background: transparent;
+	box-shadow: none;
+	transition:
+		background 0.18s ease,
+		border-color 0.18s ease;
+}
+
+.krona-marketing .krona-consent-checkbox:hover {
+	border-color: color-mix(in srgb, var(--km-text) 44%, transparent);
+}
+
+.krona-marketing .krona-consent-checkbox[data-state='checked'] {
+	background: var(--km-gradient);
+	border-color: transparent;
+}
+
+.krona-marketing .krona-consent-checkbox svg {
+	width: 13px;
+	height: 13px;
+	stroke-width: 3;
+	color: #fff;
+}
+
+.krona-btn-gradient {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 0.5rem;
+	border-radius: 9999px;
+	box-sizing: border-box;
+	background: var(--km-gradient);
+	color: #fff !important;
+	font-weight: 600;
+	text-decoration: none;
+	border: none;
+	box-shadow: 0 8px 32px rgba(99, 32, 222, 0.35);
+	transition:
+		transform 0.2s ease,
+		box-shadow 0.2s ease,
+		filter 0.2s ease;
+}
+
+.krona-btn-gradient:hover {
+	background: var(--km-gradient-hover);
+	border: none;
+	transform: translateY(-1px);
+	box-shadow:
+		var(--krona-control-inset-stroke),
+		0 12px 40px rgba(21, 161, 241, 0.35);
+	filter: brightness(1.03);
+}
+
+.krona-btn-gradient:active {
+	border: none;
+	transform: translateY(0);
+	box-shadow:
+		var(--krona-control-inset-stroke),
+		0 8px 32px rgba(99, 32, 222, 0.35);
+}
+
+/* Auth / static marketing bars — always visible */
+.krona-glass-nav {
+	background: var(--km-glass);
+	backdrop-filter: blur(24px) saturate(180%);
+	-webkit-backdrop-filter: blur(24px) saturate(180%);
+	border-bottom: 1px solid var(--km-nav-border);
+}
+
+/* Sign-in / login top bar — transparent, scrolls with page */
+.krona-auth-nav {
+	position: relative;
+	background: transparent;
+	border-bottom: none;
+	backdrop-filter: none;
+	-webkit-backdrop-filter: none;
+}
+
+/* Landing nav — transparent at top; frosted blur on scroll */
+.krona-landing-nav {
+	--km-nav-btn-height: 2.5rem;
+	position: sticky;
+	top: 0;
+	z-index: 50;
+	width: 100%;
+	background: transparent;
+	border-bottom: 1px solid transparent;
+	backdrop-filter: none;
+	-webkit-backdrop-filter: none;
+	/* Avoid animating layout size — sticky height changes tank scroll perf */
+	transition:
+		background-color 0.2s ease,
+		border-color 0.2s ease;
+}
+
+.krona-landing-nav--scrolled {
+	/* Solid fill — backdrop-filter over hero/feature screenshots tanks first-half scroll */
+	background: rgba(6, 3, 16, 0.92);
+	border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+	backdrop-filter: none;
+	-webkit-backdrop-filter: none;
+}
+
+.krona-landing-nav-row {
+	display: grid;
+	min-height: 72px;
+	width: 100%;
+	grid-template-columns: 1fr auto;
+	align-items: center;
+	column-gap: 2rem;
+	padding-top: 0;
+	padding-bottom: 0;
+	box-sizing: border-box;
+}
+
+.krona-landing-nav--scrolled .krona-landing-nav-row {
+	/* Keep height stable while scrolling */
+	min-height: 72px;
+	padding-top: 0;
+	padding-bottom: 0;
+}
+
+.krona-landing-nav-links {
+	display: none;
+}
+
+.krona-landing-nav-actions {
+	display: flex;
+	align-items: center;
+	justify-content: flex-end;
+	gap: 1.125rem;
+	justify-self: end;
+}
+
+.krona-landing-nav-action-group {
+	display: flex;
+	align-items: center;
+	gap: 1.125rem;
+}
+
+/* Shared wordmark sizing — landing nav + auth top bar */
+.krona-marketing-wordmark {
+	display: flex;
+	flex-shrink: 0;
+	align-items: center;
+	height: var(--km-nav-btn-height, 2.5rem);
+}
+
+.krona-marketing-wordmark > span {
+	display: block !important;
+	height: var(--km-nav-btn-height, 2.5rem) !important;
+	width: auto !important;
+}
+
+.krona-marketing-wordmark img {
+	display: block;
+	flex-shrink: 0;
+	height: var(--km-nav-btn-height, 2.5rem) !important;
+	width: auto !important;
+	max-height: none;
+	max-width: none;
+}
+
+.krona-landing-wordmark,
+.krona-landing-wordmark img {
+	display: block;
+	height: 2.25rem;
+	width: auto;
+}
+
+.krona-landing-wordmark > span {
+	display: block !important;
+	height: 2.25rem !important;
+	width: auto !important;
+}
+
+.krona-landing-nav .krona-landing-nav-btn {
+	box-sizing: border-box;
+	height: var(--km-nav-btn-height);
+	min-height: var(--km-nav-btn-height);
+	padding-top: 0;
+	padding-bottom: 0;
+	white-space: nowrap;
+}
+
+.krona-marketing {
+	background: var(--km-bg);
+	color: var(--km-text);
+}
+
+.krona-marketing[data-krona-theme='dark'] {
+	background: #060310;
+}
+
+.krona-landing-eyebrow {
+	font-size: 0.7rem;
+	font-weight: 600;
+	letter-spacing: 0.12em;
+	text-transform: uppercase;
+	color: var(--km-text-muted);
+}
+
+.krona-landing-trust-panel,
+.krona-landing-cta-surface {
+	box-shadow: none;
+}
+
+.krona-landing-badge {
+	display: inline-block;
+	border-radius: 999px;
+	padding: 0.35rem 0.85rem;
+	font-size: 0.7rem;
+	font-weight: 700;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	color: var(--krona-accent);
+	background: var(--krona-accent-12);
+	border: 1px solid var(--krona-accent-22);
+}
+
+/* Landing buttons & review surfaces — pill shape, 8% white fill, 12% white border */
+.krona-landing-btn {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 0.5rem;
+	border-radius: 9999px;
+	font-weight: 600;
+	color: var(--km-text) !important;
+	text-decoration: none;
+	background: var(--km-glass-fill);
+	border: 1px solid var(--km-glass-stroke);
+	backdrop-filter: blur(16px) saturate(160%);
+	-webkit-backdrop-filter: blur(16px) saturate(160%);
+	box-shadow: none;
+	transition:
+		background-color 0.2s ease,
+		border-color 0.2s ease,
+		transform 0.2s ease;
+}
+
+.krona-landing-btn:hover {
+	background: rgba(255, 255, 255, 0.08);
+	border-color: rgba(255, 255, 255, 0.12);
+	transform: translateY(-1px);
+}
+
+.krona-landing-btn:active {
+	transform: translateY(0);
+}
+
+.krona-social-link svg {
+	display: block;
+	flex-shrink: 0;
+}
+
+.krona-marketing .krona-social-link.krona-landing-btn {
+	color: var(--km-text-muted) !important;
+}
+
+.krona-marketing .krona-social-link.krona-landing-btn:hover {
+	color: var(--km-text) !important;
+}
+
+.krona-landing-cta-surface .krona-btn-gradient {
+	box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+}
+
+.krona-marketing[data-krona-theme='light'] .krona-landing-btn,
+.krona-marketing[data-krona-theme='light'] .krona-landing-review-card {
+	box-shadow: 0 4px 24px rgba(18, 21, 31, 0.04);
+}
+
+/* Hero: one copy column + mockup — no split text rows */
+.krona-landing-hero-split {
+	display: grid;
+	align-items: center;
+	gap: 2rem;
+}
+
+.krona-landing-hero-copy {
+	text-align: left;
+	min-width: 0;
+	container-type: inline-size;
+	container-name: hero-copy;
+}
+
+/* Fallback size; JS fit bumps this to the largest single-line size */
+.krona-landing-hero-title {
+	font-size: clamp(1.75rem, 8.8cqi, 2.75rem);
+}
+
+.krona-landing-hero-mockup-col {
+	width: 100%;
+	min-width: 0;
+	max-width: 100%;
+}
+
+.krona-landing-hero-mockup-col .krona-web-mockup--hero {
+	width: 100%;
+	max-width: 100%;
+}
+
+.krona-landing-hero-mockup-mobile .krona-web-mockup--hero {
+	width: 100%;
+	max-width: 100%;
+}
+
+@media (min-width: 1024px) {
+	.krona-landing-hero-split {
+		grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
+		gap: 2rem 2.5rem;
+		align-items: center;
+	}
+
+	.krona-landing-hero-copy {
+		grid-column: 1;
+		grid-row: 1;
+	}
+
+	.krona-landing-hero-mockup-col {
+		grid-column: 2;
+		grid-row: 1;
+		align-self: center;
+		justify-self: stretch;
+		overflow: hidden;
+		max-width: 100%;
+	}
+
+	.krona-landing-hero-mockup-col .krona-web-mockup--hero {
+		width: 100%;
+		max-width: 100%;
+	}
+}
+
+.krona-landing-hero-copy-col {
+	text-align: left;
+}
+
+.krona-landing-hero-rating {
+	max-width: 36rem;
+}
+
+/* Who Krona is for — 6:9 portrait cards, horizontal scroll + edge fade */
+.krona-landing-who-scroll-shell {
+	/* Match .krona-landing-container side padding (+ centered max-width inset) */
+	--krona-who-pad: 16px;
+	--krona-who-gutter: max(
+		var(--krona-who-pad),
+		calc((100vw - 1400px) / 2 + var(--krona-who-pad))
+	);
+	position: relative;
+	width: 100%;
+	/* Fade only in the gutter so the first/last card stay crisp when aligned */
+	-webkit-mask-image: linear-gradient(
+		to right,
+		transparent 0,
+		#000 var(--krona-who-gutter),
+		#000 calc(100% - var(--krona-who-gutter)),
+		transparent 100%
+	);
+	mask-image: linear-gradient(
+		to right,
+		transparent 0,
+		#000 var(--krona-who-gutter),
+		#000 calc(100% - var(--krona-who-gutter)),
+		transparent 100%
+	);
+}
+
+@media (min-width: 768px) {
+	.krona-landing-who-scroll-shell {
+		--krona-who-pad: 48px;
+	}
+}
+
+@media (min-width: 1024px) {
+	.krona-landing-who-scroll-shell {
+		--krona-who-pad: 80px;
+	}
+}
+
+@media (min-width: 1560px) {
+	.krona-landing-who-scroll-shell {
+		--krona-who-pad: 0px;
+	}
+}
+
+.krona-landing-who-track {
+	list-style: none;
+	margin: 0;
+	padding: 0 var(--krona-who-gutter);
+	display: flex;
+	gap: 1.25rem;
+	overflow-x: auto;
+	overflow-y: hidden;
+	scroll-snap-type: x proximity;
+	scroll-padding-inline: var(--krona-who-gutter);
+	-webkit-overflow-scrolling: touch;
+	overscroll-behavior-x: contain;
+	/* Allow both axes: vertical page scroll + native horizontal overflow on touch */
+	touch-action: pan-x pan-y pinch-zoom;
+	scrollbar-width: none;
+	cursor: grab;
+	user-select: none;
+	-webkit-user-select: none;
+}
+
+.krona-landing-who-track--dragging {
+	cursor: grabbing;
+	scroll-snap-type: none;
+	touch-action: none;
+}
+
+.krona-landing-who-track::-webkit-scrollbar {
+	display: none;
+}
+
+.krona-landing-who-card {
+	position: relative;
+	flex: 0 0 auto;
+	width: min(72vw, 360px);
+	max-width: 360px;
+	aspect-ratio: 6 / 9;
+	border-radius: var(--km-radius-lg);
+	border: 1px solid rgba(255, 255, 255, 0.16);
+	overflow: hidden;
+	scroll-snap-align: start;
+	isolation: isolate;
+	background: var(--km-bg-elevated);
+	box-sizing: border-box;
+	cursor: pointer;
+	transition: border-color 0.35s ease;
+}
+
+.krona-landing-who-card:focus-visible {
+	outline: 2px solid #767fff;
+	outline-offset: 3px;
+}
+
+.krona-landing-who-card:is(:hover, :focus-within, .krona-landing-who-card--active) {
+	border-color: rgba(255, 255, 255, 0.24);
+}
+
+.krona-landing-who-card-media {
+	position: absolute;
+	inset: 0;
+	z-index: 0;
+}
+
+.krona-landing-who-card-image {
+	object-fit: cover;
+	object-position: center top;
+	-webkit-user-drag: none;
+	user-select: none;
+	pointer-events: none;
+}
+
+.krona-landing-who-card-overlay {
+	position: absolute;
+	inset: 0;
+	z-index: 1;
+	pointer-events: none;
+	background: linear-gradient(
+		to top,
+		rgba(6, 3, 16, 0.92) 0%,
+		rgba(6, 3, 16, 0.72) 28%,
+		rgba(6, 3, 16, 0.28) 55%,
+		transparent 78%
+	);
+}
+
+.krona-landing-who-card-copy {
+	position: absolute;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	z-index: 2;
+	padding: 1.25rem 32px 1.5rem;
+	box-sizing: border-box;
+}
+
+.krona-landing-who-card-copy h3 {
+	margin: 0;
+	font-size: 1.375rem;
+	font-weight: 700;
+	line-height: 1.25;
+	letter-spacing: -0.02em;
+	color: #fff;
+}
+
+.krona-landing-who-card-copy p {
+	margin: 0;
+	font-size: 0.875rem;
+	line-height: 1.5;
+	font-weight: 400;
+	color: rgba(255, 255, 255, 0.72);
+	max-height: 0;
+	opacity: 0;
+	overflow: hidden;
+	transform: translateY(8px);
+	transition:
+		max-height 0.45s ease,
+		opacity 0.4s ease,
+		transform 0.4s ease,
+		margin-top 0.4s ease;
+}
+
+.krona-landing-who-card:is(:hover, :focus-within, .krona-landing-who-card--active)
+	.krona-landing-who-card-copy
+	p {
+	max-height: 12rem;
+	opacity: 1;
+	margin-top: 0.5rem;
+	transform: translateY(0);
+}
+
+@media (min-width: 768px) {
+	.krona-landing-who-card {
+		width: 360px;
+	}
+
+	.krona-landing-who-card-copy h3 {
+		font-size: 1.625rem;
+	}
+}
+
+/* Features: mobile image → title → body; desktop alternating two columns */
+.krona-landing-feature {
+	display: grid;
+	align-items: center;
+	gap: 2rem;
+}
+
+.krona-landing-feature-divider {
+	display: block;
+	width: 48px;
+	height: 1px;
+	margin: 2.4rem auto;
+	border: 0;
+	padding: 0;
+	background: color-mix(in srgb, var(--km-text) 16%, transparent);
+}
+
+@media (min-width: 1024px) {
+	.krona-landing-feature-divider {
+		margin: 3.2rem auto;
+	}
+}
+
+.krona-landing-feature-title + .krona-landing-feature-body {
+	margin-top: 24px;
+}
+
+@media (max-width: 1023px) {
+	.krona-landing-feature-visual {
+		order: 1;
+		width: 100%;
+	}
+
+	.krona-landing-feature-copy {
+		order: 2;
+	}
+
+	.krona-web-mockup--feature {
+		height: auto;
+		overflow: visible;
+	}
+
+	.krona-web-mockup--feature-img {
+		display: block;
+		height: auto !important;
+		width: 100% !important;
+		max-width: 100%;
+		object-fit: contain;
+		object-position: center center;
+	}
+}
+
+@media (min-width: 1024px) {
+	.krona-landing-feature {
+		display: grid;
+		grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
+		grid-template-rows: 1fr;
+		grid-auto-flow: dense;
+		align-items: center;
+		gap: 4rem;
+	}
+
+	.krona-landing-feature--reverse {
+		grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+	}
+
+	.krona-landing-feature-copy {
+		grid-column: 1;
+		grid-row: 1;
+		align-self: center;
+		justify-self: stretch;
+	}
+
+	.krona-landing-feature-visual {
+		grid-column: 2;
+		grid-row: 1;
+		align-self: center;
+		justify-self: stretch;
+		display: flex;
+		align-items: center;
+		height: 100%;
+	}
+
+	.krona-landing-feature--reverse .krona-landing-feature-copy {
+		grid-column: 2;
+		grid-row: 1;
+	}
+
+	.krona-landing-feature--reverse .krona-landing-feature-visual {
+		grid-column: 1;
+		grid-row: 1;
+	}
+
+	.krona-web-mockup--feature {
+		width: 100%;
+		height: auto;
+		overflow: hidden;
+	}
+
+	.krona-web-mockup--feature-img {
+		display: block;
+		width: 100%;
+		height: auto;
+		object-fit: contain;
+		object-position: center center;
+	}
+}
+
+/* Landing app screenshots / feature mockup frames — no stroke */
+.krona-web-mockup {
+	box-sizing: border-box;
+	overflow: hidden;
+	border: 0 !important;
+	outline: none;
+	box-shadow: none;
+	border-radius: 0;
+	background: transparent !important;
+}
+
+.krona-web-mockup img,
+.krona-web-mockup video {
+	display: block;
+	border: 0;
+	outline: none;
+}
+
+.krona-web-mockup--hero {
+	aspect-ratio: auto;
+	border-radius: 16px;
+	box-shadow: none;
+}
+
+/* Hero asset is square — keep natural aspect */
+.krona-web-mockup--hero-mobile {
+	aspect-ratio: auto;
+	overflow: visible;
+	border-radius: 0;
+}
+
+.krona-landing-hero-mockup-mobile .krona-web-mockup--hero-mobile {
+	width: 100%;
+	max-width: 100%;
+}
+
+.krona-landing-all-in-one-grid {
+	display: grid;
+	width: 100%;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 0.75rem;
+	list-style: none;
+	padding: 0;
+	margin-inline: 0;
+	margin-bottom: 0;
+	margin-top: 3.5rem;
+}
+
+@media (min-width: 1024px) {
+	.krona-landing-all-in-one-grid {
+		grid-template-columns: repeat(4, minmax(0, 1fr));
+		gap: 1rem;
+		margin-top: 4.5rem;
+	}
+}
+
+.krona-landing-all-in-one-item {
+	display: flex;
+	align-items: center;
+	gap: 0.75rem;
+	width: 100%;
+	min-width: 0;
+	padding: 0.85rem 1rem;
+	border-radius: 18px;
+	background: rgba(255, 255, 255, 0.06);
+	border: 1px solid rgba(255, 255, 255, 0.10);
+	text-align: left;
+	box-sizing: border-box;
+}
+
+.krona-landing-all-in-one-icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 2.25rem;
+	height: 2.25rem;
+	flex-shrink: 0;
+	border-radius: 14px;
+	background: rgba(255, 255, 255, 0.10);
+	color: #fff;
+}
+
+.krona-landing-metrics-grid {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 2rem 1.5rem;
+}
+
+@media (min-width: 1024px) {
+	.krona-landing-metrics-grid {
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+		gap: 2rem;
+	}
+}
+
+.krona-landing-trust-panel .krona-landing-metric-cell {
+	position: relative;
+	text-align: center;
+}
+
+.krona-landing-metric-value {
+	font-size: 2.5rem;
+	font-weight: 600;
+	line-height: 1.1;
+	letter-spacing: -0.02em;
+	color: #fff;
+}
+
+@media (min-width: 1024px) {
+	.krona-landing-metric-value {
+		font-size: 3.25rem;
+	}
+}
+
+@media (min-width: 1024px) {
+	.krona-landing-metric-value {
+		font-size: 3.75rem;
+	}
+}
+
+.krona-landing-metric-divider {
+	position: absolute;
+	top: 0;
+	right: -1rem;
+	width: 1px;
+	height: 100%;
+	background: rgba(255, 255, 255, 0.14);
+}
+
+.krona-landing-trust-panel .krona-landing-metric-divider {
+	background: rgba(255, 255, 255, 0.14);
+}
+
+.krona-landing-review-card {
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+	border-radius: var(--km-radius-lg);
+	border: 1px solid var(--km-glass-stroke);
+	background: var(--km-glass-fill);
+	backdrop-filter: blur(16px) saturate(160%);
+	-webkit-backdrop-filter: blur(16px) saturate(160%);
+	padding: 1.5rem;
+	box-shadow: 0 4px 24px rgba(18, 21, 31, 0.04);
+}
+
+/* Max content 1400px; 16px side padding on mobile; wider inset on desktop */
+.krona-landing-container {
+	box-sizing: border-box;
+	width: 100%;
+	max-width: 1400px;
+	margin-inline: auto;
+	padding-inline: 16px;
+}
+
+@media (min-width: 768px) {
+	.krona-landing-container {
+		padding-inline: 48px;
+	}
+}
+
+@media (min-width: 1024px) {
+	.krona-landing-container {
+		padding-inline: 80px;
+	}
+}
+
+@media (min-width: 1560px) {
+	.krona-landing-container {
+		padding-inline: 0;
+	}
+}
+
+/* Mobile: full-width CTAs (do not force display — allows intentional hiding) */
+@media (max-width: 1023px) {
+	.krona-landing-cta-full {
+		width: 100%;
+		box-sizing: border-box;
+	}
+
+	.krona-landing-feature-cta {
+		display: none !important;
+	}
+}
+
+/* Mobile nav menu */
+.krona-landing-mobile-menu-btn {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	justify-self: end;
+	width: 2.5rem;
+	height: 2.5rem;
+	flex-shrink: 0;
+	border-radius: 14px;
+	border: 1px solid var(--km-glass-stroke);
+	background: var(--km-glass-fill);
+	color: var(--km-text);
+	cursor: pointer;
+	transition:
+		background-color 0.2s ease,
+		border-color 0.2s ease;
+}
+
+@media (max-width: 1023px) {
+	.krona-landing-nav-row {
+		grid-template-columns: 1fr auto;
+		column-gap: 1rem;
+	}
+
+	.krona-landing-nav-actions {
+		display: none !important;
+	}
+}
+
+@media (min-width: 1024px) {
+	.krona-landing-mobile-menu-btn {
+		display: none !important;
+	}
+}
+
+.krona-landing-mobile-menu-btn:hover {
+	background: rgba(255, 255, 255, 0.08);
+}
+
+.krona-landing-mobile-menu {
+	display: block;
+	overflow-x: hidden;
+	overflow-y: auto;
+	max-height: 0;
+	opacity: 0;
+	visibility: hidden;
+	border-bottom: 1px solid transparent;
+	background: var(--km-glass);
+	backdrop-filter: blur(10px);
+	-webkit-backdrop-filter: blur(10px);
+	-webkit-overflow-scrolling: touch;
+	overscroll-behavior: contain;
+	transition:
+		max-height 0.35s ease,
+		opacity 0.25s ease,
+		visibility 0.35s ease,
+		border-color 0.25s ease;
+}
+
+@media (min-width: 1024px) {
+	.krona-landing-mobile-menu {
+		display: none !important;
+	}
+}
+
+.krona-landing-mobile-menu--open {
+	max-height: min(70dvh, 32rem);
+	opacity: 1;
+	visibility: visible;
+	border-bottom-color: var(--km-nav-border);
+}
+
+.krona-marketing[data-krona-theme='light'] .krona-landing-mobile-menu {
+	background: rgba(255, 255, 255, 0.80);
+}
+
+/* Sticky bottom CTA on scroll (mobile) */
+.krona-landing-sticky-cta {
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	z-index: 45;
+	box-sizing: border-box;
+	padding: 12px 16px calc(12px + env(safe-area-inset-bottom, 0px));
+	pointer-events: none;
+	opacity: 0;
+	transform: translateY(100%);
+	transition:
+		opacity 0.3s ease,
+		transform 0.3s ease;
+	background: linear-gradient(to top, var(--km-bg) 70%, transparent);
+}
+
+.krona-landing-sticky-cta--visible {
+	pointer-events: auto;
+	opacity: 1;
+	transform: translateY(0);
+}
+
+.krona-landing-main {
+	padding-bottom: 0;
+}
+
+@media (max-width: 1023px) {
+	.krona-landing-main {
+		padding-bottom: calc(5.5rem + env(safe-area-inset-bottom, 0px));
+	}
+}
+
+/* Krona Teams landing — isolated from auth and in-app surfaces */
+.krona-marketing:has(.krona-teams-landing) .krona-landing-container {
+	width: calc(100% - clamp(32px, calc(45vw - 256px), 20vw));
+	max-width: 1600px;
+	padding-inline: 0;
+}
+
+.krona-marketing:has(.krona-teams-landing) .krona-landing-who-scroll-shell {
+	--krona-who-gutter: max(16px, 12.5vw);
+}
+
+.krona-marketing:has(.krona-teams-landing) .krona-landing-who-track {
+	gap: 24px;
+}
+
+.krona-marketing:has(.krona-teams-landing) .krona-landing-nav {
+	position: fixed;
+}
+
+.krona-marketing:has(.krona-teams-landing)
+	.krona-landing-nav:not(.krona-landing-nav--scrolled) {
+	background: transparent;
+	border-bottom-color: transparent;
+	backdrop-filter: none;
+	-webkit-backdrop-filter: none;
+}
+
+.krona-marketing:has(.krona-teams-landing) {
+	background:
+		radial-gradient(circle at 78% 5%, rgba(84, 48, 196, 0.24), transparent 34rem),
+		#000;
+}
+
+.krona-teams-landing {
+	position: relative;
+	background: #000;
+}
+
+.krona-teams-hero {
+	position: relative;
+	min-height: min(850px, calc(100svh - 72px));
+	display: flex;
+	align-items: center;
+	overflow: visible;
+	background:
+		radial-gradient(circle at 78% 30%, rgba(84, 48, 196, 0.22), transparent 34rem),
+		linear-gradient(100deg, #060310 0%, #09051a 52%, #150b3d 100%);
+	isolation: isolate;
+}
+
+.krona-teams-hero::after {
+	content: '';
+	position: absolute;
+	inset: 0;
+	z-index: -1;
+	pointer-events: none;
+	background:
+		radial-gradient(circle at 12% 18%, rgba(38, 30, 100, 0.16), transparent 25rem),
+		linear-gradient(to bottom, transparent 58%, #000 100%);
+}
+
+.krona-teams-hero-grid {
+	display: grid;
+	align-items: center;
+	gap: clamp(2.2rem, 4.8vw, 4rem);
+}
+
+.krona-teams-hero-copy {
+	width: min(60vw, 100%);
+	overflow: visible;
+}
+
+.krona-teams-hero-outro {
+	width: min(50vw, 100%);
+}
+
+.krona-teams-hero-title-accent {
+	padding-bottom: 0.12em;
+	line-height: 1.2;
+}
+
+.krona-teams-hero-offer {
+	margin: 0.85rem 0 0;
+	max-width: 28rem;
+	padding-bottom: 0.2em;
+	font-size: 0.875rem;
+	line-height: 1.5;
+	color: var(--km-text-muted);
+}
+
+.krona-teams-hero-actions .krona-landing-btn {
+	cursor: pointer;
+}
+
+.krona-teams-hero-title {
+	width: 100%;
+	max-width: none;
+	font-size: clamp(2.1rem, 4vw, 3.25rem);
+	font-weight: 650;
+	margin-inline: auto;
+}
+
+.krona-teams-hero-title-line {
+	display: block;
+	white-space: nowrap;
+}
+
+.krona-teams-hero-benefits {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: center;
+	gap: 0.9rem;
+	margin: 0 0 clamp(0.85rem, 1.6vw, 1.15rem);
+	padding: 0;
+	list-style: none;
+	font-size: 0.82rem;
+	font-weight: 600;
+	letter-spacing: 0.01em;
+	color: #8f94ff;
+}
+
+.krona-teams-hero-benefits li {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.48rem;
+}
+
+.krona-teams-hero-benefits li + li::before {
+	content: '';
+	width: 4px;
+	height: 4px;
+	margin-right: 0.42rem;
+	border-radius: 50%;
+	background: rgba(143, 148, 255, 0.55);
+}
+
+.krona-teams-hero-benefits svg {
+	width: 15px;
+	height: 15px;
+	color: #8f94ff;
+}
+
+.krona-teams-hero-visual {
+	width: min(75vw, 100%);
+	max-width: none;
+	margin-inline: auto;
+	contain: layout paint;
+}
+
+.krona-teams-hero-outro > p {
+	margin: 0;
+	font-size: clamp(0.95rem, 1.4vw, 1.12rem);
+	font-weight: 550;
+	line-height: 1.55;
+	color: var(--km-text);
+}
+
+.krona-teams-hero-outro > span {
+	margin-top: 1rem;
+	font-size: 0.8rem;
+	color: var(--km-text-muted);
+}
+
+.krona-teams-eyebrow {
+	margin: 0;
+	font-size: 1rem;
+	font-weight: 700;
+	line-height: 1.4;
+	letter-spacing: 0.02em;
+	text-transform: none;
+	color: #767fff;
+}
+
+.krona-teams-screen-frame,
+.krona-teams-wide-screen {
+	position: relative;
+	border: 0;
+	border-radius: 18px;
+	overflow: clip;
+	background: #0c0920;
+	box-shadow: 0 40px 120px rgba(26, 19, 93, 0.5);
+}
+
+.krona-teams-screen-frame img,
+.krona-teams-wide-screen img,
+.krona-teams-feature-image img {
+	display: block;
+	width: 100%;
+	height: auto;
+}
+
+.krona-teams-section {
+	position: relative;
+	padding-block: clamp(5rem, 9vw, 8.5rem);
+}
+
+.krona-teams-landing > section + section {
+	position: relative;
+}
+
+.krona-teams-landing > section + section::before {
+	content: '';
+	position: absolute;
+	top: 0;
+	left: 50%;
+	width: clamp(80px, 8vw, 120px);
+	height: 1px;
+	transform: translateX(-50%);
+	background: rgba(255, 255, 255, 0.16);
+}
+
+.krona-teams-landing > #faq + section::before {
+	content: none;
+}
+
+.krona-teams-section-heading {
+	width: min(60vw, 100%);
+	max-width: none;
+	margin-inline: auto;
+	text-align: center;
+}
+
+.krona-teams-section-heading h2 {
+	margin: 1rem 0 0;
+	font-size: clamp(1.85rem, 4vw, 3rem);
+	font-weight: 650;
+	line-height: 1.2;
+	letter-spacing: -0.03em;
+	color: var(--km-text);
+}
+
+.krona-teams-landing #faq h2,
+.krona-teams-landing .krona-landing-cta-surface h2 {
+	font-size: clamp(1.9rem, 4vw, 3rem);
+	font-weight: 650;
+	line-height: 1.2;
+	letter-spacing: -0.03em;
+}
+
+.krona-teams-section-heading > p:last-child {
+	max-width: none;
+	margin: 1.4rem auto 0;
+	font-size: 1.0625rem;
+	line-height: 1.7;
+	color: var(--km-text-muted);
+}
+
+.krona-teams-section-closing {
+	display: flex;
+	width: 75%;
+	max-width: none;
+	margin: clamp(3rem, 7vw, 5rem) auto 0;
+	flex-direction: column;
+	align-items: center;
+	text-align: center;
+}
+
+.krona-teams-section-closing > p {
+	width: min(50vw, 100%);
+	margin: 0;
+	font-size: 1rem;
+	font-weight: 550;
+	line-height: 1.55;
+	color: var(--km-text);
+}
+
+.krona-teams-section-closing > a {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 0.5rem;
+	margin-top: 1.75rem;
+	padding: 0.8rem 1.5rem;
+	font-size: 0.85rem;
+}
+
+.krona-teams-section-closing > span {
+	margin-top: 1rem;
+	font-size: 0.78rem;
+	color: var(--km-text-muted);
+}
+
+.krona-teams-benefit-grid,
+.krona-teams-tools-grid,
+.krona-teams-steps-grid,
+.krona-teams-pricing-grid,
+.krona-teams-audience-grid {
+	display: grid;
+	width: min(75vw, 100%);
+	gap: 24px;
+	margin-top: clamp(2.5rem, 6vw, 4.5rem);
+	margin-inline: auto;
+}
+
+.krona-teams-pricing-widget {
+	width: min(560px, 100%);
+	max-width: 560px;
+	margin-top: clamp(2.5rem, 6vw, 4.5rem);
+	margin-inline: auto;
+}
+
+.krona-teams-cta-widget {
+	width: min(75vw, 100%);
+	margin-inline: auto;
+}
+
+.krona-teams-feature-list {
+	width: min(75vw, 100%);
+	margin-inline: auto;
+}
+
+.krona-teams-form-width {
+	width: min(560px, 100%);
+	max-width: 560px;
+	margin-inline: auto;
+}
+
+.krona-teams-info-card,
+.krona-teams-tool-card,
+.krona-teams-step-card,
+.krona-teams-price-card {
+	position: relative;
+	border: 1px solid rgba(255, 255, 255, 0.08);
+	border-radius: 20px;
+	background:
+		linear-gradient(145deg, rgba(255, 255, 255, 0.055), rgba(255, 255, 255, 0.018)),
+		rgba(11, 8, 29, 0.76);
+	box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.025);
+}
+
+.krona-teams-info-card,
+.krona-teams-tool-card {
+	padding: clamp(1.4rem, 3vw, 2rem);
+}
+
+.krona-teams-why .krona-teams-info-card {
+	min-height: 200px;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-end;
+}
+
+.krona-teams-tool-card {
+	min-height: 190px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.krona-teams-capabilities .krona-teams-tools-grid {
+	gap: 24px;
+}
+
+.krona-teams-capabilities .krona-teams-tool-card {
+	min-height: 204px;
+}
+
+.krona-teams-capabilities .krona-teams-tool-card h3 {
+	max-width: 17ch;
+	margin: 0;
+	font-size: 1.05rem;
+	line-height: 1.45;
+}
+
+.krona-teams-capabilities .krona-teams-icon {
+	width: 32px;
+	height: 32px;
+	justify-content: flex-start;
+	border: 0;
+	border-radius: 0;
+	color: #767fff;
+	background: transparent;
+}
+
+.krona-teams-capabilities .krona-teams-icon svg {
+	width: 28px;
+	height: 28px;
+}
+
+.krona-teams-info-card h3,
+.krona-teams-tool-card h3,
+.krona-teams-step-card h3 {
+	margin: 1.25rem 0 0;
+	font-size: 1.1rem;
+	font-weight: 650;
+	color: var(--km-text);
+}
+
+.krona-teams-info-card p,
+.krona-teams-tool-card p,
+.krona-teams-step-card p {
+	margin: 0.75rem 0 0;
+	font-size: 0.92rem;
+	line-height: 1.65;
+	color: var(--km-text-muted);
+}
+
+.krona-teams-icon {
+	display: inline-flex;
+	width: 32px;
+	height: 32px;
+	align-items: center;
+	justify-content: flex-start;
+	border: 0;
+	border-radius: 0;
+	color: #767fff;
+	background: transparent;
+}
+
+.krona-teams-icon svg {
+	width: 28px;
+	height: 28px;
+}
+
+.krona-teams-price-meta svg {
+	color: #767fff;
+}
+
+.krona-teams-members-showcase {
+	overflow: clip;
+}
+
+.krona-teams-feature-list > div:nth-child(n + 3) {
+	content-visibility: auto;
+	contain-intrinsic-size: auto 720px;
+}
+
+.krona-teams-wide-screen {
+	width: min(75vw, 100%);
+	max-width: none;
+	margin: clamp(2.75rem, 6vw, 5rem) auto 0;
+}
+
+.krona-teams-feature-image {
+	position: relative;
+	width: 100%;
+	aspect-ratio: 1;
+	overflow: hidden;
+	border: 0;
+	border-radius: 0;
+}
+
+.krona-teams-feature-image img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+.krona-teams-step-card {
+	padding: clamp(1.6rem, 4vw, 2.4rem);
+}
+
+.krona-teams-step-card > span {
+	font-size: 3.25rem;
+	font-weight: 750;
+	line-height: 1;
+	color: transparent;
+	-webkit-text-fill-color: transparent;
+	background: linear-gradient(
+		45deg,
+		var(--krona-accent) 0%,
+		color-mix(in srgb, var(--krona-accent) 64%, transparent) 100%
+	);
+	-webkit-background-clip: text;
+	background-clip: text;
+}
+
+.krona-teams-price-card {
+	padding: clamp(1.7rem, 4vw, 2.6rem);
+	text-align: center;
+}
+
+.krona-teams-price-tabs {
+	display: flex;
+	align-items: stretch;
+	gap: 4px;
+	width: 100%;
+	padding: 4px;
+	box-sizing: border-box;
+	min-height: 48px;
+	border-radius: 999px;
+	border: 1px solid var(--km-glass-stroke);
+}
+
+.krona-teams-price-tab {
+	flex: 1;
+	min-width: 0;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 0.5rem;
+	margin: 0;
+	padding: 0 8px;
+	min-height: 40px;
+	border: none;
+	border-radius: 999px;
+	background: transparent;
+	color: var(--km-text);
+	font-family: inherit;
+	font-size: 14px;
+	font-weight: 600;
+	line-height: 1.2;
+	cursor: pointer;
+	transition:
+		background 0.2s ease,
+		color 0.2s ease;
+}
+
+.krona-teams-price-tab[aria-selected='true'] {
+	color: #fff;
+	background: var(--km-gradient);
+}
+
+.krona-teams-price-tab[aria-selected='true']:hover {
+	background: var(--km-gradient-hover);
+}
+
+.krona-teams-price-tab:not([aria-selected='true']):hover {
+	background: var(--km-glass-fill);
+}
+
+.krona-teams-price-save {
+	display: inline-flex;
+	align-items: center;
+	flex-shrink: 0;
+	padding: 0.2rem 0.45rem;
+	border-radius: 999px;
+	font-size: 10px;
+	font-weight: 700;
+	letter-spacing: 0.04em;
+	text-transform: uppercase;
+	line-height: 1.2;
+	white-space: nowrap;
+}
+
+.krona-teams-price-tab:not([aria-selected='true']) .krona-teams-price-save {
+	background: color-mix(in srgb, var(--krona-accent) 22%, transparent);
+	color: var(--krona-accent);
+	border: 1px solid color-mix(in srgb, var(--krona-accent) 42%, transparent);
+}
+
+.krona-teams-price-tab[aria-selected='true'] .krona-teams-price-save {
+	background: rgba(255, 255, 255, 0.14);
+	color: #fff;
+	border: 1px solid rgba(255, 255, 255, 0.22);
+}
+
+@media (max-width: 420px) {
+	.krona-teams-price-tab {
+		gap: 0.3rem;
+		padding: 0 6px;
+		font-size: 13px;
+	}
+
+	.krona-teams-price-save {
+		font-size: 9px;
+		padding: 0.15rem 0.35rem;
+	}
+}
+
+.krona-teams-price-card--featured {
+	border-color: rgba(87, 111, 255, 0.5);
+	box-shadow:
+		0 24px 80px rgba(54, 44, 160, 0.2),
+		inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+.krona-teams-price-badge {
+	position: absolute;
+	top: 1.25rem;
+	right: 1.25rem;
+	padding: 0.35rem 0.7rem;
+	border-radius: 999px;
+	font-size: 0.68rem;
+	font-weight: 700;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	color: #fff;
+	background: var(--km-gradient);
+}
+
+.krona-teams-price-name {
+	margin: 0;
+	font-size: 1.05rem;
+	font-weight: 650;
+	color: var(--km-text);
+}
+
+.krona-teams-price {
+	display: flex;
+	align-items: baseline;
+	gap: 0.75rem;
+	margin-top: 1.75rem;
+}
+
+.krona-teams-price strong {
+	font-size: clamp(2.6rem, 6vw, 4rem);
+	line-height: 1;
+	color: var(--km-text);
+}
+
+.krona-teams-price span {
+	font-size: 0.85rem;
+	color: var(--km-text-muted);
+}
+
+.krona-teams-price--centered {
+	flex-wrap: wrap;
+	justify-content: center;
+	text-align: center;
+}
+
+.krona-teams-price--centered > span {
+	flex-basis: 100%;
+}
+
+.krona-teams-price del {
+	font-size: 1.7rem;
+	color: var(--km-text);
+}
+
+.krona-teams-save-badge {
+	display: inline-flex;
+	margin-left: 0.4rem;
+	padding: 0.2rem 0.45rem;
+	border: 1px solid rgba(94, 111, 255, 0.5);
+	border-radius: 999px;
+	font-size: 0.7rem;
+	color: #8f94ff;
+}
+
+.krona-teams-price-meta {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: center;
+	gap: 1rem;
+	margin-top: 1.2rem;
+	font-size: 0.75rem;
+	color: var(--km-text-muted);
+}
+
+.krona-teams-price-meta span {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.35rem;
+}
+
+.krona-teams-audience-card {
+	position: relative;
+	aspect-ratio: 540 / 690;
+	overflow: hidden;
+	border-radius: 20px;
+	background: #111;
+}
+
+.krona-teams-audience-card img {
+	object-fit: cover;
+}
+
+.krona-teams-audience-card > div {
+	position: absolute;
+	inset: 0;
+	background: linear-gradient(to top, rgba(0, 0, 0, 0.76), transparent 50%);
+}
+
+.krona-teams-audience-card h3 {
+	position: absolute;
+	left: 1.5rem;
+	right: 1.5rem;
+	bottom: 1.35rem;
+	margin: 0;
+	font-size: 1.2rem;
+	color: #fff;
+}
+
+.krona-teams-landing .krona-landing-cta-surface .krona-teams-eyebrow + h2 {
+	margin-top: 1.5rem;
+}
+
+.krona-teams-footer {
+	padding-block: 4rem 2rem;
+	background: #000;
+}
+
+.krona-teams-footer .krona-landing-container {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 1.6rem;
+	padding-block: 2.5rem;
+	background: #07060c;
+}
+
+.krona-teams-footer nav {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	gap: 1.25rem 2.5rem;
+}
+
+.krona-teams-footer a {
+	font-size: 0.85rem;
+	font-weight: 550;
+	color: var(--km-text);
+	text-decoration: none;
+}
+
+.krona-teams-footer-meta {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	gap: 0.6rem 1.5rem;
+	font-size: 0.75rem;
+	color: var(--km-text-muted);
+}
+
+.krona-teams-footer-meta span + span {
+	padding-left: 1.5rem;
+	border-left: 1px solid rgba(255, 255, 255, 0.16);
+}
+
+.krona-teams-price-card ul {
+	display: grid;
+	gap: 0.85rem;
+	margin: 2rem 0;
+	padding: 0;
+	list-style: none;
+	color: var(--km-text-muted);
+}
+
+.krona-teams-price-card li::before {
+	content: '✓';
+	margin-right: 0.7rem;
+	color: #77d7ff;
+}
+
+.krona-teams-price-card a.krona-btn-gradient {
+	display: inline-flex;
+	width: 100%;
+	align-items: center;
+	justify-content: center;
+	gap: 0.5rem;
+	margin-top: 2.5rem;
+	padding: 0.9rem 1.25rem;
+}
+
+@media (min-width: 640px) {
+	.krona-teams-benefit-grid,
+	.krona-teams-tools-grid {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+
+	.krona-teams-audience-grid {
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+		gap: 24px;
+	}
+}
+
+@media (min-width: 768px) {
+	.krona-teams-pricing-grid {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		margin-inline: auto;
+	}
+}
+
+@media (min-width: 1024px) {
+	.krona-landing-nav-row:has(.krona-landing-nav-center) {
+		grid-template-columns: 1fr auto 1fr;
+	}
+
+	.krona-teams-benefit-grid {
+		grid-template-columns: repeat(4, minmax(0, 1fr));
+	}
+
+	.krona-teams-why .krona-teams-benefit-grid {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+
+	.krona-teams-landing .krona-landing-feature {
+		grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+	}
+
+	.krona-teams-landing .krona-landing-feature--reverse {
+		grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+	}
+
+	.krona-teams-tools-grid {
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+	}
+
+	.krona-teams-steps-grid {
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+	}
+}
+
+@media (max-width: 1023px) {
+	.krona-teams-hero {
+		min-height: 0;
+	}
+
+	.krona-teams-hero-title {
+		max-width: 100%;
+	}
+
+	.krona-teams-hero-title-line {
+		white-space: normal;
+	}
+
+	.krona-teams-hero-visual {
+		margin-top: 0.5rem;
+	}
+
+	.krona-teams-hero-benefits li + li::before {
+		display: none;
+	}
+
+	.krona-teams-capabilities .krona-teams-tool-card h3 {
+		max-width: none;
+	}
+
+	.krona-teams-footer {
+		padding-bottom: calc(8rem + env(safe-area-inset-bottom, 0px));
+	}
+}
+
+@media (max-width: 767px) {
+	.krona-marketing:has(.krona-teams-landing) .krona-landing-who-scroll-shell {
+		--krona-who-gutter: 16px;
+	}
+}
+
+@media (max-width: 639px) {
+	.krona-teams-hero-copy,
+	.krona-teams-hero-outro,
+	.krona-teams-section-heading,
+	.krona-teams-section-closing,
+	.krona-teams-wide-screen,
+	.krona-teams-hero-visual,
+	.krona-teams-benefit-grid,
+	.krona-teams-tools-grid,
+	.krona-teams-steps-grid,
+	.krona-teams-pricing-grid,
+	.krona-teams-pricing-widget,
+	.krona-teams-cta-widget,
+	.krona-teams-feature-list,
+	.krona-teams-form-width {
+		width: 100%;
+	}
+
+	.krona-teams-section-closing > p {
+		width: 100%;
+	}
+
+	.krona-teams-section {
+		padding-block: 4.5rem;
+	}
+
+	.krona-teams-hero-title {
+		font-size: clamp(2rem, 10vw, 2.8rem);
+	}
+
+	.krona-teams-hero-benefits {
+		flex-direction: column;
+		gap: 0.65rem;
+	}
+
+	.krona-teams-hero-benefits li + li::before {
+		display: none;
+	}
+
+	.krona-teams-screen-frame,
+	.krona-teams-wide-screen,
+	.krona-teams-feature-image {
+		border-radius: 14px;
+	}
+
+	.krona-teams-footer-meta span + span {
+		padding-left: 0;
+		border-left: 0;
+	}
+}
+
+/* Landing-only visitor AI */
+.krona-visitor-ai {
+	position: fixed;
+	right: 24px;
+	bottom: 24px;
+	z-index: 60;
+	display: flex;
+	flex-direction: column;
+	align-items: flex-end;
+	gap: 12px;
+	font-family: var(--font-geist-sans), 'Poppins', system-ui, sans-serif;
+}
+
+.krona-visitor-ai-launcher {
+	box-sizing: border-box;
+	width: 56px;
+	height: 56px;
+	display: grid;
+	place-items: center;
+	padding: 0;
+	appearance: none;
+	border: 0;
+	border-radius: 50%;
+	outline: 0;
+	color: #fff;
+	cursor: pointer;
+	background: var(--km-gradient);
+	box-shadow: 0 14px 45px rgba(73, 93, 253, 0.42);
+	transition:
+		transform 0.2s ease,
+		box-shadow 0.2s ease;
+}
+
+.krona-visitor-ai-launcher:hover {
+	transform: translateY(-2px);
+	box-shadow: 0 18px 50px rgba(73, 93, 253, 0.5);
+}
+
+.krona-visitor-ai-launcher:focus-visible {
+	box-shadow:
+		0 0 0 3px rgba(255, 255, 255, 0.9),
+		0 18px 50px rgba(73, 93, 253, 0.5);
+}
+
+.krona-visitor-ai-launcher img,
+.krona-visitor-ai-avatar img,
+.krona-visitor-ai-launcher svg {
+	filter:
+		brightness(0)
+		invert(1)
+		drop-shadow(0 0 7px rgba(255, 255, 255, 0.95));
+}
+
+.krona-visitor-ai-teaser {
+	position: absolute;
+	right: 68px;
+	bottom: 4px;
+	width: max-content;
+	max-width: min(250px, calc(100vw - 105px));
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	padding: 0.8rem 1rem;
+	border: 1px solid rgba(255, 255, 255, 0.12);
+	border-radius: 16px 16px 4px 16px;
+	color: var(--km-text);
+	text-align: left;
+	cursor: pointer;
+	background: rgba(17, 14, 37, 0.96);
+	box-shadow: 0 16px 50px rgba(0, 0, 0, 0.42);
+	animation: krona-visitor-teaser-in 0.32s ease both;
+}
+
+.krona-visitor-ai-teaser strong {
+	font-size: 0.82rem;
+}
+
+.krona-visitor-ai-teaser span {
+	margin-top: 0.15rem;
+	font-size: 0.75rem;
+	color: var(--km-text-muted);
+}
+
+@keyframes krona-visitor-teaser-in {
+	from {
+		opacity: 0;
+		transform: translateY(8px) scale(0.96);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0) scale(1);
+	}
+}
+
+.krona-visitor-ai-panel {
+	width: min(380px, calc(100vw - 32px));
+	height: min(560px, calc(100dvh - 110px));
+	display: flex;
+	overflow: hidden;
+	flex-direction: column;
+	border: 1px solid rgba(126, 140, 255, 0.25);
+	border-radius: 24px;
+	color: var(--km-text);
+	background: rgba(8, 6, 24, 0.98);
+	box-shadow: 0 24px 90px rgba(0, 0, 0, 0.68);
+	animation: krona-visitor-panel-in 0.25s ease both;
+}
+
+@keyframes krona-visitor-panel-in {
+	from {
+		opacity: 0;
+		transform: translateY(12px) scale(0.98);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0) scale(1);
+	}
+}
+
+.krona-visitor-ai-panel > header {
+	display: flex;
+	align-items: center;
+	gap: 0.75rem;
+	padding: 1rem;
+	border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.krona-visitor-ai-avatar {
+	width: 38px;
+	height: 38px;
+	display: grid;
+	flex-shrink: 0;
+	place-items: center;
+	border-radius: 12px;
+	background: var(--km-gradient);
+}
+
+.krona-visitor-ai-panel > header > div {
+	display: flex;
+	min-width: 0;
+	flex: 1;
+	flex-direction: column;
+}
+
+.krona-visitor-ai-panel > header strong {
+	font-size: 0.9rem;
+}
+
+.krona-visitor-ai-panel > header span {
+	font-size: 0.7rem;
+	color: var(--km-text-muted);
+}
+
+.krona-visitor-ai-panel > header button {
+	width: 34px;
+	height: 34px;
+	display: grid;
+	place-items: center;
+	padding: 0;
+	border: 0;
+	border-radius: 10px;
+	color: var(--km-text-muted);
+	cursor: pointer;
+	background: transparent;
+}
+
+.krona-visitor-ai-panel > header button:hover {
+	color: var(--km-text);
+	background: rgba(255, 255, 255, 0.07);
+}
+
+.krona-visitor-ai-messages {
+	display: flex;
+	min-height: 0;
+	flex: 1;
+	flex-direction: column;
+	gap: 0.75rem;
+	overflow-y: auto;
+	padding: 1rem;
+}
+
+.krona-visitor-ai-message {
+	max-width: 88%;
+	padding: 0.7rem 0.9rem;
+	border-radius: 16px;
+	font-size: 0.82rem;
+	line-height: 1.55;
+	overflow-wrap: anywhere;
+	white-space: pre-wrap;
+}
+
+.krona-visitor-ai-message--assistant {
+	align-self: flex-start;
+	border: 1px solid rgba(255, 255, 255, 0.08);
+	border-bottom-left-radius: 5px;
+	color: var(--km-text);
+	background: rgba(255, 255, 255, 0.055);
+}
+
+.krona-visitor-ai-message--user {
+	align-self: flex-end;
+	border-bottom-right-radius: 5px;
+	color: #fff;
+	background: var(--km-gradient);
+}
+
+.krona-visitor-ai-message a {
+	color: #8fdcff;
+	font-weight: 650;
+	text-decoration: underline;
+	text-decoration-color: rgba(143, 220, 255, 0.45);
+	text-underline-offset: 3px;
+}
+
+.krona-visitor-ai-suggestions {
+	display: grid;
+	gap: 0.5rem;
+	margin-top: auto;
+}
+
+.krona-visitor-ai-suggestions button {
+	padding: 0.65rem 0.75rem;
+	border: 1px solid rgba(255, 255, 255, 0.1);
+	border-radius: 12px;
+	color: var(--km-text);
+	font: inherit;
+	font-size: 0.75rem;
+	text-align: left;
+	cursor: pointer;
+	background: rgba(255, 255, 255, 0.035);
+}
+
+.krona-visitor-ai-suggestions button:hover {
+	border-color: rgba(111, 132, 255, 0.42);
+	background: rgba(73, 93, 253, 0.1);
+}
+
+.krona-visitor-ai-typing {
+	display: flex;
+	align-self: flex-start;
+	gap: 4px;
+	padding: 0.75rem 0.9rem;
+	border-radius: 16px;
+	background: rgba(255, 255, 255, 0.055);
+}
+
+.krona-visitor-ai-typing span {
+	width: 5px;
+	height: 5px;
+	border-radius: 50%;
+	background: var(--km-text-muted);
+	animation: krona-visitor-typing 0.9s infinite alternate;
+}
+
+.krona-visitor-ai-typing span:nth-child(2) {
+	animation-delay: 0.15s;
+}
+
+.krona-visitor-ai-typing span:nth-child(3) {
+	animation-delay: 0.3s;
+}
+
+@keyframes krona-visitor-typing {
+	to {
+		opacity: 0.3;
+		transform: translateY(-3px);
+	}
+}
+
+.krona-visitor-ai-panel > form {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+	margin: 0.75rem;
+	padding: 0.45rem 0.45rem 0.45rem 0.9rem;
+	border: 1px solid rgba(255, 255, 255, 0.13);
+	border-radius: 16px;
+	background: rgba(255, 255, 255, 0.04);
+}
+
+.krona-visitor-ai-panel > form input {
+	min-width: 0;
+	flex: 1;
+	border: 0;
+	outline: 0;
+	color: var(--km-text);
+	font: inherit;
+	font-size: 0.82rem;
+	background: transparent;
+}
+
+.krona-visitor-ai-panel > form input::placeholder {
+	color: var(--km-text-muted);
+}
+
+.krona-visitor-ai-panel > form button {
+	width: 34px;
+	height: 34px;
+	display: grid;
+	flex-shrink: 0;
+	place-items: center;
+	padding: 0;
+	border: 0;
+	border-radius: 11px;
+	color: #fff;
+	cursor: pointer;
+	background: var(--km-gradient);
+}
+
+.krona-visitor-ai-panel > form button:disabled {
+	opacity: 0.38;
+	cursor: not-allowed;
+}
+
+@media (max-width: 1023px) {
+	.krona-visitor-ai {
+		right: 16px;
+		bottom: calc(82px + env(safe-area-inset-bottom, 0px));
+	}
+
+	.krona-visitor-ai--open {
+		bottom: calc(88px + env(safe-area-inset-bottom, 0px));
+	}
+
+	.krona-visitor-ai-panel {
+		height: min(520px, calc(100dvh - 160px - env(safe-area-inset-bottom, 0px)));
+	}
+}
+
+@media (max-width: 480px) {
+	.krona-visitor-ai-panel {
+		height: min(500px, calc(100dvh - 160px - env(safe-area-inset-bottom, 0px)));
+	}
+}

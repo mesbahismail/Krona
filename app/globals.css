@@ -1,0 +1,1352 @@
+@import 'tailwindcss';
+@import 'tw-animate-css';
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+	--color-background: var(--background);
+	--color-foreground: var(--foreground);
+	--font-sans: var(--font-geist-sans);
+	--font-mono: var(--font-geist-mono);
+	--color-sidebar-ring: var(--sidebar-ring);
+	--color-sidebar-border: var(--sidebar-border);
+	--color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+	--color-sidebar-accent: var(--sidebar-accent);
+	--color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+	--color-sidebar-primary: var(--sidebar-primary);
+	--color-sidebar-foreground: var(--sidebar-foreground);
+	--color-sidebar: var(--sidebar);
+	--color-chart-5: var(--chart-5);
+	--color-chart-4: var(--chart-4);
+	--color-chart-3: var(--chart-3);
+	--color-chart-2: var(--chart-2);
+	--color-chart-1: var(--chart-1);
+	--color-ring: var(--ring);
+	--color-input: var(--input);
+	--color-border: var(--border);
+	--color-destructive: var(--destructive);
+	--color-accent-foreground: var(--accent-foreground);
+	--color-accent: var(--accent);
+	--color-muted-foreground: var(--muted-foreground);
+	--color-muted: var(--muted);
+	--color-secondary-foreground: var(--secondary-foreground);
+	--color-secondary: var(--secondary);
+	--color-primary-foreground: var(--primary-foreground);
+	--color-primary: var(--primary);
+	--color-popover-foreground: var(--popover-foreground);
+	--color-popover: var(--popover);
+	--color-card-foreground: var(--card-foreground);
+	--color-card: var(--card);
+	--radius-sm: calc(var(--radius) - 4px);
+	--radius-md: calc(var(--radius) - 2px);
+	--radius-lg: var(--radius);
+	--radius-xl: calc(var(--radius) + 4px);
+}
+
+:root {
+	--krona-page-gap: 40px;
+	--krona-page-gap-mobile: 16px;
+	--krona-nav-gap: 32px;
+	--krona-top-gap: 24px;
+	--krona-top-height: 60px;
+	--krona-mobile-tab-height: 0px;
+	--krona-sidebar-width: 72px;
+	--krona-mobile-max: 899px;
+	--krona-tablet-min: 800px;
+	--krona-tablet-max: 1199px;
+	--krona-desktop-min: 1200px;
+	--krona-floating-offset: 0px;
+	--krona-control-height: 32px;
+	--krona-control-font-size: 14px;
+	--krona-page-nav-title-font-size: 20px;
+	--krona-note-editor-font-size: 14px;
+	--krona-widget-blur: 20px;
+	--krona-shell-blur: 24px;
+	--krona-widget-saturate: 160%;
+	--krona-shell-saturate: 180%;
+	--krona-bg-gradient: linear-gradient(
+		135deg,
+		#faf8ff 0%,
+		#f3effc 24%,
+		#ebe4f8 48%,
+		#e4edf8 72%,
+		#dce8f4 100%
+	);
+	--krona-text: #1a102e;
+	--krona-text-muted: rgba(26, 16, 46, 0.68);
+	--krona-placeholder-color: rgba(26, 16, 46, 0.48);
+	/* Derived from --krona-text, so they flip with the theme on <html>. Use
+	   these instead of hardcoded white for any text, icon, or hover chip. */
+	--krona-text-72: color-mix(in srgb, var(--krona-text) 72%, transparent);
+	--krona-text-64: color-mix(in srgb, var(--krona-text) 64%, transparent);
+	--krona-text-48: color-mix(in srgb, var(--krona-text) 48%, transparent);
+	--krona-text-36: color-mix(in srgb, var(--krona-text) 36%, transparent);
+	--krona-text-24: color-mix(in srgb, var(--krona-text) 24%, transparent);
+	--krona-overlay-hover: color-mix(in srgb, var(--krona-text) 8%, transparent);
+	--krona-overlay-active: color-mix(
+		in srgb,
+		var(--krona-text) 12%,
+		transparent
+	);
+	--krona-overlay-strong: color-mix(
+		in srgb,
+		var(--krona-text) 16%,
+		transparent
+	);
+	/* Folder / entity icon chips — dark glyph on light wash, white on dark. */
+	--krona-icon-tile-bg: color-mix(
+		in srgb,
+		var(--krona-accent) 16%,
+		var(--krona-secondary-bg)
+	);
+	--krona-icon-tile-fg: var(--krona-accent-stop-0);
+	/* Unfilled part of progress bars — needs more weight on the light page
+	   background than a plain overlay to stay readable. */
+	--krona-progress-track: rgba(26, 16, 46, 0.2);
+	--krona-vacation-day-bg: rgba(251, 191, 36, 0.2);
+	--krona-vacation-label-bg: rgba(251, 191, 36, 0.28);
+	--krona-vacation-border: rgba(180, 83, 9, 0.38);
+	--krona-vacation-text: #78350f;
+	--krona-vacation-muted: rgba(120, 53, 15, 0.78);
+	--krona-vacation-icon: #b45309;
+	--krona-vacation-cta-bg: #d97706;
+	--krona-vacation-cta-text: #fff8e8;
+	--krona-gold: #b45309;
+	--krona-note-title-placeholder-color: rgba(26, 16, 46, 0.24);
+	--krona-surface-bg: rgba(255, 255, 255, 0.66);
+	--krona-surface-border: rgba(26, 16, 46, 0.12);
+	--krona-widget-border-hover: rgba(26, 16, 46, 0.24);
+	--krona-widget-bg: rgba(255, 255, 255, 0.6);
+	--krona-widget-list-item-hover: rgba(26, 16, 46, 0.06);
+	--krona-widget-item-shadow: 0 6px 16px -8px rgba(0, 0, 0, 0.22);
+	--krona-widget-shadow: 0 8px 24px rgba(0, 0, 0, 0.04);
+	--krona-input-bg: transparent;
+	--krona-input-border: rgba(26, 16, 46, 0.48);
+	--krona-secondary-bg: rgba(26, 16, 46, 0.08);
+	--krona-secondary-border: rgba(26, 16, 46, 0.14);
+	--krona-accent: #495dfd;
+	--krona-accent-08: color-mix(in srgb, var(--krona-accent) 8%, transparent);
+	--krona-accent-10: color-mix(in srgb, var(--krona-accent) 10%, transparent);
+	--krona-accent-12: color-mix(in srgb, var(--krona-accent) 12%, transparent);
+	--krona-accent-14: color-mix(in srgb, var(--krona-accent) 14%, transparent);
+	--krona-accent-16: color-mix(in srgb, var(--krona-accent) 16%, transparent);
+	--krona-accent-18: color-mix(in srgb, var(--krona-accent) 18%, transparent);
+	--krona-accent-22: color-mix(in srgb, var(--krona-accent) 22%, transparent);
+	--krona-accent-28: color-mix(in srgb, var(--krona-accent) 28%, transparent);
+	--krona-accent-35: color-mix(in srgb, var(--krona-accent) 35%, transparent);
+	--krona-accent-36: color-mix(in srgb, var(--krona-accent) 36%, transparent);
+	--krona-accent-45: color-mix(in srgb, var(--krona-accent) 45%, transparent);
+	--krona-accent-55: color-mix(in srgb, var(--krona-accent) 55%, transparent);
+	--krona-accent-70: color-mix(in srgb, var(--krona-accent) 70%, transparent);
+	/* Semantic accent treatments. Components should use these instead of
+	   fixed blue/purple values so every season keeps its own visual language. */
+	--krona-accent-soft-bg: color-mix(
+		in srgb,
+		var(--krona-accent) 16%,
+		transparent
+	);
+	--krona-accent-soft-border: color-mix(
+		in srgb,
+		var(--krona-accent) 42%,
+		transparent
+	);
+	--krona-accent-soft-text: color-mix(
+		in srgb,
+		var(--krona-accent) 82%,
+		var(--krona-text)
+	);
+	--krona-on-accent: #ffffff;
+	--krona-accent-stop-0: #6320de;
+	--krona-accent-stop-34: #534fff;
+	--krona-accent-stop-68: #15a1f1;
+	--krona-accent-stop-100: #00bdd3;
+	--krona-accent-gradient: linear-gradient(
+		45deg,
+		var(--krona-accent-stop-0) 0%,
+		var(--krona-accent-stop-34) 34%,
+		var(--krona-accent-stop-68) 68%,
+		var(--krona-accent-stop-100) 100%
+	);
+	--krona-accent-gradient-hover: linear-gradient(
+		45deg,
+		#7a3af3 0%,
+		#6a66ff 34%,
+		#36b7ff 68%,
+		#38d9ec 100%
+	);
+	--krona-accent-shadow: 0 8px 24px rgba(21, 161, 241, 0.28);
+	/* Primary hover/press ring — inside the control, light blue at 64%. */
+	--krona-control-inset-stroke: inset 0 0 0 1px
+		color-mix(in srgb, #15a1f1 64%, transparent);
+	--krona-primary-hover-shadow:
+		var(--krona-control-inset-stroke), var(--krona-accent-shadow);
+	--krona-modal-bg: rgba(255, 255, 255, 0.96);
+	--krona-modal-overlay: rgba(10, 12, 24, 0.42);
+	--krona-dropdown-bg: #f4f5fa;
+	--krona-dropdown-shadow: 0 24px 48px rgba(26, 16, 46, 0.16);
+	--radius: 0.875rem;
+	--background: #e8e8e8;
+	--foreground: #111111;
+	--card: #ffffff;
+	--card-foreground: #111111;
+	--popover: #ffffff;
+	--popover-foreground: #111111;
+	--primary: var(--krona-accent);
+	--primary-foreground: #ffffff;
+	--secondary: #f0f0f0;
+	--secondary-foreground: #111111;
+	--muted: #f0f0f0;
+	--muted-foreground: #666666;
+	--accent: #f0f0f0;
+	--accent-foreground: #111111;
+	--destructive: oklch(0.577 0.245 27.325);
+	--border: rgba(0, 0, 0, 0.12);
+	--input: rgba(0, 0, 0, 0.08);
+	--ring: color-mix(in srgb, var(--krona-accent) 45%, transparent);
+	--chart-1: oklch(0.646 0.222 41.116);
+	--chart-2: oklch(0.6 0.118 184.704);
+	--chart-3: oklch(0.398 0.07 227.392);
+	--chart-4: oklch(0.828 0.189 84.429);
+	--chart-5: oklch(0.769 0.188 70.08);
+	--sidebar: hsl(0 0% 98%);
+	--sidebar-foreground: hsl(240 5.3% 26.1%);
+	--sidebar-primary: hsl(240 5.9% 10%);
+	--sidebar-primary-foreground: hsl(0 0% 98%);
+	--sidebar-accent: hsl(240 4.8% 95.9%);
+	--sidebar-accent-foreground: hsl(240 5.9% 10%);
+	--sidebar-border: hsl(220 13% 91%);
+	--sidebar-ring: hsl(217.2 91.2% 59.8%);
+}
+
+.dark {
+	--krona-bg-gradient: linear-gradient(135deg, #1c1c1c 0%, #101010 100%);
+	--krona-text: #ffffff;
+	--krona-text-72: color-mix(in srgb, var(--krona-text) 72%, transparent);
+	--krona-text-64: color-mix(in srgb, var(--krona-text) 64%, transparent);
+	--krona-text-48: color-mix(in srgb, var(--krona-text) 48%, transparent);
+	--krona-text-36: color-mix(in srgb, var(--krona-text) 36%, transparent);
+	--krona-text-24: color-mix(in srgb, var(--krona-text) 24%, transparent);
+	--krona-overlay-hover: color-mix(in srgb, var(--krona-text) 5%, transparent);
+	--krona-overlay-active: color-mix(in srgb, var(--krona-text) 8%, transparent);
+	--krona-overlay-strong: color-mix(
+		in srgb,
+		var(--krona-text) 11%,
+		transparent
+	);
+	--krona-icon-tile-bg: color-mix(
+		in srgb,
+		var(--krona-accent) 28%,
+		transparent
+	);
+	--krona-icon-tile-fg: #fff;
+	--krona-text-muted: var(--krona-text-64);
+	--krona-placeholder-color: rgba(255, 255, 255, 0.42);
+	--krona-note-title-placeholder-color: rgba(255, 255, 255, 0.2);
+	--krona-surface-bg: rgba(24, 24, 28, 0.55);
+	--krona-surface-border: rgba(255, 255, 255, 0.14);
+	--krona-widget-border-hover: rgba(255, 255, 255, 0.24);
+	--krona-widget-bg: rgba(255, 255, 255, 0.02);
+	--krona-widget-list-item-hover: rgba(255, 255, 255, 0.05);
+	--krona-widget-item-shadow: 0 6px 16px -8px rgba(0, 0, 0, 0.22);
+	--krona-input-bg: transparent;
+	--krona-input-border: rgba(255, 255, 255, 0.38);
+	--krona-secondary-bg: rgba(255, 255, 255, 0.11);
+	--krona-secondary-border: rgba(255, 255, 255, 0.14);
+	--krona-progress-track: rgba(255, 255, 255, 0.08);
+	--krona-vacation-day-bg: rgba(251, 191, 36, 0.17);
+	--krona-vacation-label-bg: rgba(251, 191, 36, 0.2);
+	--krona-vacation-border: rgba(251, 191, 36, 0.52);
+	--krona-vacation-text: #fde68a;
+	--krona-vacation-muted: rgba(253, 230, 138, 0.82);
+	--krona-vacation-icon: #fbbf24;
+	--krona-vacation-cta-bg: #fbbf24;
+	--krona-vacation-cta-text: #1a102e;
+	--krona-gold: #fbbf24;
+	--krona-modal-bg: rgba(0, 0, 0, 0.08);
+	--krona-modal-overlay: rgba(6, 4, 18, 0.5);
+	--krona-dropdown-bg: #12102e;
+	--krona-dropdown-shadow: 0 24px 48px rgba(0, 0, 0, 0.32);
+	--background: #0c091b;
+	--foreground: #ffffff;
+	--card: #181818;
+	--card-foreground: #ffffff;
+	--popover: #181818;
+	--popover-foreground: #ffffff;
+	--primary: oklch(0.922 0 0);
+	--primary-foreground: oklch(0.205 0 0);
+	--secondary: oklch(0.269 0 0);
+	--secondary-foreground: oklch(0.985 0 0);
+	--muted: oklch(0.269 0 0);
+	--muted-foreground: oklch(0.708 0 0);
+	--accent: oklch(0.269 0 0);
+	--accent-foreground: oklch(0.985 0 0);
+	--destructive: oklch(0.704 0.191 22.216);
+	--border: oklch(1 0 0 / 10%);
+	--input: oklch(1 0 0 / 15%);
+	--ring: oklch(0.556 0 0);
+	--chart-1: oklch(0.488 0.243 264.376);
+	--chart-2: oklch(0.696 0.17 162.48);
+	--chart-3: oklch(0.769 0.188 70.08);
+	--chart-4: oklch(0.627 0.265 303.9);
+	--chart-5: oklch(0.645 0.246 16.439);
+	--sidebar: hsl(240 5.9% 10%);
+	--sidebar-foreground: hsl(240 4.8% 95.9%);
+	--sidebar-primary: hsl(224.3 76.3% 48%);
+	--sidebar-primary-foreground: hsl(0 0% 100%);
+	--sidebar-accent: hsl(240 3.7% 15.9%);
+	--sidebar-accent-foreground: hsl(240 4.8% 95.9%);
+	--sidebar-border: hsl(240 3.7% 15.9%);
+	--sidebar-ring: hsl(217.2 91.2% 59.8%);
+}
+
+/* Neutral charcoal with a gently lifted background and surface lighting. */
+html.dark[data-krona-season='dark'] {
+	--krona-bg-gradient: linear-gradient(135deg, #1c1c1c 0%, #101010 100%);
+	--krona-surface-bg: rgba(26, 26, 26, 0.78);
+	--krona-surface-border: rgba(255, 255, 255, 0.11);
+	--krona-widget-border-hover: rgba(255, 255, 255, 0.22);
+	--krona-widget-bg: rgba(255, 255, 255, 0.045);
+	--krona-widget-list-item-hover: rgba(255, 255, 255, 0.055);
+	--krona-widget-item-shadow: 0 6px 16px -8px rgba(0, 0, 0, 0.55);
+	--krona-secondary-bg: rgba(255, 255, 255, 0.088);
+	--krona-secondary-border: rgba(255, 255, 255, 0.132);
+	--krona-input-border: rgba(255, 255, 255, 0.352);
+	--krona-progress-track: rgba(255, 255, 255, 0.088);
+	/* Near-black base washes out the shared amber tint — lift it here so the
+	   vacation banner reads as a notice and not as another dark surface. */
+	--krona-vacation-day-bg: rgba(251, 191, 36, 0.22);
+	--krona-vacation-border: rgba(251, 191, 36, 0.62);
+	--krona-modal-bg: rgba(0, 0, 0, 0.32);
+	--krona-modal-overlay: rgba(0, 0, 0, 0.5);
+	--krona-dropdown-bg: #181818;
+	--krona-dropdown-shadow: 0 24px 48px rgba(0, 0, 0, 0.55);
+	--background: #101010;
+	--foreground: #ffffff;
+	--card: #1b1b1b;
+	--card-foreground: #ffffff;
+	--popover: #1b1b1b;
+	--popover-foreground: #ffffff;
+}
+
+/* Light mode uses thin translucent layers and restrained shadows. */
+html:not(.dark) {
+	--krona-text: #292637;
+	--krona-text-muted: rgba(41, 38, 55, 0.64);
+	--krona-placeholder-color: rgba(41, 38, 55, 0.44);
+	--krona-surface-bg: rgba(255, 255, 255, 0.46);
+	--krona-widget-bg: rgba(255, 255, 255, 0.3);
+	--krona-surface-border: rgba(41, 38, 55, 0.09);
+	--krona-widget-border-hover: rgba(41, 38, 55, 0.17);
+	--krona-widget-list-item-hover: rgba(41, 38, 55, 0.035);
+	--krona-widget-item-shadow: 0 4px 14px -8px rgba(41, 38, 55, 0.12);
+	--krona-widget-shadow: 0 8px 24px rgba(41, 38, 55, 0.025);
+	--krona-secondary-bg: rgba(41, 38, 55, 0.045);
+	--krona-secondary-border: rgba(41, 38, 55, 0.1);
+	--krona-input-border: rgba(41, 38, 55, 0.24);
+	--krona-progress-track: rgba(41, 38, 55, 0.12);
+	--krona-overlay-hover: rgba(41, 38, 55, 0.045);
+	--krona-overlay-active: rgba(41, 38, 55, 0.075);
+	--krona-accent-shadow: 0 6px 20px rgba(21, 161, 241, 0.17);
+	--krona-dropdown-bg: #f8f8fc;
+	--krona-dropdown-shadow: 0 16px 40px rgba(41, 38, 55, 0.1);
+	--krona-widget-saturate: 125%;
+}
+
+.krona-main-content {
+	width: 100%;
+	max-width: 100%;
+	min-width: 0;
+	box-sizing: border-box;
+	padding-top: calc(var(--krona-top-height) + var(--krona-top-gap));
+	padding-left: var(--krona-page-gap-mobile);
+	padding-right: var(--krona-page-gap-mobile);
+	padding-bottom: var(--krona-nav-gap);
+	transition: margin-left 0.36s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@media (max-width: 899px) {
+	.krona-main-content {
+		padding-bottom: calc(
+			var(--krona-mobile-tab-height) + env(safe-area-inset-bottom, 0px) + 16px
+		);
+	}
+}
+
+.krona-main-content.krona-notes-page {
+	padding-bottom: 0 !important;
+}
+
+@media (max-width: 899px) {
+	.krona-main-content.krona-notes-page {
+		padding-bottom: calc(
+			var(--krona-mobile-tab-height) + env(safe-area-inset-bottom, 0px) + 16px
+		) !important;
+	}
+}
+
+/* Challenges owns its vertical spacing internally so lists scroll flush to the
+   top bar and the bottom of the viewport instead of clipping inside shell
+   padding. Only the fixed top bar's height stays reserved here. */
+.krona-main-content.krona-challenges-page {
+	padding-top: var(--krona-top-height);
+	padding-bottom: 0 !important;
+}
+
+@media (max-width: 899px) {
+	.krona-main-content.krona-challenges-page {
+		padding-bottom: 0 !important;
+	}
+}
+
+@media (min-width: 900px) {
+	.krona-main-content {
+		margin-left: var(--krona-page-gap);
+		margin-right: var(--krona-page-gap);
+		padding-left: 0;
+		padding-right: 0;
+	}
+}
+
+html,
+body {
+	min-height: 100%;
+	background: var(--krona-bg-gradient);
+	background-attachment: fixed;
+	color: var(--krona-text);
+	transition: color 0.4s ease;
+}
+
+/* Hide browser scrollbars app-wide; scrolling still works. */
+*,
+*::before,
+*::after {
+	scrollbar-width: none;
+	-ms-overflow-style: none;
+}
+
+*::-webkit-scrollbar {
+	display: none;
+	width: 0;
+	height: 0;
+}
+
+html.krona-theme-settle,
+html.krona-theme-settle body {
+	transition:
+		color 0.4s ease,
+		background-color 0.4s ease,
+		border-color 0.4s ease;
+}
+
+[data-joy-color-scheme='light'],
+[data-joy-color-scheme='dark'] {
+	--joy-palette-background-body: transparent !important;
+	--joy-palette-background-surface: transparent !important;
+}
+
+@layer base {
+	* {
+		@apply border-border outline-ring/50;
+	}
+	body {
+		@apply text-foreground;
+		background: transparent;
+	}
+	[class*='MuiButton-root']:not(.krona-timer-control):not(
+			.krona-timer-control--primary
+		):not(.krona-routine-date-chip) {
+		min-height: var(--krona-control-height) !important;
+		height: var(--krona-control-height) !important;
+		max-height: var(--krona-control-height) !important;
+	}
+	.krona-routine-date-chip {
+		box-sizing: border-box !important;
+		min-height: unset !important;
+		height: auto !important;
+		max-height: none !important;
+		padding: 12px !important;
+	}
+	[class*='MuiIconButton-root']:not(.krona-timer-control):not(
+			.krona-timer-control--primary
+		):not(.krona-task-row-action):not(.krona-profile-trigger) {
+		min-height: var(--krona-control-height) !important;
+		height: var(--krona-control-height) !important;
+		max-height: var(--krona-control-height) !important;
+		min-width: var(--krona-control-height) !important;
+		width: var(--krona-control-height) !important;
+		max-width: var(--krona-control-height) !important;
+	}
+	.krona-task-row-action {
+		min-height: 26px !important;
+		height: 26px !important;
+		max-height: 26px !important;
+		min-width: 26px !important;
+		width: 26px !important;
+		max-width: 26px !important;
+	}
+	.krona-task-row-action svg {
+		flex-shrink: 0;
+	}
+	.krona-task-row-action.krona-task-priority-star[aria-pressed='true'],
+	.krona-task-row-action.krona-task-timer-track[aria-pressed='true'] {
+		background: transparent !important;
+		background-color: transparent !important;
+		box-shadow: none !important;
+	}
+	/* Timer track keeps no hover chip when active; star matches ⋯ hover chip. */
+	.krona-task-row-action.krona-task-timer-track[aria-pressed='true']:hover,
+	.krona-task-row-action.krona-task-timer-track[aria-pressed='true']:active,
+	.krona-task-row-action.krona-task-timer-track[aria-pressed='true']:focus-visible {
+		background: transparent !important;
+		background-color: transparent !important;
+		box-shadow: none !important;
+	}
+	.krona-task-row-action.krona-task-priority-star:hover,
+	.krona-task-row-action.krona-task-priority-star[aria-pressed='true']:hover {
+		background: var(--krona-overlay-hover) !important;
+		background-color: var(--krona-overlay-hover) !important;
+	}
+	.krona-task-row-action.krona-task-priority-star:active,
+	.krona-task-row-action.krona-task-priority-star[aria-pressed='true']:active {
+		background: var(--krona-overlay-active) !important;
+		background-color: var(--krona-overlay-active) !important;
+	}
+	.krona-task-checkbox {
+		min-height: 26px !important;
+		height: 26px !important;
+		max-height: 26px !important;
+		min-width: 26px !important;
+		width: 26px !important;
+		max-width: 26px !important;
+	}
+	.krona-task-checkbox[aria-checked='true'] {
+		background: var(--krona-accent-gradient) !important;
+		background-color: transparent !important;
+		border: none !important;
+		box-shadow: none !important;
+	}
+	.krona-task-checkbox[aria-checked='true']:hover {
+		background: var(--krona-accent-gradient-hover) !important;
+		background-color: transparent !important;
+		border: none !important;
+	}
+	.krona-task-row-actions {
+		gap: 4px !important;
+		column-gap: 4px !important;
+	}
+	[class*='MuiInput-root']:not(.krona-note-inline):not(.krona-note-title),
+	[class*='MuiSelect-root'],
+	[class*='MuiTextarea-root']:not(.krona-note-prose):not(
+			.krona-ai-composer
+		):not(.krona-onboarding-textarea) {
+		min-height: var(--krona-control-height) !important;
+		height: var(--krona-control-height) !important;
+		max-height: var(--krona-control-height) !important;
+		background-color: transparent !important;
+		box-shadow: none !important;
+	}
+	.krona-onboarding-textarea[class*='MuiTextarea-root'] {
+		min-height: 132px !important;
+		height: auto !important;
+		max-height: none !important;
+		background-color: transparent !important;
+		box-shadow: none !important;
+	}
+	.krona-onboarding-textarea[class*='MuiTextarea-root'] textarea {
+		min-height: 100px !important;
+		resize: vertical !important;
+	}
+	.krona-ai-composer[class*='MuiTextarea-root'] {
+		min-height: unset !important;
+		height: auto !important;
+		max-height: none !important;
+		background-color: transparent !important;
+		box-shadow: none !important;
+	}
+	/* Height is owned by Joy's auto-resize (inline style) — overriding it here
+	   pins the box to one row and scrolls the text out of view instead. */
+	.krona-ai-composer[class*='MuiTextarea-root'] textarea {
+		min-height: unset !important;
+		max-height: none !important;
+		resize: none !important;
+		white-space: pre-wrap !important;
+	}
+	.krona-theme-toggle {
+		min-height: unset !important;
+		height: 26px !important;
+		max-height: 26px !important;
+		width: 40px !important;
+		min-width: 40px !important;
+		max-width: 40px !important;
+	}
+	.krona-note-prose[class*='MuiTextarea-root'] {
+		min-height: unset !important;
+		height: auto !important;
+		max-height: none !important;
+		background: transparent !important;
+		background-color: transparent !important;
+		box-shadow: none !important;
+	}
+	.krona-note-prose[class*='MuiTextarea-root']::before,
+	.krona-note-prose[class*='MuiTextarea-root']::after {
+		display: none !important;
+	}
+	.krona-note-prose[class*='MuiTextarea-root'] textarea {
+		min-height: 72px !important;
+		height: auto !important;
+		max-height: none !important;
+		background: transparent !important;
+		background-color: transparent !important;
+		resize: none !important;
+		white-space: pre-wrap !important;
+		font-size: var(--krona-note-editor-font-size) !important;
+		line-height: 1.7 !important;
+		padding: 0 !important;
+		color: transparent !important;
+		-webkit-text-fill-color: transparent !important;
+		caret-color: var(--krona-text) !important;
+	}
+	.krona-note-prose[class*='MuiTextarea-root'] textarea::selection {
+		background: rgba(73, 93, 253, 0.35) !important;
+		color: transparent !important;
+		-webkit-text-fill-color: transparent !important;
+	}
+	.krona-note-prose-display {
+		padding: 0 !important;
+	}
+	.krona-note-prose-editable {
+		outline: none !important;
+	}
+	.krona-note-prose-editable .krona-note-tiptap-surface {
+		outline: none !important;
+		min-height: inherit;
+	}
+	.krona-note-prose-editable .krona-note-tiptap-surface > * + * {
+		margin-top: 0;
+	}
+	.krona-note-prose-editable.krona-note-prose-compact
+		.krona-note-tiptap-surface
+		> *
+		+ * {
+		margin-top: 0;
+	}
+	.krona-note-prose-editable.krona-note-prose-compact
+		.krona-note-tiptap-surface {
+		min-height: 0 !important;
+	}
+	.krona-note-prose-editable.krona-note-prose-compact
+		.krona-note-tiptap-surface
+		p,
+	.krona-note-prose-editable.krona-note-prose-compact
+		.krona-note-tiptap-surface
+		h1,
+	.krona-note-prose-editable.krona-note-prose-compact
+		.krona-note-tiptap-surface
+		h2,
+	.krona-note-prose-editable.krona-note-prose-compact
+		.krona-note-tiptap-surface
+		h3 {
+		min-height: calc(var(--krona-note-editor-font-size) * 1.7);
+	}
+	.krona-note-prose-editable .krona-note-tiptap-surface h1,
+	.krona-note-prose-editable .krona-note-tiptap-surface h2,
+	.krona-note-prose-editable .krona-note-tiptap-surface h3,
+	.krona-note-prose-editable .krona-note-tiptap-surface p,
+	.krona-note-prose-editable .krona-note-tiptap-surface li {
+		margin: 0;
+		padding: 0;
+		min-height: calc(var(--krona-note-editor-font-size) * 1.7);
+		line-height: 1.7;
+		color: var(--krona-text);
+		white-space: pre-wrap;
+		word-break: break-word;
+	}
+	.krona-note-prose-editable .krona-note-tiptap-surface h1 {
+		font-size: 22px;
+		font-weight: 600;
+	}
+	.krona-note-prose-editable .krona-note-tiptap-surface h2 {
+		font-size: 18px;
+		font-weight: 600;
+	}
+	.krona-note-prose-editable .krona-note-tiptap-surface h3 {
+		font-size: 16px;
+		font-weight: 600;
+	}
+	.krona-note-prose-editable .krona-note-tiptap-surface p,
+	.krona-note-prose-editable .krona-note-tiptap-surface li {
+		font-size: var(--krona-note-editor-font-size);
+		font-weight: 400;
+	}
+	.krona-note-prose-editable .krona-note-tiptap-surface ul,
+	.krona-note-prose-editable .krona-note-tiptap-surface ol {
+		margin: 0;
+		padding: 0 0 0 1.25rem;
+		list-style-position: outside;
+	}
+	.krona-note-prose-editable .krona-note-tiptap-surface ul {
+		list-style-type: disc;
+	}
+	.krona-note-prose-editable .krona-note-tiptap-surface ol {
+		list-style-type: decimal;
+	}
+	.krona-note-prose-editable .krona-note-tiptap-surface hr {
+		border: none;
+		border-top: 1px solid var(--krona-surface-border);
+		margin: 24px 0;
+	}
+	.krona-note-prose-editable .krona-note-tiptap-surface li > p {
+		min-height: 0;
+	}
+	.krona-note-prose-editable .krona-note-tiptap-surface strong,
+	.krona-note-prose-editable .krona-note-tiptap-surface b {
+		font-weight: 700;
+	}
+	.krona-note-prose-editable .krona-note-tiptap-surface em,
+	.krona-note-prose-editable .krona-note-tiptap-surface i {
+		font-style: italic;
+	}
+	.krona-note-prose-editable .krona-note-tiptap-surface s {
+		text-decoration: line-through;
+	}
+	.krona-note-prose-editable
+		.krona-note-tiptap-surface
+		p.is-empty[data-placeholder]::before,
+	.krona-note-prose-editable
+		.krona-note-tiptap-surface
+		h1.is-empty[data-placeholder]::before,
+	.krona-note-prose-editable
+		.krona-note-tiptap-surface
+		h2.is-empty[data-placeholder]::before,
+	.krona-note-prose-editable
+		.krona-note-tiptap-surface
+		h3.is-empty[data-placeholder]::before {
+		content: attr(data-placeholder);
+		color: var(--krona-text-muted);
+		float: left;
+		height: 0;
+		pointer-events: none;
+	}
+	.krona-note-prose-editable .suggestion {
+		background: rgba(73, 93, 253, 0.14);
+		border-radius: 8px;
+		box-decoration-break: clone;
+		-webkit-box-decoration-break: clone;
+	}
+	.krona-note-prose-editable .krona-note-block {
+		margin: 0;
+		padding: 0;
+		min-height: calc(var(--krona-note-editor-font-size) * 1.7);
+		line-height: 1.7;
+		color: var(--krona-text);
+		white-space: pre-wrap;
+		word-break: break-word;
+	}
+	.krona-note-prose-editable .krona-note-block[data-kind='header'] {
+		font-size: 22px;
+		font-weight: 600;
+	}
+	.krona-note-prose-editable .krona-note-block[data-kind='subheader1'] {
+		font-size: 18px;
+		font-weight: 600;
+	}
+	.krona-note-prose-editable .krona-note-block[data-kind='subheader2'] {
+		font-size: 16px;
+		font-weight: 600;
+	}
+	.krona-note-prose-editable .krona-note-block[data-kind='body'] {
+		font-size: var(--krona-note-editor-font-size);
+		font-weight: 400;
+	}
+	.krona-note-prose-editable .krona-note-block strong,
+	.krona-note-prose-editable .krona-note-block b {
+		font-weight: 700;
+	}
+	.krona-note-prose-editable .krona-note-block em,
+	.krona-note-prose-editable .krona-note-block i {
+		font-style: italic;
+	}
+	.krona-note-prose-editable .krona-note-block s {
+		text-decoration: line-through;
+	}
+	.krona-note-title[class*='MuiInput-root'] {
+		min-height: unset !important;
+		height: auto !important;
+		max-height: none !important;
+		background: transparent !important;
+		background-color: transparent !important;
+		box-shadow: none !important;
+	}
+	.krona-note-title[class*='MuiInput-root']::before,
+	.krona-note-title[class*='MuiInput-root']::after {
+		display: none !important;
+	}
+	.krona-note-title[class*='MuiInput-root'] input {
+		min-height: unset !important;
+		height: auto !important;
+		font-size: calc(var(--krona-page-nav-title-font-size) - 4px) !important;
+		font-weight: 600 !important;
+		line-height: 1.15 !important;
+		padding: 0 !important;
+		background: transparent !important;
+		background-color: transparent !important;
+	}
+	.krona-note-title[class*='MuiInput-root'] input::placeholder {
+		font-size: calc(var(--krona-page-nav-title-font-size) - 4px) !important;
+		font-weight: 600 !important;
+		line-height: 1.15 !important;
+		color: var(--krona-note-title-placeholder-color) !important;
+		opacity: 1 !important;
+	}
+	.krona-note-title[class*='MuiInput-root']
+		input:not(:placeholder-shown)::placeholder {
+		opacity: 0 !important;
+	}
+	.krona-note-inline[class*='MuiInput-root'] {
+		min-height: unset !important;
+		height: auto !important;
+		max-height: none !important;
+		background: transparent !important;
+	}
+	.krona-note-inline[class*='MuiInput-root'] input {
+		min-height: 36px !important;
+		height: auto !important;
+		background: transparent !important;
+	}
+	[class*='MuiInput-root']:not(.krona-note-title) input,
+	[class*='MuiSelect-button'],
+	[class*='MuiTextarea-root']:not(.krona-note-prose) textarea,
+	[class*='MuiButton-root']:not(.krona-timer-control):not(
+			.krona-timer-control--primary
+		) {
+		font-size: var(--krona-control-font-size) !important;
+		font-family: Poppins, sans-serif !important;
+	}
+	[class*='MuiInput-root'] input,
+	[class*='MuiTextarea-root'] textarea {
+		background-color: transparent !important;
+	}
+	[role='menu'],
+	[class*='MuiMenu-listbox'] {
+		border-radius: 24px !important;
+	}
+	.krona-timer-tab {
+		min-height: var(--krona-control-height) !important;
+		height: var(--krona-control-height) !important;
+	}
+
+	.krona-timer-tab[data-active='true'] {
+		color: #fff !important;
+	}
+	.krona-timer-control {
+		width: 48px !important;
+		height: 48px !important;
+		min-width: 48px !important;
+		min-height: 48px !important;
+		max-width: 48px !important;
+		max-height: 48px !important;
+	}
+	.krona-timer-control--primary {
+		width: 64px !important;
+		height: 64px !important;
+		min-width: 64px !important;
+		min-height: 64px !important;
+		max-width: 64px !important;
+		max-height: 64px !important;
+	}
+
+	[class*='MuiCheckbox-root'] .MuiCheckbox-checkbox {
+		border-color: var(--krona-input-border) !important;
+		background-color: transparent !important;
+	}
+
+	[class*='MuiCheckbox-root'] .MuiCheckbox-label {
+		opacity: 1 !important;
+		color: var(--krona-text) !important;
+	}
+
+	[class*='MuiCheckbox-root'].Mui-checked .MuiCheckbox-checkbox,
+	[class*='MuiCheckbox-root'] .MuiCheckbox-checkbox[data-checked='true'] {
+		background: var(--krona-accent-gradient) !important;
+		background-color: transparent !important;
+		border: none !important;
+		color: #fff !important;
+	}
+
+	[class*='MuiCheckbox-root'].Mui-checked .MuiCheckbox-icon,
+	[class*='MuiCheckbox-root'] .MuiCheckbox-checkbox[data-checked='true'] svg {
+		color: #fff !important;
+	}
+
+	/* Flat surfaces — accent glow only on primary gradient controls */
+	[class*='MuiCard-root'],
+	[class*='MuiSheet-root'],
+	[role='menu'] {
+		box-shadow: none !important;
+	}
+
+	/*
+	  AI dock is fixed at z-index 1400 and shrinks the chrome via
+	  --krona-ai-panel-width. Portaled modals still default to the full
+	  viewport, so inset + raise them so dialogs center in the remaining
+	  workspace and stay above the dock.
+	*/
+	[class*='MuiModal-root'] {
+		right: var(--krona-ai-panel-width, 0px) !important;
+		z-index: 1500 !important;
+	}
+
+	[class*='MuiModal-backdrop'],
+	[class*='JoyModal-backdrop'] {
+		background-color: var(
+			--krona-modal-overlay,
+			rgba(6, 4, 18, 0.5)
+		) !important;
+	}
+
+	[class*='MuiModalDialog-root'] {
+		background: var(--krona-modal-bg) !important;
+		box-shadow: none !important;
+	}
+
+	[class*='MuiTooltip-root'],
+	[class*='JoyTooltip-root'] {
+		background: var(--krona-dropdown-bg) !important;
+		color: var(--krona-text) !important;
+		border: 1px solid var(--krona-surface-border) !important;
+		border-radius: 14px !important;
+		box-shadow: var(--krona-dropdown-shadow) !important;
+		backdrop-filter: blur(var(--krona-shell-blur))
+			saturate(var(--krona-shell-saturate)) !important;
+		-webkit-backdrop-filter: blur(var(--krona-shell-blur))
+			saturate(var(--krona-shell-saturate)) !important;
+		font-family: Poppins, system-ui, sans-serif !important;
+		font-size: 12px !important;
+		font-weight: 600 !important;
+		padding: 6px 10px !important;
+		z-index: 1720 !important;
+	}
+
+	[class*='MuiTooltip-arrow'],
+	[class*='JoyTooltip-arrow'] {
+		color: var(--krona-dropdown-bg) !important;
+	}
+
+	[class*='MuiTooltip-arrow']::before,
+	[class*='JoyTooltip-arrow']::before {
+		background: var(--krona-dropdown-bg) !important;
+		border: 1px solid var(--krona-surface-border) !important;
+	}
+
+	/* Unified dropdown / option menus — calendar-matched surface */
+	[class*='MuiMenu-root'] {
+		background: var(--krona-dropdown-bg) !important;
+		border-radius: 20px !important;
+		border: 1px solid var(--krona-surface-border) !important;
+		backdrop-filter: blur(24px) saturate(180%) !important;
+		-webkit-backdrop-filter: blur(24px) saturate(180%) !important;
+		box-shadow: var(--krona-dropdown-shadow) !important;
+		color: var(--krona-text) !important;
+		z-index: 1700 !important;
+		overflow: hidden !important;
+		--List-padding: 6px;
+		--List-radius: 20px;
+		--ListItem-radius: 14px;
+	}
+
+	[class*='MuiSelect-listbox'],
+	[class*='MuiAutocomplete-listbox'] {
+		background: var(--krona-dropdown-bg) !important;
+		border-radius: 20px !important;
+		border: 1px solid var(--krona-surface-border) !important;
+		backdrop-filter: blur(24px) saturate(180%) !important;
+		-webkit-backdrop-filter: blur(24px) saturate(180%) !important;
+		box-shadow: var(--krona-dropdown-shadow) !important;
+		color: var(--krona-text) !important;
+		z-index: 1700 !important;
+		overflow: auto !important;
+		--List-padding: 6px;
+		--List-radius: 20px;
+		--ListItem-radius: 14px;
+	}
+
+	[class*='MuiMenu-listbox'] {
+		background: transparent !important;
+		border: none !important;
+		box-shadow: none !important;
+	}
+
+	[class*='MuiMenuItem-root']:not(.krona-menu-item-delete),
+	[class*='MuiOption-root'] {
+		border-radius: 14px !important;
+		color: var(--krona-text) !important;
+		outline: none !important;
+	}
+
+	[class*='MuiMenuItem-root']:focus,
+	[class*='MuiMenuItem-root']:focus-visible,
+	[class*='MuiMenuItem-root'].Mui-focusVisible,
+	[class*='MuiOption-root']:focus,
+	[class*='MuiOption-root']:focus-visible,
+	[class*='MuiOption-root'].Mui-focusVisible {
+		outline: none !important;
+		box-shadow: none !important;
+		background: var(--krona-secondary-bg) !important;
+	}
+
+	[class*='MuiMenuItem-root'].krona-menu-item-delete {
+		color: #f87171 !important;
+	}
+
+	/* Filter / sort menus mark the active choice with the accent gradient, so
+	   the label stays white in both themes. The item keeps a 1px border, so the
+	   gradient must originate from the border box — otherwise it tiles and the
+	   left edge paints the opposite end of the ramp as a 1px seam. */
+	[class*='MuiMenuItem-root'].krona-menu-item-selected {
+		background: var(--krona-accent-gradient) !important;
+		background-origin: border-box !important;
+		background-repeat: no-repeat !important;
+		border-color: transparent !important;
+		color: #fff !important;
+	}
+
+	[class*='MuiMenuItem-root'].krona-menu-item-selected:not(
+			[aria-disabled='true']
+		):hover {
+		background: var(--krona-accent-gradient-hover) !important;
+		background-origin: border-box !important;
+		background-repeat: no-repeat !important;
+		border-color: transparent !important;
+		color: #fff !important;
+	}
+
+	[class*='MuiMenuItem-root'].krona-menu-item-delete svg {
+		color: #f87171 !important;
+		stroke: currentColor;
+	}
+
+	[class*='MuiMenuItem-root']:not([aria-disabled='true']):not(
+			.krona-menu-item-delete
+		):hover,
+	[class*='MuiOption-root']:not([aria-disabled='true']):hover {
+		background: var(--krona-secondary-bg) !important;
+	}
+
+	[class*='MuiMenuItem-root'].krona-menu-item-delete:not(
+			[aria-disabled='true']
+		):hover {
+		background: rgba(248, 113, 113, 0.12) !important;
+		color: #ef4444 !important;
+	}
+
+	[class*='MuiMenuItem-root'].krona-menu-item-delete:not(
+			[aria-disabled='true']
+		):hover
+		svg {
+		color: #ef4444 !important;
+	}
+
+	[data-slot='dropdown-menu-content'],
+	[data-slot='dropdown-menu-sub-content'],
+	[data-slot='select-content'] {
+		background: var(--krona-dropdown-bg) !important;
+		border-radius: 20px !important;
+		border: 1px solid var(--krona-surface-border) !important;
+		backdrop-filter: blur(24px) saturate(180%) !important;
+		-webkit-backdrop-filter: blur(24px) saturate(180%) !important;
+		box-shadow: var(--krona-dropdown-shadow) !important;
+		color: var(--krona-text) !important;
+	}
+
+	[data-slot='dropdown-menu-item']:not([data-disabled]):hover,
+	[data-slot='dropdown-menu-sub-trigger']:not([data-disabled]):hover {
+		background: var(--krona-secondary-bg) !important;
+	}
+
+	.krona-dashboard-widget {
+		box-shadow: var(--krona-widget-shadow) !important;
+		transition: border-color 0.25s ease !important;
+	}
+
+	.krona-dashboard-widget:hover {
+		border-color: var(--krona-widget-border-hover) !important;
+	}
+
+	.krona-timer-control--primary {
+		box-shadow: var(--krona-accent-shadow) !important;
+	}
+
+	/* Widget lists: hidden scrollbar + bottom fade */
+	.krona-widget-scroll {
+		scrollbar-width: none;
+		-ms-overflow-style: none;
+		-webkit-overflow-scrolling: touch;
+	}
+
+	.krona-widget-scroll::-webkit-scrollbar {
+		display: none;
+		width: 0;
+		height: 0;
+	}
+
+	.krona-widget-scroll-fade {
+		mask-image: linear-gradient(
+			to bottom,
+			#000 0%,
+			#000 calc(100% - 2.75rem),
+			transparent 100%
+		);
+		-webkit-mask-image: linear-gradient(
+			to bottom,
+			#000 0%,
+			#000 calc(100% - 2.75rem),
+			transparent 100%
+		);
+	}
+
+	/* Rows dissolving under a sticky search toolbar (20px = the search→list gap) */
+	.krona-widget-scroll-fade-top {
+		mask-image: linear-gradient(to bottom, transparent 0, #000 20px);
+		-webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 20px);
+	}
+
+	.krona-widget-scroll-fade-y {
+		mask-image: linear-gradient(
+			to bottom,
+			transparent 0,
+			#000 20px,
+			#000 calc(100% - 2.75rem),
+			transparent 100%
+		);
+		-webkit-mask-image: linear-gradient(
+			to bottom,
+			transparent 0,
+			#000 20px,
+			#000 calc(100% - 2.75rem),
+			transparent 100%
+		);
+	}
+
+	/* Notes carousel / horizontal strips — same 2.75rem end fade as task lists */
+	.krona-widget-scroll-fade-end-x {
+		mask-image: linear-gradient(
+			to right,
+			#000 0%,
+			#000 calc(100% - 2.75rem),
+			transparent 100%
+		);
+		-webkit-mask-image: linear-gradient(
+			to right,
+			#000 0%,
+			#000 calc(100% - 2.75rem),
+			transparent 100%
+		);
+	}
+
+	.krona-widget-scroll-fade-start-x {
+		mask-image: linear-gradient(
+			to left,
+			#000 0%,
+			#000 calc(100% - 2.75rem),
+			transparent 100%
+		);
+		-webkit-mask-image: linear-gradient(
+			to left,
+			#000 0%,
+			#000 calc(100% - 2.75rem),
+			transparent 100%
+		);
+	}
+
+	.krona-widget-scroll-fade-x-both {
+		mask-image: linear-gradient(
+			to right,
+			transparent 0%,
+			#000 2.75rem,
+			#000 calc(100% - 2.75rem),
+			transparent 100%
+		);
+		-webkit-mask-image: linear-gradient(
+			to right,
+			transparent 0%,
+			#000 2.75rem,
+			#000 calc(100% - 2.75rem),
+			transparent 100%
+		);
+	}
+}
+
+@media (min-width: 600px) {
+	:root {
+		--krona-page-nav-title-font-size: 30px;
+	}
+}
+
+/* Placeholder: visible while empty (including on focus); hidden once the user types. */
+input::placeholder,
+textarea::placeholder,
+[class*='MuiInput-root'] input::placeholder,
+[class*='MuiTextarea-root'] textarea::placeholder {
+	color: var(--krona-placeholder-color, var(--krona-text-muted));
+	opacity: 1 !important;
+	transition: opacity 0.15s ease;
+}
+
+input:not(:placeholder-shown)::placeholder,
+textarea:not(:placeholder-shown)::placeholder,
+[class*='MuiInput-root'] input:not(:placeholder-shown)::placeholder,
+[class*='MuiTextarea-root'] textarea:not(:placeholder-shown)::placeholder {
+	opacity: 0 !important;
+}
+
+.krona-note-slash-menu__item.is-active {
+	background: var(--krona-secondary-bg) !important;
+}
+
+/* Slash command menu — portal above editor with blurred backdrop */
+.krona-note-slash-backdrop {
+	position: fixed;
+	inset: 0;
+	z-index: 12000;
+	background: rgba(8, 10, 18, 0.42);
+	backdrop-filter: blur(10px) saturate(140%);
+	-webkit-backdrop-filter: blur(10px) saturate(140%);
+	pointer-events: none;
+}
+
+.krona-note-slash-popup {
+	z-index: 12001 !important;
+	pointer-events: auto;
+}
+
+.krona-note-slash-popup .krona-note-slash-menu {
+	position: relative;
+	z-index: 1;
+	backdrop-filter: blur(24px) saturate(180%);
+	-webkit-backdrop-filter: blur(24px) saturate(180%);
+}
+
+/* Shared icon rail. Content and fixed header reserve its exact width. */
+.krona-app-content {
+	margin-left: var(--krona-sidebar-width);
+	width: calc(100% - var(--krona-sidebar-width));
+	min-width: 0;
+}
+.krona-side-menu {
+	position: fixed;
+	inset: 0 auto 0 0;
+	width: var(--krona-sidebar-width);
+	height: 100dvh;
+	z-index: 1350;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	padding: 64px 0;
+	background: var(--krona-surface-bg);
+	border-right: 1px solid var(--krona-surface-border);
+	backdrop-filter: blur(24px);
+}
+.krona-rail-appearance {
+	position: fixed;
+	bottom: max(8px, env(safe-area-inset-bottom));
+	left: 0;
+	width: var(--krona-sidebar-width);
+}
+.krona-rail-gradient-defs {
+	position: absolute;
+	pointer-events: none;
+}
+.krona-rail-brand {
+	position: absolute;
+	top: 15px;
+	display: grid;
+	place-items: center;
+	min-height: 30px;
+}
+.krona-rail-links {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 14px;
+	width: 100%;
+	max-height: 100%;
+	overflow-y: auto;
+	scrollbar-width: none;
+}
+.krona-rail-button {
+	position: relative;
+	display: grid;
+	place-items: center;
+	width: 100%;
+	height: 44px;
+	flex-shrink: 0;
+	border: 0;
+	background: transparent;
+	color: var(--krona-text-muted);
+	cursor: pointer;
+	text-decoration: none;
+}
+.krona-rail-button svg {
+	opacity: 0.72;
+	transition:
+		opacity 160ms ease,
+		transform 160ms ease;
+}
+.krona-rail-button:hover svg {
+	opacity: 1;
+}
+.krona-rail-button[aria-current='page'] svg {
+	opacity: 1;
+	transform: scale(1.08);
+	filter: drop-shadow(
+			0 0 4px color-mix(in srgb, var(--krona-accent-stop-34) 65%, transparent)
+		)
+		drop-shadow(
+			0 0 10px color-mix(in srgb, var(--krona-accent-stop-68) 40%, transparent)
+		);
+}
+.krona-rail-button[aria-current='page']::after {
+	content: '';
+	position: absolute;
+	right: 0;
+	top: 50%;
+	transform: translateY(-50%);
+	width: 4px;
+	height: 28px;
+	border-radius: 4px 0 0 4px;
+	background: var(--krona-accent-gradient);
+	box-shadow: var(--krona-accent-shadow);
+}
+.krona-rail-button:focus-visible,
+.krona-rail-brand:focus-visible {
+	outline: 2px solid var(--krona-accent);
+	outline-offset: -4px;
+	border-radius: 8px;
+}
+.krona-theme-picker {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 16px;
+	padding: 10px 16px;
+	color: var(--krona-text);
+	font-size: 14px;
+}
+.krona-theme-picker button:focus-visible {
+	outline: 2px solid var(--krona-accent);
+	outline-offset: 2px;
+}
+@media (max-width: 599px) {
+	:root {
+		--krona-sidebar-width: 56px;
+	}
+}
+@media (max-height: 560px) {
+	.krona-side-menu {
+		padding-block: 56px;
+	}
+	.krona-rail-links {
+		gap: 4px;
+	}
+}
