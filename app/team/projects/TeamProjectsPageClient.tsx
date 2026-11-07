@@ -1,5 +1,7 @@
 'use client';
 
+import ProjectMetaDot from '@/components/krona/ProjectMetaDot';
+
 import * as React from 'react';
 import { useSearchParams } from 'next/navigation';
 import {
@@ -139,23 +141,6 @@ function daysLeftForDeadline(deadline: string | null | undefined): number | null
 
 function deadlineToDueAt(dateKey: string): string | null {
 	return localDateKeyToIso(dateKey, { hour: 9 });
-}
-
-function ProjectMetaDot() {
-	return (
-		<Typography
-			component="span"
-			aria-hidden
-			sx={{
-				color: 'var(--krona-text-64)',
-				fontSize: 13,
-				lineHeight: 1,
-				userSelect: 'none',
-			}}
-		>
-			·
-		</Typography>
-	);
 }
 
 export default function TeamProjectsPageClient() {
@@ -1106,7 +1091,7 @@ export default function TeamProjectsPageClient() {
 						alignItems: 'center',
 						gap: 1,
 						flexWrap: 'wrap',
-						flexShrink: 0,
+						minWidth: 0,
 						ml: { xs: 0, md: 'auto' },
 					}}
 				>

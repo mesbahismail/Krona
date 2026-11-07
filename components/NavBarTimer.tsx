@@ -4,7 +4,7 @@ import * as React from 'react';
 import { useRouter } from 'next/navigation';
 import { usePomodoroTimer } from '@/components/PomodoroContext';
 import { Box, Typography, IconButton, Tooltip } from '@mui/joy';
-import { Clock, Play, Pause, SkipForward, RotateCcw, Repeat2 } from 'lucide-react';
+import { Clock, Play, Pause, SkipForward, RotateCcw } from 'lucide-react';
 import { kronaNavTimerControlSx, kronaNavTimerTaskBadgeSx, kronaNavBarTimeTextSx } from '@/lib/kronaStyles';
 import { projectsDeepLink, taskDeepLink } from '@/lib/reminderSync';
 import { useSelectedTimerTask } from '@/lib/selectedTimerTask';
@@ -17,12 +17,6 @@ function modeLabel(
 	if (mode === 'work') return '💪 Work';
 	if (mode === 'break') return workFree ? '🔋 Rest' : '🔋 Short Break';
 	return '☕ Long Break';
-}
-
-function modeEmoji(mode: 'work' | 'break' | 'longBreak') {
-	if (mode === 'work') return '💪';
-	if (mode === 'break') return '🔋';
-	return '☕';
 }
 
 function TimerTaskBadge({
@@ -159,105 +153,21 @@ export default function NavBarTimer({
 
 	if (compact) {
 		return (
-			<Box
-				role="group"
-				aria-label="Focus timer"
-				sx={{
-					display: 'flex',
-					alignItems: 'center',
-					justifyContent: 'center',
-					gap: 0.75,
-					width: '100%',
-					minWidth: 0,
-				}}
-			>
-				<Typography
-					component="span"
-					aria-hidden
-					sx={{
-						fontSize: 14,
-						lineHeight: 1,
-						flexShrink: 0,
-					}}
-				>
-					{modeEmoji(activeMode)}
-				</Typography>
-				<Typography
-					level="body-md"
-					sx={{
-						...kronaNavBarTimeTextSx,
-						minWidth: 48,
-						textAlign: 'center',
-						flexShrink: 0,
-					}}
-				>
+			<Box role="group" aria-label="Focus timer" sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 0.5, width: 'max-content', flexShrink: 0 }}>
+				<Typography component="span" aria-label={`Focus timer: ${format(displayRemaining)}`} sx={{ ...kronaNavBarTimeTextSx, fontVariantNumeric: 'tabular-nums', whiteSpace: 'nowrap', textAlign: 'center', mr: 0.5 }}>
 					{format(displayRemaining)}
 				</Typography>
-				<Box
-					sx={{
-						display: 'inline-flex',
-						alignItems: 'center',
-						flexShrink: 0,
-						gap: 0.5,
-						ml: 0.25,
-					}}
-				>
-					{running ? (
-						<Tooltip title="Pause">
-							<IconButton
-								size="sm"
-								variant="plain"
-								onClick={pause}
-								sx={kronaNavTimerControlSx}
-							>
-								<Pause size={16} />
-							</IconButton>
-						</Tooltip>
-					) : (
-						<Tooltip title="Start">
-							<IconButton
-								size="sm"
-								variant="plain"
-								onClick={() => start()}
-								sx={kronaNavTimerControlSx}
-							>
-								<Play size={16} />
-							</IconButton>
-						</Tooltip>
-					)}
-					<Tooltip
-						title={
-							workFree
-								? activeMode === 'work'
-									? 'Switch to rest'
-									: 'Switch to work'
-								: 'Skip'
-						}
-					>
-						<IconButton
-							size="sm"
-							variant="plain"
-							onClick={skip}
-							sx={kronaNavTimerControlSx}
-							aria-label="Skip"
-						>
-							<SkipForward size={16} />
-						</IconButton>
-					</Tooltip>
-					{showReset ? (
-						<Tooltip title="Replay">
-							<IconButton
-								size="sm"
-								variant="plain"
-								onClick={reset}
-								sx={kronaNavTimerControlSx}
-								aria-label="Replay"
-							>
-								<Repeat2 size={16} />
-							</IconButton>
-						</Tooltip>
-					) : null}
-				</Box>
+				<IconButton size="sm" aria-label={running ? 'Pause timer' : 'Start timer'} onClick={running ? pause : () => start()} sx={kronaNavTimerControlSx}>
+					{running ? <Pause size={16} /> : <Play size={16} />}
+				</IconButton>
+				<IconButton size="sm" aria-label={workFree ? (activeMode === 'work' ? 'Switch to rest' : 'Switch to work') : 'Skip session'} onClick={skip} sx={kronaNavTimerControlSx}>
+					<SkipForward size={16} />
+				</IconButton>
+				{showReset ? (
+					<IconButton size="sm" aria-label="Reset timer" onClick={reset} sx={kronaNavTimerControlSx}>
+						<RotateCcw size={16} />
+					</IconButton>
+				) : null}
 			</Box>
 		);
 	}

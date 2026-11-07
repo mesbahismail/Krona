@@ -53,7 +53,7 @@ export default function KronaSearchCreateToolbar({
 				] as SxProps
 			}
 		>
-			<Box sx={kronaToolbarRowSx} className="krona-search-toolbar-row">
+			<Box sx={{ ...kronaToolbarRowSx, ...(createIconOnly ? { flexWrap: 'nowrap', minWidth: 0, '& > button': { flexShrink: 0 } } : {}) }} className="krona-search-toolbar-row">
 				<Input
 					startDecorator={<Search size={16} aria-hidden />}
 					endDecorator={
@@ -89,7 +89,7 @@ export default function KronaSearchCreateToolbar({
 					}}
 					value={searchValue}
 					onChange={(e) => onSearchChange(e.target.value)}
-					sx={kronaSearchToolbarInputSx}
+					sx={{ ...kronaSearchToolbarInputSx, ...(createIconOnly ? { minWidth: 0, flex: '1 1 0', '& input': { minWidth: 0 } } : {}) }}
 				/>
 				{beforeCreateSlot ? (
 					<Box sx={{ flexShrink: 0 }}>{beforeCreateSlot}</Box>

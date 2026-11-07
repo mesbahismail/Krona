@@ -441,12 +441,15 @@ export function TeamActivityProvider({ children }: { children: React.ReactNode }
 			primedIdsRef.current = new Set(today.map((item) => item.id));
 		} else {
 			const fresh = today.filter((item) => !primedIdsRef.current!.has(item.id));
-			for (const item of fresh.slice(0, 6)) {
-				showKronaToast(activityToastText(item), { id: `activity:${item.id}` });
-				primedIdsRef.current.add(item.id);
-			}
-			for (const item of fresh.slice(6)) {
-				primedIdsRef.current.add(item.id);
+			// Keep every update in Activity, but announce a burst only once.
+			for (const item of fresh) primedIdsRef.current.add(item.id);
+			if (fresh.length && !openRef.current) {
+				showKronaToast(
+					fresh.length === 1
+						? activityToastText(fresh[0])
+						: `Workspace activity — ${fresh.length} new updates. Open Activity from your account menu to review them.`,
+					{ id: 'workspace-activity' },
+				);
 			}
 		}
 		// Opening the panel means these are read. Don't let a stale poll

@@ -16,10 +16,10 @@ export default function Providers({ children }: { children: React.ReactNode }) {
 					reverseOrder={false}
 					gutter={8}
 					containerStyle={{
-						left: 0,
-						right: 0,
-						width: '100vw',
-						maxWidth: '100vw',
+						left: 16,
+						right: 16,
+						bottom: 'max(24px, env(safe-area-inset-bottom))',
+						maxWidth: 'calc(100vw - 32px)',
 					}}
 					toastOptions={{
 						duration: 5000,

@@ -7,8 +7,7 @@ export default function HelpPage() {
 	return (
 		<div className="relative min-h-screen overflow-x-hidden">
 			<Background />
-			{/* width:auto so page-gap margins don’t get clipped off the right */}
-			<div className="krona-main-content relative z-[1] min-w-0 !w-auto max-w-none overflow-x-hidden">
+			<div className="krona-main-content relative z-[1] min-w-0 overflow-x-hidden">
 				<Top title="Help Center" />
 
 				<div className="w-full min-w-0 pt-4 pb-8 text-center sm:pt-5 sm:pb-10">

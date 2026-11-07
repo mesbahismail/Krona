@@ -157,8 +157,8 @@ export default function Top({
 						display: isMobileNav ? 'grid' : 'none',
 						gridTemplateColumns: 'minmax(0, 1fr) auto minmax(0, 1fr)',
 						alignItems: 'center',
-						gap: 0.75,
-						px: '16px',
+						gap: 0.5,
+						px: '12px',
 						py: 0,
 						bgcolor: 'transparent',
 						height: '100%',
@@ -206,7 +206,7 @@ export default function Top({
 							display: 'flex',
 							justifyContent: 'center',
 							alignItems: 'center',
-							px: 0.5,
+							px: 0,
 						}}
 					>
 						{showNavTimer ? <NavBarTimer compact /> : null}
@@ -216,13 +216,12 @@ export default function Top({
 						sx={{
 							display: 'flex',
 							alignItems: 'center',
-							gap: 1.75,
+							gap: 1,
 							justifySelf: 'end',
 							flexShrink: 0,
 						}}
 					>
-						{renderActivityButton()}
-						<UserAccountControls onboardingTourEnabled={isMobileNav} />
+						<UserAccountControls compact onboardingTourEnabled={isMobileNav} />
 					</Box>
 				</Box>
 

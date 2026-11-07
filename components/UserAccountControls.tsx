@@ -12,6 +12,7 @@ import {
 	Typography,
 } from '@mui/joy';
 import {
+	Bell,
 	Briefcase,
 	ChevronDown,
 	CircleHelp,
@@ -24,6 +25,7 @@ import FeedbackModal from '@/components/FeedbackModal';
 import { showKronaError } from '@/lib/kronaToast';
 import KronaSwitch from '@/components/krona/KronaSwitch';
 import { useVacationMode } from '@/components/VacationModeContext';
+import { useTeamActivity } from '@/components/teams/TeamActivityProvider';
 import { useTeamMode } from '@/components/teams/TeamModeContext';
 import { localData } from '@/lib/localData';
 import {
@@ -76,12 +78,15 @@ const kronaMobileAccountMenuModifier: Modifier<
 export default function UserAccountControls({
 	tourId = 'dashboard-account',
 	onboardingTourEnabled = true,
+	compact = false,
 }: {
 	tourId?: string;
+	compact?: boolean;
 	/** Only the currently visible top-bar instance should react to tour events. */
 	onboardingTourEnabled?: boolean;
 }) {
 	const router = useRouter();
+	const activity = useTeamActivity();
 	const { mode } = useKronaLayoutMode();
 	/* Full-bleed menu only on the phone layout — tablet keeps a compact menu even
 	 * with compact navigation. */
@@ -287,11 +292,11 @@ export default function UserAccountControls({
 						alignItems: 'center',
 						gap: 0.75,
 						borderRadius: '999px',
-						pl: '3px',
-						pr: 1,
-						height: 'var(--krona-control-height)',
-						minHeight: 'var(--krona-control-height)',
-						width: 'max-content',
+						pl: compact ? 0 : '3px',
+						pr: compact ? 0 : 1,
+						height: compact ? 36 : 'var(--krona-control-height)',
+						minHeight: compact ? 36 : 'var(--krona-control-height)',
+						width: compact ? 36 : 'max-content',
 						maxWidth: 'none',
 						minWidth: 0,
 						flexShrink: 0,
@@ -308,8 +313,9 @@ export default function UserAccountControls({
 						src={avatarUrl}
 						alt=""
 						size="sm"
-						sx={{ width: 24, height: 24, flexShrink: 0 }}
+						sx={{ width: compact ? 30 : 24, height: compact ? 30 : 24, flexShrink: 0 }}
 					/>
+					{!compact ? <>
 					<Typography
 						component="span"
 						level="body-sm"
@@ -336,6 +342,7 @@ export default function UserAccountControls({
 							transform: open ? 'rotate(180deg)' : undefined,
 						}}
 					/>
+					</> : null}
 				</IconButton>
 			</Box>
 			<Menu
@@ -452,6 +459,7 @@ export default function UserAccountControls({
 					) : null}
 				</Box>
 				<Divider sx={{ borderColor: 'var(--krona-surface-border)' }} />
+				{hasTeam ? <MenuItem sx={kronaMenuItemSx} onClick={() => { close(); if (!activity.open) activity.toggle(); }}><Bell size={14} style={{ marginRight: 8 }} />Activity{activity.unreadCount ? ` (${activity.unreadCount})` : ''}</MenuItem> : null}
 				<MenuItem
 					onClick={() => goTo('/settings?tab=account')}
 					sx={{

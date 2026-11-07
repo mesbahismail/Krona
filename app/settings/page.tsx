@@ -656,8 +656,8 @@ export default function App() {
 							justifyContent: 'flex-start',
 							alignItems: 'stretch',
 							width: '100%',
-							px: { xs: 0, md: 3 },
-							py: { xs: 2, md: 3 },
+							px: 0,
+							py: 0,
 						}}
 					>
 						{!accountLoaded ? (

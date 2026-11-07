@@ -216,3 +216,41 @@ test('quarterly and yearly reports load local employee and manager metrics', asy
 		assert.ok(manager.totalWorkHours > 0);
 	}
 });
+
+
+test('portrait upgrade preserves custom photos and recorded activity', () => {
+	const original = `data:image/svg+xml,${encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="80" height="80"><rect width="80" height="80" rx="24" fill="#534fff"/><text x="40" y="49" text-anchor="middle" font-family="sans-serif" font-size="27" fill="white">AM</text></svg>')}`;
+	const custom = 'data:image/svg+xml,%3Csvg%3E%3Ctext%3EMy%20photo%3C/text%3E%3C/svg%3E';
+	const existing = createTemplateData();
+	existing.profiles[0].avatar_url = original;
+	existing.profiles[1].avatar_url = custom;
+	existing.local_identity[0].user_metadata.avatar_url = original;
+	const updated = withTemplateData(existing);
+	assert.equal(updated.profiles[0].avatar_url, '/portraits/alex.jpg');
+	assert.equal(updated.local_identity[0].user_metadata.avatar_url, '/portraits/alex.jpg');
+	assert.equal(updated.profiles[1].avatar_url, custom);
+	assert.equal(updated.sessions, existing.sessions);
+	assert.equal(updated.tasks, existing.tasks);
+	assert.equal(updated.daily_challenges, existing.daily_challenges);
+	assert.equal(withTemplateData(updated), updated);
+});
+
+test('tabbed reminders keep their height across the desktop sidebar breakpoint', () => {
+	const styleFunctionSx = require('@mui/system/styleFunctionSx').default;
+	const { extendTheme } = require('@mui/joy/styles');
+	const { kronaStackedListPanelSx } = load('lib/kronaStyles.ts');
+	const { kronaContentLayoutFromWidth } = load('lib/kronaBreakpoints.ts');
+	const css = styleFunctionSx({ sx: kronaStackedListPanelSx, theme: extendTheme() });
+	// Resolve the generated MUI media rules, including rules that override base flex styles.
+	for (const width of [320, 620, 799, 800, 899, 900, 999, 1000, 1199, 1200]) {
+		const resolved = { ...css };
+		for (const [selector, rules] of Object.entries(css)) {
+			const minimum = selector.match(/^@media \(min-width:(\d+)px\)$/);
+			if (minimum && width >= Number(minimum[1])) Object.assign(resolved, rules);
+		}
+		assert.equal(resolved.flexGrow, 1, `Panel must fill remaining height at ${width}px`);
+		assert.equal(resolved.height, 'auto');
+		assert.equal(resolved.minHeight, 0);
+		assert.equal(kronaContentLayoutFromWidth(width).isDesktopDashboard, width >= 1200);
+	}
+});

@@ -418,9 +418,6 @@ export const kronaIconTileSx: SxProps = {
 	color: 'var(--krona-icon-tile-fg)',
 };
 
-/** Horizontal bleed for projects task row bg (::before). Matches list container `px: 1.5`. */
-const kronaTaskListRowBgBleedX = 12;
-
 /** Timer-selected task — border + fill only (matches dashboard timer task chip). */
 export const kronaTimerSelectedTaskBorder = `1px solid ${kronaAccentColorMix(36)}`;
 
@@ -435,7 +432,7 @@ export const kronaTimerSelectedTaskAccentSx: SxProps = {
 	bgcolor: kronaTimerSelectedTaskBg,
 };
 
-/** Flat task rows (projects page) — bg on ::before so sides can extend without shifting content. */
+/** Project task cards share the homepage widget surface and hover treatment. */
 export const kronaTaskListRowSx = (options?: {
 	highlighted?: boolean;
 	selected?: boolean;
@@ -443,43 +440,23 @@ export const kronaTaskListRowSx = (options?: {
 	const highlighted = options?.highlighted ?? false;
 	const selected = options?.selected ?? false;
 
-	const baseBg = selected
-		? kronaTimerSelectedTaskBg
-		: highlighted
-			? 'var(--krona-secondary-bg)'
-			: 'transparent';
-
-	const hoverBg = selected
-		? kronaTimerSelectedTaskBg
-		: highlighted
-			? 'var(--krona-secondary-bg)'
-			: 'var(--krona-widget-list-item-hover)';
-
 	return {
-		position: 'relative',
+		...kronaWidgetListItemSx,
 		boxSizing: 'border-box',
 		width: '100%',
-		borderRadius: '12px',
-		bgcolor: 'transparent',
-		border: '1px solid transparent',
-		'&::before': {
-			content: '""',
-			position: 'absolute',
-			top: 0,
-			bottom: 0,
-			left: -kronaTaskListRowBgBleedX,
-			right: -kronaTaskListRowBgBleedX,
-			borderRadius: 'inherit',
-			pointerEvents: 'none',
-			zIndex: 0,
-			boxSizing: 'border-box',
-			transition: 'background-color 0.15s ease',
-			bgcolor: baseBg,
-			border: selected ? kronaTimerSelectedTaskBorder : '1px solid transparent',
-		},
-		'&:hover::before': {
-			bgcolor: hoverBg,
-		},
+		px: 1.25,
+		mb: 1,
+		bgcolor: selected
+			? kronaTimerSelectedTaskBg
+			: highlighted
+				? 'var(--krona-secondary-bg)'
+				: 'var(--krona-widget-bg)',
+		border: selected
+			? kronaTimerSelectedTaskBorder
+			: '1px solid var(--krona-surface-border)',
+		...(selected || highlighted
+			? { '&:hover::before': { bgcolor: 'transparent' } }
+			: {}),
 	};
 };
 
@@ -767,6 +744,16 @@ export const kronaSideListPanelSx: SxProps = {
 	minWidth: 0,
 	flexGrow: { xs: 1, md: 0 },
 	overflow: 'hidden',
+};
+
+/** Full-height tabbed panel; never inherit the desktop sidebar's flex-grow: 0. */
+export const kronaStackedListPanelSx: SxProps = {
+	...kronaSideListPanelSx,
+	height: 'auto',
+	flex: '1 1 0%',
+	flexGrow: 1,
+	display: 'flex',
+	flexDirection: 'column',
 };
 
 /** Keep list controls fixed while cards scroll inside their shared panel. */

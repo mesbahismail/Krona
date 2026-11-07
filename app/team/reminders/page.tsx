@@ -1,6 +1,7 @@
 'use client';
 
 import * as React from 'react';
+import { useKronaLayoutMode } from '@/components/KronaLayoutModeProvider';
 import {
 	Box,
 	Button,
@@ -14,6 +15,8 @@ import {
 	Typography,
 } from '@mui/joy';
 import {
+	ChevronLeft,
+	ChevronRight,
 	Bell,
 	Check,
 	Edit,
@@ -158,28 +161,14 @@ function TeamRemindersCalendar({
 					flexShrink: 0,
 				}}
 			>
-				<Button
-					variant="plain"
-					size="sm"
-					onClick={() => setCurrent(current.subtract(1, 'month'))}
-					sx={kronaSecondaryButtonSx}
-				>
-					Prev
-				</Button>
+				<Button variant="plain" size="sm" aria-label="Previous month" onClick={() => setCurrent(current.subtract(1, 'month'))} sx={{ ...kronaSecondaryButtonSx, minWidth: 32, width: 32, px: 0, flexShrink: 0 }}><ChevronLeft size={16} /></Button>
 				<Typography
 					level="title-lg"
-					sx={{ color: 'var(--krona-text)', fontWeight: 600 }}
+					sx={{ color: 'var(--krona-text)', fontWeight: 600, fontSize: { xs: 14, md: 18 }, minWidth: 0, textAlign: 'center', mx: 1 }}
 				>
 					{current.format('MMMM YYYY')}
 				</Typography>
-				<Button
-					variant="plain"
-					size="sm"
-					onClick={() => setCurrent(current.add(1, 'month'))}
-					sx={kronaSecondaryButtonSx}
-				>
-					Next
-				</Button>
+				<Button variant="plain" size="sm" aria-label="Next month" onClick={() => setCurrent(current.add(1, 'month'))} sx={{ ...kronaSecondaryButtonSx, minWidth: 32, width: 32, px: 0, flexShrink: 0 }}><ChevronRight size={16} /></Button>
 			</Box>
 			<Box
 				sx={{
@@ -195,7 +184,7 @@ function TeamRemindersCalendar({
 				<Box
 					sx={{
 						display: 'grid',
-						gridTemplateColumns: 'repeat(7, 1fr)',
+						gridTemplateColumns: 'repeat(7, minmax(0, 1fr))',
 						flexShrink: 0,
 						borderBottom: '1px solid var(--krona-overlay-active)',
 					}}
@@ -220,7 +209,7 @@ function TeamRemindersCalendar({
 						flex: 1,
 						minHeight: 0,
 						display: 'grid',
-						gridTemplateColumns: 'repeat(7, 1fr)',
+						gridTemplateColumns: 'repeat(7, minmax(0, 1fr))',
 						gridTemplateRows: 'repeat(6, minmax(0, 1fr))',
 					}}
 				>
@@ -318,6 +307,8 @@ function TeamRemindersCalendar({
 }
 
 export default function TeamRemindersPage() {
+	const { isDesktopDashboard } = useKronaLayoutMode();
+	const stackedReminders = !isDesktopDashboard;
 	const { organization, isManager, canCreateEditReminders } = useTeamMode();
 	const [reminders, setReminders] = React.useState<TeamReminderRow[]>([]);
 	const [members, setMembers] = React.useState<OrganizationMember[]>([]);
@@ -834,7 +825,7 @@ export default function TeamRemindersPage() {
 				<>
 					<Box
 						sx={{
-							display: { xs: 'flex', md: 'none' },
+							display: stackedReminders ? 'flex' : 'none',
 							flexDirection: 'column',
 							flex: 1,
 							minHeight: 0,
@@ -882,7 +873,7 @@ export default function TeamRemindersPage() {
 								</IconButton>
 							) : null}
 						</Box>
-						<Box sx={{ mt: '20px', mb: 0, flexShrink: 0 }}>
+						<Box sx={{ mt: '20px', mb: '20px', flexShrink: 0 }}>
 							<Box
 								sx={kronaTabBarSx}
 								role="tablist"
@@ -936,10 +927,11 @@ export default function TeamRemindersPage() {
 
 					<KronaResizableSplitLayout
 						dividerAriaLabel="Resize reminders list and calendar"
+						detailSx={{ pl: { xs: 0, md: '28px' } }}
 						containerSx={{
 							flex: 1,
 							minHeight: 0,
-							display: { xs: 'none', md: 'flex' },
+							display: stackedReminders ? 'none' : 'flex',
 						}}
 						sidebar={
 							<>

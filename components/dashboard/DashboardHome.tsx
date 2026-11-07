@@ -1788,11 +1788,11 @@ function DashboardHomeContent() {
 
 			<Box
 				sx={{
-					pt: 'calc(var(--krona-top-height, 60px) + 24px)',
+					pt: 'calc(var(--krona-top-height, 60px) + var(--krona-page-padding))',
 					pb: isMobileNav
-						? 'calc(var(--krona-mobile-tab-height, 81px) + env(safe-area-inset-bottom, 0px) + 16px)'
-						: 3,
-					px: isMobileNav ? '16px' : 3,
+						? 'calc(var(--krona-mobile-tab-height, 0px) + env(safe-area-inset-bottom, 0px) + var(--krona-page-padding))'
+						: 'var(--krona-page-padding)',
+					px: 'var(--krona-page-padding)',
 					width: '100%',
 					boxSizing: 'border-box',
 					flex: isDesktopDashboard ? 1 : '0 0 auto',

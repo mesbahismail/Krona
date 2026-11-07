@@ -99,15 +99,15 @@ export default function TeamAppShell({
 			<Box
 				sx={{
 					pt: fillViewport
-						? 'calc(var(--krona-top-height, 60px) + 24px)'
+						? 'calc(var(--krona-top-height, 60px) + var(--krona-page-padding))'
 						: undefined,
-					px: fillViewport ? { xs: '16px', md: 3 } : { xs: 2, md: 3 },
-					py: fillViewport ? undefined : 2,
+					px: 'var(--krona-page-padding)',
+					py: fillViewport ? undefined : 'var(--krona-page-padding)',
 					pb: fillViewport
 						? isMobileNav
-							? 'calc(var(--krona-mobile-tab-height, 81px) + env(safe-area-inset-bottom, 0px) + 16px)'
-							: 3
-						: 'calc(var(--krona-mobile-tabbar-height, 0px) + 24px)',
+							? 'calc(var(--krona-mobile-tab-height, 0px) + env(safe-area-inset-bottom, 0px) + var(--krona-page-padding))'
+							: 'var(--krona-page-padding)'
+						: 'calc(var(--krona-mobile-tabbar-height, 0px) + var(--krona-page-padding))',
 					width: '100%',
 					boxSizing: 'border-box',
 					maxWidth: fillViewport ? 'none' : 1200,

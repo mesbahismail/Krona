@@ -1,5 +1,7 @@
 'use client';
 
+import ProjectMetaDot from '@/components/krona/ProjectMetaDot';
+
 import * as React from 'react';
 import { CssVarsProvider, extendTheme } from '@mui/joy/styles';
 import CssBaseline from '@mui/joy/CssBaseline';
@@ -3631,6 +3633,7 @@ export default function App() {
 										<Box
 											sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}
 										>
+											<ProjectMetaDot />
 											<CalendarIcon size={14} aria-label="deadline" color="var(--krona-text)" />
 											<Typography
 												level="body-sm"
@@ -3662,6 +3665,7 @@ export default function App() {
 										</Box>
 									)}
 									<Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+										<ProjectMetaDot />
 										<ClipboardList size={14} color="var(--krona-text)" aria-hidden />
 										<Typography
 											level="body-sm"
@@ -3676,6 +3680,7 @@ export default function App() {
 										</Typography>
 									</Box>
 									<Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+										<ProjectMetaDot />
 										<CheckCircle2
 											size={14}
 											color={

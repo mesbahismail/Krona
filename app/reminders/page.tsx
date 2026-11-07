@@ -1,6 +1,7 @@
 'use client';
 
 import * as React from 'react';
+import { useKronaLayoutMode } from '@/components/KronaLayoutModeProvider';
 import {
 	Box,
 	Button,
@@ -16,6 +17,8 @@ import {
 	extendTheme,
 } from '@mui/joy';
 import {
+	ChevronLeft,
+	ChevronRight,
 	Edit,
 	Trash2,
 	Undo2,
@@ -30,6 +33,7 @@ import KronaResizableSplitLayout from '@/components/krona/KronaResizableSplitLay
 import KronaSearchCreateToolbar from '@/components/krona/KronaSearchCreateToolbar';
 import {
 	kronaSideListPanelSx,
+	kronaStackedListPanelSx,
 	kronaSideListPanelBodySx,
 	kronaSideListCardSx,
 } from '@/lib/kronaStyles';
@@ -251,6 +255,8 @@ function formatSubscriptionValue(
 type RemindersViewTab = 'list' | 'calendar';
 
 export default function RemindersPage() {
+	const { isDesktopDashboard } = useKronaLayoutMode();
+	const stackedReminders = !isDesktopDashboard;
 	const router = useRouter();
 	const { role, canCreateEditReminders, isManager, mode } = useTeamMode();
 	const canCreateReminder = role !== 'member' || canCreateEditReminders;
@@ -1006,28 +1012,14 @@ export default function RemindersPage() {
 						flexShrink: 0,
 					}}
 				>
-					<Button
-						variant="plain"
-						size="sm"
-						onClick={() => setCurrent(current.subtract(1, 'month'))}
-						sx={kronaSecondaryButtonSx}
-					>
-						Prev
-					</Button>
+					<Button variant="plain" size="sm" aria-label="Previous month" onClick={() => setCurrent(current.subtract(1, 'month'))} sx={{ ...kronaSecondaryButtonSx, minWidth: 32, width: 32, px: 0, flexShrink: 0 }}><ChevronLeft size={16} /></Button>
 					<Typography
 						level="title-lg"
-						sx={{ color: 'var(--krona-text)', fontWeight: 600 }}
+						sx={{ color: 'var(--krona-text)', fontWeight: 600, fontSize: { xs: 14, md: 18 }, minWidth: 0, textAlign: 'center', mx: 1 }}
 					>
 						{current.format('MMMM YYYY')}
 					</Typography>
-					<Button
-						variant="plain"
-						size="sm"
-						onClick={() => setCurrent(current.add(1, 'month'))}
-						sx={kronaSecondaryButtonSx}
-					>
-						Next
-					</Button>
+					<Button variant="plain" size="sm" aria-label="Next month" onClick={() => setCurrent(current.add(1, 'month'))} sx={{ ...kronaSecondaryButtonSx, minWidth: 32, width: 32, px: 0, flexShrink: 0 }}><ChevronRight size={16} /></Button>
 				</Box>
 				<Box
 					sx={{
@@ -1043,7 +1035,7 @@ export default function RemindersPage() {
 					<Box
 						sx={{
 							display: 'grid',
-							gridTemplateColumns: 'repeat(7, 1fr)',
+							gridTemplateColumns: 'repeat(7, minmax(0, 1fr))',
 							flexShrink: 0,
 							borderBottom: '1px solid var(--krona-overlay-active)',
 						}}
@@ -1068,7 +1060,7 @@ export default function RemindersPage() {
 							flex: 1,
 							minHeight: 0,
 							display: 'grid',
-							gridTemplateColumns: 'repeat(7, 1fr)',
+							gridTemplateColumns: 'repeat(7, minmax(0, 1fr))',
 							gridTemplateRows: 'repeat(6, minmax(0, 1fr))',
 						}}
 					>
@@ -1422,7 +1414,7 @@ export default function RemindersPage() {
 				pb: { xs: 0, md: 1.5 },
 			}}
 		>
-			<Box sx={{ display: { xs: 'none', md: 'block' }, flexShrink: 0 }}>
+			<Box sx={{ display: stackedReminders ? 'none' : 'block', flexShrink: 0 }}>
 				<VacationModeBanner />
 			</Box>
 			<CalendarView
@@ -1478,7 +1470,7 @@ export default function RemindersPage() {
 						) : (
 							<>
 								<Box
-									sx={{ display: { xs: 'block', md: 'none' }, flexShrink: 0 }}
+									sx={{ display: stackedReminders ? 'block' : 'none', flexShrink: 0 }}
 								>
 									<VacationModeBanner />
 								</Box>
@@ -1486,8 +1478,8 @@ export default function RemindersPage() {
 								{/* Tablet / mobile: search + tabs */}
 								<Box
 									sx={{
-										...kronaSideListPanelSx,
-										display: { xs: 'flex', md: 'none' },
+										...kronaStackedListPanelSx,
+										display: stackedReminders ? 'flex' : 'none',
 										flexDirection: 'column',
 										flex: 1,
 										minHeight: 0,
@@ -1565,11 +1557,12 @@ export default function RemindersPage() {
 								<KronaResizableSplitLayout
 									resizeAtSidebarEdge
 									dividerAriaLabel="Resize reminders list and calendar"
+						detailSx={{ pl: { xs: 0, md: '28px' } }}
 									sidebarSx={kronaSideListPanelSx}
 									containerSx={{
 										flex: 1,
 										minHeight: 0,
-										display: { xs: 'none', md: 'flex' },
+										display: stackedReminders ? 'none' : 'flex',
 									}}
 									sidebar={
 										<>

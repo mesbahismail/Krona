@@ -61,7 +61,7 @@ export function createTemplateData(now = new Date()): TemplateDatabase {
 		},
 	];
 	const avatar = (person: (typeof people)[number]) =>
-		`data:image/svg+xml,${encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" width="80" height="80"><rect width="80" height="80" rx="24" fill="${person.color}"/><text x="40" y="49" text-anchor="middle" font-family="sans-serif" font-size="27" fill="white">${person.first[0]}${person.last[0]}</text></svg>`)}`;
+		`/portraits/${person.first.toLowerCase()}.jpg`;
 	const projects = ['Website redesign', 'Design system', 'Product launch'];
 	const taskNames = [
 		'Refine the dashboard wireframes',
@@ -368,6 +368,28 @@ export function withTemplateData(
 						}
 					: row,
 			),
+		};
+	}
+	// Upgrade only the original SVG initials, without resetting saved work.
+	const portraitById: Record<string, string> = {
+		[TEMPLATE_USER_ID]: '/portraits/alex.jpg',
+		'demo-maya': '/portraits/maya.jpg',
+		'demo-jordan': '/portraits/jordan.jpg',
+		'demo-sam': '/portraits/sam.jpg',
+		'demo-noor': '/portraits/noor.jpg',
+	};
+	const originalAvatars = [['AM', '#534fff'], ['MC', '#15a1f1'], ['JL', '#8b5cf6'], ['SR', '#0d9488'], ['NA', '#c026d3']].map(([initials, color]) =>
+		`data:image/svg+xml,${encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" width="80" height="80"><rect width="80" height="80" rx="24" fill="${color}"/><text x="40" y="49" text-anchor="middle" font-family="sans-serif" font-size="27" fill="white">${initials}</text></svg>`)}`,
+	);
+	const isInitials = (url: unknown) => typeof url === 'string' && originalAvatars.includes(url);
+	if (existing.profiles?.some((row) => portraitById[String(row.id)] && isInitials(row.avatar_url))) {
+		existing = {
+			...existing,
+			profiles: existing.profiles.map((row) => portraitById[String(row.id)] && isInitials(row.avatar_url) ? { ...row, avatar_url: portraitById[String(row.id)] } : row),
+			local_identity: (existing.local_identity ?? []).map((row) => {
+				const meta = row.user_metadata as Record<string, unknown> | undefined;
+				return isInitials(meta?.avatar_url) ? { ...row, user_metadata: { ...meta, avatar_url: portraitById[TEMPLATE_USER_ID] } } : row;
+			}),
 		};
 	}
 	if (existing._template?.some((row) => row.version === 1)) return existing;
