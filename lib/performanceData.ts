@@ -76,7 +76,7 @@ export type PomodoroDaySnapshot = {
 export const PERFORMANCE_DATA_STALE_MS = 15 * 60 * 1000;
 
 /** Bump when trend/period math changes so stale in-memory cache is dropped. */
-const PERFORMANCE_CACHE_VERSION = 13;
+const PERFORMANCE_CACHE_VERSION = 14;
 
 type PerformanceCacheEntry = {
 	userId: string;
@@ -810,9 +810,7 @@ export async function fetchPerformanceExtendedMetrics(
 		localData
 			.from('tasks')
 			.select('status, time_assigned_minutes, total_time_worked_minutes, updated_at, completed_at')
-			.eq('user_id', userId)
-			.gte('updated_at', start.toISOString())
-			.lte('updated_at', now.toISOString()),
+			.eq('user_id', userId),
 		fetchMergedSessionsInRange(userId, start.toISOString(), {
 			awaitBackfill: false,
 			endIso: now.toISOString(),
@@ -1031,6 +1029,7 @@ export async function fetchTeamPerformanceExtendedMetrics(
 			.from('team_tasks')
 			.select('status, completed_at')
 			.eq('organization_id', options.organizationId)
+			.in('assignee_user_id', ids)
 			.eq('status', 'done')
 			.gte('completed_at', start.toISOString())
 			.lte('completed_at', now.toISOString());
@@ -1041,9 +1040,7 @@ export async function fetchTeamPerformanceExtendedMetrics(
 			.select(
 				'status, time_assigned_minutes, total_time_worked_minutes, updated_at, completed_at',
 			)
-			.in('user_id', ids)
-			.gte('updated_at', start.toISOString())
-			.lte('updated_at', now.toISOString());
+			.in('user_id', ids);
 		tasksFinished = countTasksFinishedInRange(
 			personalTasks ?? [],
 			startMs,

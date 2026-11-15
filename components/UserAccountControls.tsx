@@ -1,9 +1,14 @@
 'use client';
 
+import { KRONA_TITLE_FONT_WEIGHT } from '@/lib/kronaTypography';
+
 import * as React from 'react';
+import type { SxProps } from '@mui/joy/styles/types';
+import { kronaAccentColorMix } from '@/lib/kronaAccent';
 import type { Modifier, ModifierArguments } from '@popperjs/core';
 import {
 	Avatar,
+	Button,
 	Box,
 	Divider,
 	IconButton,
@@ -12,6 +17,7 @@ import {
 	Typography,
 } from '@mui/joy';
 import {
+	ArrowLeftRight,
 	Bell,
 	Briefcase,
 	ChevronDown,
@@ -42,11 +48,26 @@ import { isKronaOfficeOwner } from '@/lib/kronaOffice';
 import {
 	kronaMenuItemSx,
 	kronaMenuSx,
-	kronaTabBarSx,
-	kronaTabButtonSx,
+	kronaSecondaryButtonSx,
 } from '@/lib/kronaStyles';
 import { useKronaLayoutMode } from '@/components/KronaLayoutModeProvider';
 import { ONBOARDING_ACCOUNT_MENU_EVENT } from '@/lib/onboarding';
+
+const profileMenuItemSx = {
+	...kronaMenuItemSx,
+	fontSize: 12,
+	fontWeight: 600,
+	minHeight: 44,
+	px: 2,
+	py: 1.25,
+	gap: 1.25,
+	'& > svg': {
+		width: 16,
+		height: 16,
+		flexShrink: 0,
+		color: 'var(--krona-text-muted)',
+	},
+} as SxProps;
 
 const kronaMobileAccountMenuModifier: Modifier<
 	'kronaMobileAccountMenu',
@@ -103,6 +124,7 @@ export default function UserAccountControls({
 	const [anchorEl, setAnchorEl] = React.useState<HTMLElement | null>(null);
 	const open = Boolean(anchorEl);
 	const [feedbackOpen, setFeedbackOpen] = React.useState(false);
+	const [switchingWorkspace, setSwitchingWorkspace] = React.useState(false);
 	const [label, setLabel] = React.useState('Alex Morgan');
 	const firstName = label.trim().split(/\s+/)[0] || 'Alex';
 	const [jobTitle, setJobTitle] = React.useState('');
@@ -313,39 +335,46 @@ export default function UserAccountControls({
 						src={avatarUrl}
 						alt=""
 						size="sm"
-						sx={{ width: compact ? 30 : 24, height: compact ? 30 : 24, flexShrink: 0 }}
-					/>
-					{!compact ? <>
-					<Typography
-						component="span"
-						level="body-sm"
 						sx={{
-							display: 'block',
+							width: compact ? 30 : 24,
+							height: compact ? 30 : 24,
 							flexShrink: 0,
-							maxWidth: { xs: 48, sm: 80 },
-							overflow: 'hidden',
-							textOverflow: 'ellipsis',
-							whiteSpace: 'nowrap',
-							fontSize: 13,
-							fontWeight: 500,
-							color: 'inherit',
-						}}
-					>
-						{firstName}
-					</Typography>
-					<ChevronDown
-						size={14}
-						aria-hidden="true"
-						style={{
-							flexShrink: 0,
-							transition: 'transform 150ms ease',
-							transform: open ? 'rotate(180deg)' : undefined,
 						}}
 					/>
-					</> : null}
+					{!compact ? (
+						<>
+							<Typography
+								component="span"
+								level="body-sm"
+								sx={{
+									display: 'block',
+									flexShrink: 0,
+									maxWidth: { xs: 48, sm: 80 },
+									overflow: 'hidden',
+									textOverflow: 'ellipsis',
+									whiteSpace: 'nowrap',
+									fontSize: 12,
+									fontWeight: 500,
+									color: 'inherit',
+								}}
+							>
+								{firstName}
+							</Typography>
+							<ChevronDown
+								size={14}
+								aria-hidden="true"
+								style={{
+									flexShrink: 0,
+									transition: 'transform 150ms ease',
+									transform: open ? 'rotate(180deg)' : undefined,
+								}}
+							/>
+						</>
+					) : null}
 				</IconButton>
 			</Box>
 			<Menu
+				className="krona-profile-menu"
 				anchorEl={anchorEl}
 				open={open}
 				onClose={() => close()}
@@ -361,7 +390,7 @@ export default function UserAccountControls({
 					...kronaMenuSx,
 					minWidth: stretchAccountMenu
 						? 'calc(100vw - var(--krona-sidebar-width) - var(--krona-ai-panel-width, 0px) - 32px)'
-						: Math.round(264 * 1.15),
+						: 320,
 					...(stretchAccountMenu
 						? {
 								width:
@@ -370,33 +399,85 @@ export default function UserAccountControls({
 									'calc(100vw - var(--krona-sidebar-width) - var(--krona-ai-panel-width, 0px) - 32px)',
 							}
 						: {}),
-					'--List-padding': '8px',
+					'--List-padding': '10px',
+					maxHeight: 'calc(100dvh - var(--krona-top-height, 60px) - 32px)',
+					overflowY: 'auto',
 				}}
 			>
-				<Box sx={{ px: 2, py: 1.25 }}>
-					<Typography
-						level="title-md"
+				<Box sx={{ px: 2, pt: 2, pb: 1.75 }}>
+					<Box
 						sx={{
-							color: 'var(--krona-text)',
-							fontWeight: 600,
-							fontSize: '1.125rem',
-							lineHeight: 1.3,
+							display: 'flex',
+							alignItems: 'center',
+							justifyContent: 'space-between',
+							gap: 1.5,
 						}}
 					>
-						{label || '—'}
-					</Typography>
-					{jobTitle ? (
-						<Typography
-							level="body-sm"
-							sx={{
-								color: 'var(--krona-text-muted)',
-								mt: 0.25,
-								lineHeight: 1.35,
-							}}
-						>
-							{jobTitle}
-						</Typography>
-					) : null}
+						<Box sx={{ minWidth: 0, flex: 1, overflowWrap: 'anywhere' }}>
+							<Typography
+								level="title-md"
+								sx={{
+									color: 'var(--krona-text)',
+									fontWeight: KRONA_TITLE_FONT_WEIGHT,
+									fontSize: '1rem',
+									lineHeight: 1.3,
+								}}
+							>
+								{label || '—'}
+							</Typography>
+							{jobTitle ? (
+								<Typography
+									level="body-sm"
+									sx={{
+										color: 'var(--krona-text-muted)',
+										mt: 0.75,
+										fontSize: 12,
+										fontWeight: 400,
+										lineHeight: 1.5,
+									}}
+								>
+									{jobTitle}
+								</Typography>
+							) : null}
+						</Box>
+						{hasTeam && canUseIndividualMode && (
+							<Button
+								type="button"
+								variant="plain"
+								size="sm"
+								data-tour="dashboard-workspace"
+								startDecorator={<ArrowLeftRight size={14} aria-hidden />}
+								aria-label={`Switch to ${workspaceMode === 'team' ? 'Employee' : 'Manager'} view`}
+								title={`Switch to ${workspaceMode === 'team' ? 'Employee' : 'Manager'} view`}
+								loading={switchingWorkspace}
+								onClick={async (event) => {
+									event.stopPropagation();
+									if (switchingWorkspace) return;
+									setSwitchingWorkspace(true);
+									try {
+										await setMode(
+											workspaceMode === 'team' ? 'individual' : 'team',
+										);
+										close();
+									} catch {
+										showKronaError(
+											'Could not switch the preview view. Please try again.',
+										);
+									} finally {
+										setSwitchingWorkspace(false);
+									}
+								}}
+								sx={{
+									...kronaSecondaryButtonSx,
+									fontSize: 11,
+									px: 1.25,
+									flexShrink: 0,
+								}}
+							>
+								Switch
+							</Button>
+						)}
+					</Box>
 					{roleLabel ? (
 						<Box
 							component="span"
@@ -405,11 +486,11 @@ export default function UserAccountControls({
 								alignItems: 'center',
 								width: 'fit-content',
 								maxWidth: '100%',
-								mt: '4px',
-								px: 0.75,
-								py: 0.2,
+								mt: 1.25,
+								px: 1.25,
+								py: 0.5,
 								borderRadius: '999px',
-								fontSize: '0.6875rem',
+								fontSize: 10,
 								fontWeight: 600,
 								lineHeight: 1.3,
 								color: '#fff',
@@ -419,93 +500,71 @@ export default function UserAccountControls({
 							{roleLabel}
 						</Box>
 					) : null}
-					{hasTeam && canUseIndividualMode ? (
-						<Box
-							sx={{ mt: 1.25 }}
-							data-tour="dashboard-workspace"
-							onClick={(e) => e.stopPropagation()}
-						>
-							<Box role="group" aria-label="Workspace" sx={kronaTabBarSx}>
-								{(
-									[
-										{ id: 'team' as const, label: 'Manager' },
-										{ id: 'individual' as const, label: 'Employee' },
-									] as const
-								).map((opt) => {
-									const selected = workspaceMode === opt.id;
-									return (
-										<Box
-											key={opt.id}
-											component="button"
-											type="button"
-											aria-pressed={selected}
-											onClick={() => {
-												void setMode(opt.id)
-													.then(() => close())
-													.catch(() =>
-														showKronaError(
-															'Could not switch the preview view. Please try again.',
-														),
-													);
-											}}
-											sx={kronaTabButtonSx(selected)}
-										>
-											{opt.label}
-										</Box>
-									);
-								})}
-							</Box>
-						</Box>
-					) : null}
 				</Box>
-				<Divider sx={{ borderColor: 'var(--krona-surface-border)' }} />
-				{hasTeam ? <MenuItem sx={kronaMenuItemSx} onClick={() => { close(); if (!activity.open) activity.toggle(); }}><Bell size={14} style={{ marginRight: 8 }} />Activity{activity.unreadCount ? ` (${activity.unreadCount})` : ''}</MenuItem> : null}
+				<Divider
+					sx={{ borderColor: 'var(--krona-surface-border)', mx: 1.5, my: 1 }}
+				/>
+				{hasTeam ? (
+					<MenuItem
+						sx={profileMenuItemSx}
+						onClick={() => {
+							close();
+							if (!activity.open) activity.toggle();
+						}}
+					>
+						<Bell size={16} />
+						Activity
+						{activity.unreadCount > 0 && (
+							<Box
+								component="span"
+								aria-label={`${activity.unreadCount} unread activities`}
+								sx={{
+									ml: 'auto',
+									minWidth: 24,
+									minHeight: 22,
+									px: 0.75,
+									display: 'inline-flex',
+									alignItems: 'center',
+									justifyContent: 'center',
+									borderRadius: '8px',
+									fontSize: 11,
+									fontWeight: 600,
+									lineHeight: 1,
+									fontVariantNumeric: 'tabular-nums',
+									color: kronaAccentColorMix(65, 'var(--krona-text)'),
+									border: `1px solid ${kronaAccentColorMix(35)}`,
+									background: kronaAccentColorMix(12),
+								}}
+							>
+								{activity.unreadCount > 99 ? '99+' : activity.unreadCount}
+							</Box>
+						)}
+					</MenuItem>
+				) : null}
 				<MenuItem
 					onClick={() => goTo('/settings?tab=account')}
-					sx={{
-						...kronaMenuItemSx,
-						color: 'var(--krona-text)',
-						fontSize: '14px',
-					}}
+					sx={profileMenuItemSx}
 				>
-					<Settings size={14} style={{ marginRight: 8 }} />
+					<Settings size={16} />
 					Account Settings
 				</MenuItem>
 				{showOffice ? (
-					<MenuItem
-						onClick={() => goTo('/office')}
-						sx={{
-							...kronaMenuItemSx,
-							color: 'var(--krona-text)',
-							fontSize: '14px',
-						}}
-					>
-						<Briefcase size={14} style={{ marginRight: 8 }} />
+					<MenuItem onClick={() => goTo('/office')} sx={profileMenuItemSx}>
+						<Briefcase size={16} />
 						Krona Office
 					</MenuItem>
 				) : null}
 				{!hasTeam ? (
 					<MenuItem
 						onClick={() => goTo('/teams/get-started')}
-						sx={{
-							...kronaMenuItemSx,
-							color: 'var(--krona-text)',
-							fontSize: '14px',
-						}}
+						sx={profileMenuItemSx}
 					>
-						<Users size={14} style={{ marginRight: 8 }} />
+						<Users size={16} />
 						Start Krona Teams
 					</MenuItem>
 				) : null}
-				<MenuItem
-					onClick={() => goTo('/help')}
-					sx={{
-						...kronaMenuItemSx,
-						color: 'var(--krona-text)',
-						fontSize: '14px',
-					}}
-				>
-					<CircleHelp size={14} style={{ marginRight: 8 }} />
+				<MenuItem onClick={() => goTo('/help')} sx={profileMenuItemSx}>
+					<CircleHelp size={16} />
 					Help Center
 				</MenuItem>
 				<MenuItem
@@ -513,20 +572,18 @@ export default function UserAccountControls({
 						close();
 						setFeedbackOpen(true);
 					}}
-					sx={{
-						...kronaMenuItemSx,
-						color: 'var(--krona-text)',
-						fontSize: '14px',
-					}}
+					sx={profileMenuItemSx}
 				>
-					<MessageSquare size={14} style={{ marginRight: 8 }} />
+					<MessageSquare size={16} />
 					Feedback
 				</MenuItem>
-				<Divider sx={{ borderColor: 'var(--krona-surface-border)' }} />
+				<Divider
+					sx={{ borderColor: 'var(--krona-surface-border)', mx: 1.5, my: 1 }}
+				/>
 				<Box
 					sx={{
 						px: 2,
-						py: 1.25,
+						py: 1.75,
 						display: 'flex',
 						alignItems: 'center',
 						justifyContent: 'space-between',
@@ -536,7 +593,7 @@ export default function UserAccountControls({
 				>
 					<Typography
 						level="body-sm"
-						sx={{ color: 'var(--krona-text)', fontSize: '14px' }}
+						sx={{ color: 'var(--krona-text)', fontSize: 12, fontWeight: 600 }}
 					>
 						Vacation mode
 					</Typography>

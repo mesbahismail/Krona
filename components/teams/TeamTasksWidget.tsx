@@ -67,6 +67,7 @@ export default function TeamTasksWidget({
 	const [name, setName] = React.useState('');
 	const [assigneeId, setAssigneeId] = React.useState<string | null>(null);
 	const [search, setSearch] = React.useState('');
+	const [showAllTasks, setShowAllTasks] = React.useState(false);
 	const membersById = React.useMemo(
 		() => new Map(members.map((m) => [m.userId, m] as const)),
 		[members],
@@ -141,7 +142,7 @@ export default function TeamTasksWidget({
 						level="body-sm"
 						sx={{
 							color: 'var(--krona-text-64)',
-							fontSize: 13,
+							fontSize: 12,
 							lineHeight: 1.35,
 						}}
 					>
@@ -268,17 +269,22 @@ export default function TeamTasksWidget({
 				>
 					{pending.length > 0 ? (
 						<Box sx={{ mt: 0 }}>
-							{pending.map((task) => renderRow(task, false))}
+							{(showAllTasks || search.trim() ? pending : pending.slice(0, 2)).map((task) => renderRow(task, false))}
 						</Box>
 					) : null}
 					{done.length > 0 ? (
 						<Box sx={{ mt: pending.length > 0 ? '10px' : 0 }}>
 							<KronaListDivider label="Done" compact />
 							<Box sx={{ mt: '10px' }}>
-								{done.map((task) => renderRow(task, true))}
+								{(showAllTasks || search.trim() ? done : done.slice(0, 2)).map((task) => renderRow(task, true))}
 							</Box>
 						</Box>
 					) : null}
+						{!search.trim() && (pending.length > 2 || done.length > 2) && (
+							<Button variant="plain" size="sm" onClick={() => setShowAllTasks((value) => !value)} aria-expanded={showAllTasks} sx={{ color: 'var(--krona-text-muted)', fontSize: 11, alignSelf: 'center', flexShrink: 0, mt: 0.5 }}>
+								{showAllTasks ? 'Show fewer tasks' : `Show all ${pending.length + done.length} tasks`}
+							</Button>
+						)}
 				</Box>
 			)}
 		</Box>

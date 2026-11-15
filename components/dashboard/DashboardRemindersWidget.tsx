@@ -1,9 +1,11 @@
 'use client';
 
+import { KRONA_TITLE_FONT_WEIGHT } from '@/lib/kronaTypography';
+
 import * as React from 'react';
 import NextLink from 'next/link';
 import { Box, Chip, IconButton, Tooltip, Typography } from '@mui/joy';
-import { ArrowRight, Bell, Plus } from 'lucide-react';
+import { ArrowRight, CalendarDays, Plus } from 'lucide-react';
 import { daysUntilLabel, reminderDueIso } from '@/lib/reminders';
 import {
 	kronaPrimaryIconButtonSx,
@@ -70,7 +72,7 @@ export default function DashboardRemindersWidget() {
 		>
 			<DashboardWidgetHeader
 				widgetId="reminders"
-				title="Reminders"
+				title="Calendar"
 				href="/reminders"
 				actions={
 					!canCreateReminder ? null : (
@@ -127,7 +129,7 @@ export default function DashboardRemindersWidget() {
 										level="title-sm"
 										sx={{
 											color: 'var(--krona-text)',
-											fontWeight: 600,
+											fontWeight: KRONA_TITLE_FONT_WEIGHT,
 											overflow: 'hidden',
 											display: '-webkit-box',
 											WebkitLineClamp: 2,
@@ -171,7 +173,7 @@ export default function DashboardRemindersWidget() {
 				</KronaHorizontalScrollStrip>
 			) : (
 				<Box sx={{ flex: 1, minHeight: 0, display: 'flex', flexDirection: 'column' }}>
-					<DashboardWidgetEmpty icon={Bell}>
+					<DashboardWidgetEmpty icon={CalendarDays}>
 						Never miss a deadline.
 					</DashboardWidgetEmpty>
 				</Box>

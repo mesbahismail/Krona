@@ -616,6 +616,7 @@ export function SubscriptionPanelSkeleton() {
 }
 
 export function DashboardPageSkeleton() {
+	const { isDesktopDashboard, isTabletDashboard } = useKronaLayoutMode();
 	const timerShellRef = React.useRef<HTMLDivElement>(null);
 	const [mobileTasksHeight, setMobileTasksHeight] = React.useState<number | null>(null);
 
@@ -649,6 +650,18 @@ export function DashboardPageSkeleton() {
 
 	return (
 		<DashboardMobileSecondaryWidgetHeightsProvider>
+			<Box sx={[
+				kronaWidgetCardSx, kronaWidgetPaddingSx,
+				{
+					gridColumn: isDesktopDashboard ? '1 / 3' : isTabletDashboard ? '1 / -1' : '1',
+					gridRow: isDesktopDashboard ? '3' : 'auto',
+					order: isDesktopDashboard ? 'unset' : 2.5,
+					height: isDesktopDashboard ? '100%' : 240,
+				},
+			] as SxProps}>
+				<WidgetHeaderSkeleton />
+				<Skeleton variant="rectangular" sx={{ ...kronaSkeletonSx, flex: 1, minHeight: 80, borderRadius: 12 }} />
+			</Box>
 			<DashboardWidgetShellSkeleton
 				id="tasks"
 				sx={{

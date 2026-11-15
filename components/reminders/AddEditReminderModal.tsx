@@ -371,7 +371,7 @@ export default function AddEditReminderModal({
 													? 'none'
 													: 'inset 0 0 0 1px var(--krona-surface-border)',
 											overflow: 'hidden',
-											fontSize: '12px',
+											fontSize: '11px',
 										}}
 									>
 										{option}
@@ -456,7 +456,7 @@ export default function AddEditReminderModal({
 														? 'none'
 														: 'inset 0 0 0 1px var(--krona-surface-border)',
 												overflow: 'hidden',
-												fontSize: '12px',
+												fontSize: '11px',
 											}}
 										>
 											{option}

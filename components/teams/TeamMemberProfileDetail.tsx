@@ -160,7 +160,7 @@ function MemberMetric({
 			>
 				<Typography
 					level="h2"
-					sx={{ color: 'var(--krona-text)', fontSize: { xs: 24, md: 30 } }}
+					sx={{ color: 'var(--krona-text)', fontSize: { xs: 22, md: 27 } }}
 				>
 					{value}
 					{unit ? (
@@ -168,7 +168,7 @@ function MemberMetric({
 							component="span"
 							sx={{
 								color: 'var(--krona-text-muted)',
-								fontSize: { xs: 14, md: 16 },
+								fontSize: { xs: 13, md: 14 },
 								fontWeight: 500,
 								ml: 0.5,
 							}}
@@ -477,7 +477,7 @@ export default function TeamMemberProfileDetail({
 									level="body-sm"
 									sx={{
 										color: 'var(--krona-text)',
-										fontSize: 13,
+										fontSize: 12,
 										fontWeight: 500,
 										lineHeight: 1.35,
 									}}
@@ -513,7 +513,7 @@ export default function TeamMemberProfileDetail({
 												level="body-sm"
 												sx={{
 													color: 'var(--krona-text)',
-													fontSize: 13,
+													fontSize: 12,
 													fontWeight: 500,
 													lineHeight: 1.35,
 												}}
@@ -773,7 +773,7 @@ export default function TeamMemberProfileDetail({
 											cursor: 'pointer',
 											color: 'var(--krona-accent)',
 											fontWeight: 600,
-											fontSize: 13,
+											fontSize: 12,
 											lineHeight: 1.2,
 											'&:hover': { textDecoration: 'underline' },
 										}}

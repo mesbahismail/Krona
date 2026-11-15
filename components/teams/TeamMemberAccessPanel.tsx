@@ -1,5 +1,7 @@
 'use client';
 
+import { KRONA_TITLE_FONT_WEIGHT } from '@/lib/kronaTypography';
+
 import * as React from 'react';
 import { Box, Typography } from '@mui/joy';
 import KronaTaskCheckbox from '@/components/krona/KronaTaskCheckbox';
@@ -50,7 +52,7 @@ export default function TeamMemberAccessPanel({
 		<Box sx={{ mt: 2, pt: 2, borderTop: '1px solid var(--krona-surface-border)' }}>
 			<Typography
 				level="title-sm"
-				sx={{ color: 'var(--krona-text)', fontWeight: 600, mb: 1.25 }}
+				sx={{ color: 'var(--krona-text)', fontWeight: KRONA_TITLE_FONT_WEIGHT, mb: 1.25 }}
 			>
 				Member access
 			</Typography>

@@ -1,5 +1,7 @@
 'use client';
 
+import { KRONA_TITLE_FONT_WEIGHT } from '@/lib/kronaTypography';
+
 import * as React from 'react';
 import { Box, IconButton, Typography } from '@mui/joy';
 import {
@@ -250,7 +252,7 @@ function TeamActivityPanel({
 					<Bell size={18} color="var(--krona-text)" />
 					<Typography
 						level="title-md"
-						sx={{ color: 'var(--krona-text)', fontWeight: 600 }}
+						sx={{ color: 'var(--krona-text)', fontWeight: KRONA_TITLE_FONT_WEIGHT }}
 					>
 						Activity today
 					</Typography>

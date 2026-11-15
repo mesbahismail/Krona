@@ -19,9 +19,9 @@ const BLOCK_STYLES: Record<
 	{ fontSize: string; fontWeight: number }
 > = {
 	body: { fontSize: 'var(--krona-note-editor-font-size)', fontWeight: 400 },
-	header: { fontSize: '22px', fontWeight: 600 },
-	subheader1: { fontSize: '18px', fontWeight: 600 },
-	subheader2: { fontSize: '16px', fontWeight: 600 },
+	header: { fontSize: '20px', fontWeight: 600 },
+	subheader1: { fontSize: '16px', fontWeight: 600 },
+	subheader2: { fontSize: '14px', fontWeight: 600 },
 };
 
 export function parseNoteProseBlock(line: string): { kind: NoteProseBlockKind; content: string } {

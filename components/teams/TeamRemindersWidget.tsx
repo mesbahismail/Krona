@@ -3,7 +3,7 @@
 import * as React from 'react';
 import NextLink from 'next/link';
 import { Box, Chip, IconButton, Tooltip, Typography } from '@mui/joy';
-import { Bell, Plus } from 'lucide-react';
+import { CalendarDays, Plus } from 'lucide-react';
 import DashboardWidgetEmpty from '@/components/dashboard/DashboardWidgetEmpty';
 import {
 	TeamWidgetHeader,
@@ -55,9 +55,9 @@ export default function TeamRemindersWidget({
 			}}
 		>
 			<TeamWidgetHeader
-				title="Team reminders"
+				title="Team calendar"
 				href="/team/reminders"
-				navHint="All reminders"
+				navHint="Open calendar"
 				actions={canCreate && onCreate ? (
 					<Tooltip title="Add reminder">
 						<IconButton
@@ -77,7 +77,7 @@ export default function TeamRemindersWidget({
 					Loading…
 				</Typography>
 			) : reminders.length === 0 ? (
-				<DashboardWidgetEmpty icon={Bell}>
+				<DashboardWidgetEmpty icon={CalendarDays}>
 					No open team reminders.
 				</DashboardWidgetEmpty>
 			) : (

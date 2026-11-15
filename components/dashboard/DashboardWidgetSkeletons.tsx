@@ -5,6 +5,7 @@ import { Box, Skeleton } from '@mui/joy';
 import type { SxProps } from '@mui/joy/styles/types';
 import { DASHBOARD_WIDGET_HEADER_GAP } from '@/components/dashboard/DashboardWidgetChrome';
 import {
+	kronaWidgetHeaderInsetSx,
 	kronaShadowBleedSx,
 	kronaSkeletonSx,
 	kronaTabBarSx,
@@ -121,6 +122,7 @@ export function WidgetHeaderSkeleton({
 	return (
 		<Box
 			sx={{
+				...kronaWidgetHeaderInsetSx,
 				display: 'flex',
 				alignItems: 'center',
 				justifyContent: 'space-between',

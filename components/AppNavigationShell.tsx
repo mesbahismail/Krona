@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import {
 	BarChart3,
-	Bell,
+	CalendarDays,
 	CircleHelp,
 	FolderKanban,
 	Home,
@@ -29,13 +29,13 @@ const personalLinks = [
 	{ href: '/', label: 'Home', Icon: Home },
 	{ href: '/projects', label: 'My projects', Icon: FolderKanban },
 	{ href: '/performance', label: 'Performance', Icon: BarChart3 },
-	{ href: '/reminders', label: 'Reminders', Icon: Bell },
+	{ href: '/reminders', label: 'Calendar', Icon: CalendarDays },
 ];
 const teamLinks = [
 	{ href: '/team', label: 'Team dashboard', Icon: Users },
 	{ href: '/team/projects', label: 'Team projects', Icon: FolderKanban },
 	{ href: '/team/performance', label: 'Team performance', Icon: BarChart3 },
-	{ href: '/team/reminders', label: 'Team reminders', Icon: Bell },
+	{ href: '/team/reminders', label: 'Team calendar', Icon: CalendarDays },
 	{ href: '/team/members', label: 'Team members', Icon: Users },
 ];
 

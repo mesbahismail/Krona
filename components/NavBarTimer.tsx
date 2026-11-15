@@ -104,7 +104,7 @@ function TimerTaskBadge({
 				level="body-sm"
 				sx={{
 					fontWeight: 600,
-					fontSize: 13,
+					fontSize: 12,
 					lineHeight: 1.25,
 					color: 'var(--krona-text)',
 					overflow: 'hidden',
@@ -194,7 +194,7 @@ export default function NavBarTimer({
 				component="span"
 				sx={{
 					fontFamily: 'Poppins, sans-serif',
-					fontSize: { xs: 13, sm: 14 },
+					fontSize: { xs: 12, sm: 13 },
 					fontWeight: 500,
 					color: 'var(--krona-text)',
 					whiteSpace: 'nowrap',

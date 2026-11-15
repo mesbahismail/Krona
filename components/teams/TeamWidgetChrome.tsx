@@ -6,6 +6,7 @@ import { Box, Typography } from '@mui/joy';
 import type { SxProps } from '@mui/joy/styles/types';
 import { ArrowUpRight } from 'lucide-react';
 import {
+	kronaWidgetHeaderInsetSx,
 	kronaTitleSx,
 	kronaWidgetCardSx,
 	kronaWidgetNavHintRevealSx,
@@ -61,7 +62,7 @@ export function TeamWidgetHeader({
 			component={href ? 'span' : 'div'}
 			sx={{
 				...kronaTitleSx,
-				fontSize: '16px',
+				fontSize: '14px',
 				color: 'var(--krona-text)',
 				fontFamily: 'Poppins, sans-serif',
 				lineHeight: 1.2,
@@ -83,10 +84,11 @@ export function TeamWidgetHeader({
 	return (
 		<Box
 			sx={{
+				...kronaWidgetHeaderInsetSx,
 				display: 'flex',
 				alignItems: 'center',
 				justifyContent: 'space-between',
-				mb: 'calc(20px - (var(--krona-control-height, 32px) - 19.2px) / 2)',
+				mb: 'calc(20px - (var(--krona-control-height, 32px) - 16.8px) / 2)',
 				gap: 1,
 				flexShrink: 0,
 				minWidth: 0,

@@ -401,6 +401,7 @@ function TeamPerformanceContent() {
 				</Box>
 			) : (
 				<PerformanceReport
+					analyticsMembers={chartMembersFor(members, selectedMemberId)}
 					metrics={metrics}
 					selectedPeriod={selectedPeriod}
 					onPeriodChange={setSelectedPeriod}

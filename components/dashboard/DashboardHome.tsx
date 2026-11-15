@@ -1,5 +1,7 @@
 'use client';
 
+import { KRONA_TITLE_FONT_WEIGHT } from '@/lib/kronaTypography';
+
 import * as React from 'react';
 import NextLink from 'next/link';
 import {
@@ -41,6 +43,7 @@ import KronaMoreMenuButton from '@/components/krona/KronaMoreMenuButton';
 import KronaTaskCheckbox from '@/components/krona/KronaTaskCheckbox';
 import DashboardWidgetEmpty from '@/components/dashboard/DashboardWidgetEmpty';
 import DashboardPerformanceWidget from '@/components/dashboard/DashboardPerformanceWidget';
+import DashboardPeakWorkWidget from '@/components/dashboard/DashboardPeakWorkWidget';
 import DashboardTodayProgressWidget from '@/components/dashboard/DashboardTodayProgressWidget';
 import Background from '@/components/Background';
 import Top from '@/components/Top';
@@ -214,6 +217,7 @@ const DashboardTasksAndTimer = React.memo(function DashboardTasksAndTimer() {
 	const undefinedProjectId = undefinedProject?.id ?? null;
 	const undefinedProjectLabel = undefinedProject?.name ?? 'Undefined';
 	const [taskSearch, setTaskSearch] = React.useState('');
+	const [showAllTasks, setShowAllTasks] = React.useState(false);
 	const [taskListFilters, setTaskListFilters] = React.useState<TaskListFilters>(
 		DEFAULT_TASK_LIST_FILTERS,
 	);
@@ -448,6 +452,15 @@ const DashboardTasksAndTimer = React.memo(function DashboardTasksAndTimer() {
 		() => filteredTasks.filter((t) => isDashboardTaskDone(t.status)),
 		[filteredTasks],
 	);
+	// Keep both task states visible in the dashboard preview; searches show all matches.
+	const expandTaskPreview = showAllTasks || Boolean(taskSearch.trim()) || folderBrowseOpen || taskListFilters.repeatableOnly || taskListFilters.favoritesOnly;
+	const previewActiveTasks = expandTaskPreview ? activeTasks : activeTasks.slice(0, 2);
+	const previewTeamActiveTasks = expandTaskPreview ? teamActiveTasks : teamActiveTasks.slice(0, Math.max(0, 2 - previewActiveTasks.length));
+	const previewDoneTasks = expandTaskPreview ? doneTasks : doneTasks.slice(0, 2);
+	const previewTeamDoneTasks = expandTaskPreview ? teamDoneTasks : teamDoneTasks.slice(0, Math.max(0, 2 - previewDoneTasks.length));
+	const taskCount = activeTasks.length + teamActiveTasks.length + doneTasks.length + teamDoneTasks.length;
+	const hasMoreTasks = activeTasks.length + teamActiveTasks.length > 2 || doneTasks.length + teamDoneTasks.length > 2;
+
 	const hasTasks =
 		activeTasks.length > 0 ||
 		doneTasks.length > 0 ||
@@ -665,7 +678,7 @@ const DashboardTasksAndTimer = React.memo(function DashboardTasksAndTimer() {
 							level="title-sm"
 							sx={{
 								color: 'var(--krona-text)',
-								fontWeight: 600,
+								fontWeight: KRONA_TITLE_FONT_WEIGHT,
 								overflow: 'hidden',
 								textOverflow: 'ellipsis',
 								whiteSpace: 'nowrap',
@@ -856,7 +869,7 @@ const DashboardTasksAndTimer = React.memo(function DashboardTasksAndTimer() {
 							level="title-sm"
 							sx={{
 								color: 'var(--krona-text)',
-								fontWeight: 600,
+								fontWeight: KRONA_TITLE_FONT_WEIGHT,
 								overflow: 'hidden',
 								textOverflow: 'ellipsis',
 								whiteSpace: 'nowrap',
@@ -1377,15 +1390,20 @@ const DashboardTasksAndTimer = React.memo(function DashboardTasksAndTimer() {
 						</Box>
 					) : (
 						<>
-							{activeTasks.map(renderTaskRow)}
-							{teamActiveTasks.map(renderTeamTaskRow)}
+							{previewActiveTasks.map(renderTaskRow)}
+							{previewTeamActiveTasks.map(renderTeamTaskRow)}
 							{doneTasks.length > 0 || teamDoneTasks.length > 0 ? (
 								<>
 									<KronaListDivider label="Done" compact />
-									{doneTasks.map(renderTaskRow)}
-									{teamDoneTasks.map(renderTeamTaskRow)}
+									{previewDoneTasks.map(renderTaskRow)}
+									{previewTeamDoneTasks.map(renderTeamTaskRow)}
 								</>
 							) : null}
+							{hasMoreTasks && !taskSearch.trim() && !folderBrowseOpen && !taskListFilters.repeatableOnly && !taskListFilters.favoritesOnly && (
+								<Button variant="plain" size="sm" onClick={() => setShowAllTasks((value) => !value)} aria-expanded={showAllTasks} sx={{ color: 'var(--krona-text-muted)', fontSize: 11, alignSelf: 'center', flexShrink: 0, mt: 0.5 }}>
+									{showAllTasks ? 'Show fewer tasks' : `Show all ${taskCount} tasks`}
+								</Button>
+							)}
 						</>
 					)}
 				</DashboardWidgetScrollArea>
@@ -1799,7 +1817,7 @@ function DashboardHomeContent() {
 					minHeight: isDesktopDashboard ? 0 : 'auto',
 					display: 'flex',
 					flexDirection: 'column',
-					overflow: isDesktopDashboard ? 'hidden' : 'visible',
+					overflowY: isDesktopDashboard ? 'hidden' : 'visible',
 					overflowX: isDesktopDashboard ? 'hidden' : 'clip',
 					position: 'relative',
 					zIndex: 1,
@@ -1836,6 +1854,7 @@ function DashboardHomeContent() {
 								<DashboardRemindersWidget />
 								<DashboardTodayProgressWidget />
 								<DashboardPerformanceWidget />
+								<DashboardPeakWorkWidget />
 							</DashboardMobileSecondaryWidgetHeightsProvider>
 						</DashboardLayoutProvider>
 					)}

@@ -1,7 +1,7 @@
 import type { LucideIcon } from 'lucide-react';
 import {
 	BarChart3,
-	Bell,
+	CalendarDays,
 	FolderKanban,
 	Home,
 	LayoutGrid,
@@ -12,7 +12,7 @@ export const KRONA_APP_NAV_ITEMS = [
 	{ path: '/', label: 'Home' },
 	{ path: '/projects', label: 'My projects' },
 	{ path: '/performance', label: 'Performance' },
-	{ path: '/reminders', label: 'Reminders' },
+	{ path: '/reminders', label: 'Calendar' },
 	{ path: '/settings', label: 'Settings' },
 	{ path: '/help', label: 'Help Center' },
 ] as const;
@@ -27,7 +27,7 @@ export type KronaMobileTabItem = {
 export const KRONA_MOBILE_BOTTOM_TABS: KronaMobileTabItem[] = [
 	{ path: '/', label: 'Home', icon: Home },
 	{ path: '/projects', label: 'My projects', icon: FolderKanban },
-	{ path: '/reminders', label: 'Reminders', icon: Bell },
+	{ path: '/reminders', label: 'Calendar', icon: CalendarDays },
 ];
 
 export const KRONA_MOBILE_MORE_TAB = {
@@ -45,7 +45,7 @@ export const KRONA_MOBILE_MORE_ITEMS: KronaMobileTabItem[] = [
 const KRONA_PAGE_NAV_ICONS: Record<string, LucideIcon> = {
 	'/projects': FolderKanban,
 	'/performance': BarChart3,
-	'/reminders': Bell,
+	'/reminders': CalendarDays,
 	'/settings': Settings,
 };
 

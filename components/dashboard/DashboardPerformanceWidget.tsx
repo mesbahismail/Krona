@@ -76,12 +76,12 @@ export default function DashboardPerformanceWidget() {
 						aria-label="Daily focus hours over the last seven days"
 						sx={{
 							flex: 1,
-							minHeight: isDesktopDashboard ? 80 : 150,
+							minHeight: isDesktopDashboard ? 0 : 150,
 							width: '100%',
 							minWidth: 0,
 						}}
 					>
-						<ResponsiveContainer width="100%" height="100%" minHeight={80}>
+						<ResponsiveContainer width="100%" height="100%" minHeight={isDesktopDashboard ? 0 : 80}>
 							<BarChart
 								data={data}
 								margin={{ top: 12, right: 4, bottom: 0, left: 4 }}

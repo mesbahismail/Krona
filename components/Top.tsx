@@ -1,10 +1,11 @@
 'use client';
 
+import { KRONA_TITLE_FONT_WEIGHT } from '@/lib/kronaTypography';
+
 import * as React from 'react';
-import { Sheet, Box, IconButton, Chip, Tooltip, Typography } from '@mui/joy';
+import { Sheet, Box, IconButton, Tooltip, Typography } from '@mui/joy';
 import { useRouter, usePathname } from 'next/navigation';
-import { ChevronLeft, CalendarDays, Bell } from 'lucide-react';
-import KronaChallengeNavProgress from '@/components/krona/KronaChallengeNavProgress';
+import { ChevronLeft, Bell } from 'lucide-react';
 import NavBarTimer from '@/components/NavBarTimer';
 import NavBarTimerCenter from '@/components/NavBarTimerCenter';
 import UserAccountControls from '@/components/UserAccountControls';
@@ -14,7 +15,6 @@ import { useTeamActivity } from '@/components/teams/TeamActivityProvider';
 import { useTopBarWidth } from '@/hooks/useTopBarWidth';
 import { KRONA_COMPACT_TITLE_MIN_PX } from '@/lib/kronaBreakpoints';
 import {
-	kronaDateChipSx,
 	kronaHeaderActionsSx,
 	kronaNavBarSx,
 	kronaNavTimerControlSx,
@@ -63,8 +63,6 @@ export default function Top({
 	} = useTeamActivity();
 	const showNavTimer = workspaceMode !== 'team';
 	const showTeamActivity = hasTeam;
-	const showChallengeProgress = workspaceMode !== 'team';
-	const [dateLabel, setDateLabel] = React.useState('');
 	useTopBarWidth(navRef);
 
 	const isHome = pathname === '/' || pathname === '/team';
@@ -74,20 +72,6 @@ export default function Top({
 	const showCompactTitle =
 		!!pageTitle && contentWidth >= KRONA_COMPACT_TITLE_MIN_PX;
 
-	React.useEffect(() => {
-		const update = () => {
-			setDateLabel(
-				new Date().toLocaleDateString('en-US', {
-					weekday: 'short',
-					month: 'short',
-					day: 'numeric',
-				}),
-			);
-		};
-		update();
-		const id = window.setInterval(update, 60_000);
-		return () => window.clearInterval(id);
-	}, []);
 
 	const handleBack = () => {
 		if (onBack) onBack();
@@ -183,8 +167,8 @@ export default function Top({
 								title={pageTitle}
 								sx={{
 									color: 'var(--krona-text)',
-									fontSize: { xs: 17, sm: 22 },
-									fontWeight: 600,
+									fontSize: { xs: 15, sm: 20 },
+									fontWeight: KRONA_TITLE_FONT_WEIGHT,
 									overflow: 'hidden',
 									textOverflow: 'ellipsis',
 									whiteSpace: 'nowrap',
@@ -263,7 +247,7 @@ export default function Top({
 							<Typography
 								level="title-lg"
 								noWrap
-								sx={{ color: 'var(--krona-text)', fontWeight: 600 }}
+								sx={{ color: 'var(--krona-text)', fontWeight: KRONA_TITLE_FONT_WEIGHT }}
 							>
 								{pageTitle}
 							</Typography>
@@ -290,32 +274,6 @@ export default function Top({
 							pl: 0.5,
 						}}
 					>
-						<Chip
-							variant="soft"
-							color="neutral"
-							startDecorator={<CalendarDays size={16} aria-hidden />}
-							aria-label={`Today — ${dateLabel || 'today'}`}
-							sx={{
-								...kronaDateChipSx,
-								background: 'none',
-								boxShadow: 'none',
-								display: { xs: 'none', lg: 'inline-flex' },
-								flexShrink: 0,
-								textDecoration: 'none',
-								cursor: 'default',
-								color: 'var(--krona-text-muted)',
-								transition: 'color 0.15s ease, background-color 0.15s ease',
-								'& .MuiChip-label, & .MuiChip-startDecorator': {
-									color: 'inherit',
-								},
-								'&:hover': {
-									background: 'var(--krona-overlay-hover)',
-									color: 'var(--krona-text)',
-								},
-							}}
-						>
-							{dateLabel || '—'}
-						</Chip>
 
 						{isHome ? (
 							<Box
@@ -326,13 +284,11 @@ export default function Top({
 									flexShrink: 0,
 								}}
 							>
-								{showChallengeProgress ? <KronaChallengeNavProgress /> : null}
 								{renderActivityButton()}
 								<UserAccountControls onboardingTourEnabled={!isMobileNav} />
 							</Box>
 						) : (
 							<>
-								{showChallengeProgress ? <KronaChallengeNavProgress /> : null}
 								{renderActivityButton()}
 								<UserAccountControls onboardingTourEnabled={!isMobileNav} />
 							</>

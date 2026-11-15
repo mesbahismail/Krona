@@ -9,9 +9,11 @@ export const DASHBOARD_WIDGET_IDS = [
 export type DashboardWidgetId = (typeof DASHBOARD_WIDGET_IDS)[number];
 
 /** Hover label beside widget title when the header links to a full page. */
-export const DASHBOARD_WIDGET_NAV_HINTS: Partial<Record<DashboardWidgetId, string>> = {
+export const DASHBOARD_WIDGET_NAV_HINTS: Partial<
+	Record<DashboardWidgetId, string>
+> = {
 	tasks: 'All projects',
-	reminders: 'All reminders',
+	reminders: 'Open calendar',
 	'work-hours': 'Today’s progress',
 	performance: 'All performance',
 };
@@ -31,7 +33,10 @@ export type DashboardWidgetPlacement = {
 	order: { xs: number; tablet: number; lg: 'unset' | number };
 };
 
-export type DashboardLayoutState = Record<DashboardWidgetId, DashboardWidgetPlacement>;
+export type DashboardLayoutState = Record<
+	DashboardWidgetId,
+	DashboardWidgetPlacement
+>;
 
 /** Resolve MUI breakpoint placement objects against content-width layout mode. */
 export function resolveDashboardPlacementForLayout(
@@ -63,17 +68,17 @@ export function resolveDashboardPlacementForLayout(
 
 /**
  * Desktop web: 3 columns — Timer | Tasks | Reminders + Today’s Progress + Performance.
- * Tall widgets span all three rows; the right column stacks the compact widgets.
+ * Timer and Tasks span the first two rows; Peak work fills the lower left beside Performance.
  */
 export const DEFAULT_DASHBOARD_LAYOUT: DashboardLayoutState = {
 	timer: {
 		gridColumn: { xs: '1', tablet: 'auto', lg: '1' },
-		gridRow: { lg: '1 / 4' },
+		gridRow: { lg: '1 / 3' },
 		order: { xs: 2, tablet: 2, lg: 'unset' },
 	},
 	tasks: {
 		gridColumn: { xs: '1', tablet: 'auto', lg: '2' },
-		gridRow: { lg: '1 / 4' },
+		gridRow: { lg: '1 / 3' },
 		order: { xs: 1, tablet: 1, lg: 'unset' },
 	},
 	reminders: {
@@ -102,7 +107,12 @@ function isWidgetId(value: string): value is DashboardWidgetId {
 type LegacyPlacement = {
 	gridColumn?: { xs?: string; tablet?: string; md?: string; lg?: string };
 	gridRow?: { md?: string; lg?: string };
-	order?: { xs?: number; tablet?: number; md?: number | 'unset'; lg?: number | 'unset' };
+	order?: {
+		xs?: number;
+		tablet?: number;
+		md?: number | 'unset';
+		lg?: number | 'unset';
+	};
 };
 
 function normalizePlacement(
@@ -140,6 +150,18 @@ export function loadDashboardLayout(): DashboardLayoutState {
 		for (const id of DASHBOARD_WIDGET_IDS) {
 			next[id] = normalizePlacement(parsed[id], DEFAULT_DASHBOARD_LAYOUT[id]);
 		}
+		// Migrate saved full-height cards into the new two-row layout.
+		for (const id of ['timer', 'tasks'] as const)
+			next[id] = { ...next[id], gridRow: { lg: '1 / 3' } };
+		// Performance stays beside Peak work; preserve the other compact-card order.
+		const previousPerformanceRow = next.performance.gridRow?.lg ?? '3';
+		if (previousPerformanceRow !== '3') {
+			for (const id of ['reminders', 'work-hours'] as const) {
+				if (next[id].gridRow?.lg === '3')
+					next[id] = { ...next[id], gridRow: { lg: previousPerformanceRow } };
+			}
+		}
+		next.performance = { ...next.performance, gridRow: { lg: '3' } };
 		return next;
 	} catch {
 		return { ...DEFAULT_DASHBOARD_LAYOUT };
@@ -173,14 +195,17 @@ export function parseDragWidgetId(data: string): DashboardWidgetId | null {
 
 export const DASHBOARD_DRAG_MIME = 'application/x-krona-widget-id';
 
-export type DashboardWidgetSizeClass = 'tall' | 'compact';
+export type DashboardWidgetSizeClass = 'tall' | 'compact' | 'chart';
 
-export const WIDGET_SIZE_CLASS: Record<DashboardWidgetId, DashboardWidgetSizeClass> = {
+export const WIDGET_SIZE_CLASS: Record<
+	DashboardWidgetId,
+	DashboardWidgetSizeClass
+> = {
 	tasks: 'tall',
 	timer: 'tall',
 	'work-hours': 'compact',
 	reminders: 'compact',
-	performance: 'compact',
+	performance: 'chart',
 };
 
 export function canSwapWidgets(

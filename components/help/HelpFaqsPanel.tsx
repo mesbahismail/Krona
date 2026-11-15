@@ -1,5 +1,8 @@
 'use client';
 
+import { KRONA_TITLE_FONT_WEIGHT } from '@/lib/kronaTypography';
+
+
 import * as React from 'react';
 import * as AccordionPrimitive from '@radix-ui/react-accordion';
 import { Minus, Plus } from 'lucide-react';
@@ -42,7 +45,7 @@ function FaqTrigger({
 		<AccordionPrimitive.Header className="flex">
 			<AccordionPrimitive.Trigger
 				className={cn(
-					'group flex flex-1 items-center justify-between gap-3 rounded-md py-3 text-left text-[15px] font-medium text-[var(--krona-text)] outline-none transition-colors hover:text-[var(--krona-text)] focus-visible:ring-2 focus-visible:ring-white/25',
+					'group flex flex-1 items-center justify-between gap-3 rounded-md py-3 text-left text-[14px] font-medium text-[var(--krona-text)] outline-none transition-colors hover:text-[var(--krona-text)] focus-visible:ring-2 focus-visible:ring-white/25',
 					className,
 				)}
 				{...props}
@@ -71,7 +74,7 @@ function FaqTrigger({
 export default function HelpFaqsPanel() {
 	return (
 		<section className="rounded-[24px] border border-[var(--krona-surface-border)] bg-[var(--krona-widget-bg)] p-5 shadow-[var(--krona-widget-shadow)] backdrop-blur-[var(--krona-widget-blur)] backdrop-saturate-150">
-			<h2 className="text-xl font-semibold text-[var(--krona-text)]">FAQs</h2>
+			<h2 style={{ fontWeight: KRONA_TITLE_FONT_WEIGHT }} className="text-xl text-[var(--krona-text)]">FAQs</h2>
 			<p className="mt-1 text-sm text-[var(--krona-text-muted)]">
 				Quick answers to common questions.
 			</p>

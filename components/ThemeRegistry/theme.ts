@@ -1,4 +1,5 @@
 import { extendTheme } from '@mui/joy/styles';
+import { kronaFontSizes, kronaTypography } from '@/lib/kronaTypography';
 import { TbChevronDown } from 'react-icons/tb';
 import {
 	kronaSelectListboxSx,
@@ -40,8 +41,6 @@ const FONT_SANS =
 const FONT_MONO =
 	'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, Liberation Mono, monospace';
 
-const KRONA_TITLE_FONT_WEIGHT = 600;
-
 const theme = extendTheme({
 	breakpoints: {
 		values: {
@@ -58,15 +57,8 @@ const theme = extendTheme({
 		display: FONT_SANS,
 		code: FONT_MONO,
 	},
-	typography: {
-		h1: { fontWeight: KRONA_TITLE_FONT_WEIGHT },
-		h2: { fontWeight: KRONA_TITLE_FONT_WEIGHT },
-		h3: { fontWeight: KRONA_TITLE_FONT_WEIGHT },
-		h4: { fontWeight: KRONA_TITLE_FONT_WEIGHT },
-		'title-lg': { fontWeight: KRONA_TITLE_FONT_WEIGHT },
-		'title-md': { fontWeight: KRONA_TITLE_FONT_WEIGHT },
-		'title-sm': { fontWeight: KRONA_TITLE_FONT_WEIGHT },
-	},
+	typography: kronaTypography,
+	fontSize: kronaFontSizes,
 	components: {
 		JoyModal: {
 			styleOverrides: {
@@ -240,7 +232,7 @@ const theme = extendTheme({
 			styleOverrides: {
 				root: {
 					fontFamily: FONT_SANS,
-					fontSize: 12,
+					fontSize: 11,
 					fontWeight: 600,
 					lineHeight: 1.35,
 					borderRadius: '14px',
@@ -381,7 +373,7 @@ const theme = extendTheme({
 				root: {
 					fontFamily: FONT_SANS,
 					/* Joy default sm label is ~14px; Krona titles sit 2px smaller. */
-					fontSize: 12,
+					fontSize: 11,
 					lineHeight: 1.35,
 					fontWeight: 500,
 					marginBottom: '6px',
@@ -398,7 +390,7 @@ const theme = extendTheme({
 				styleOverrides: {
 					root: () => ({
 						borderRadius: '16px',
-						fontSize: '14px',
+						fontSize: '13px',
 						fontFamily: FONT_SANS,
 					transition: 'border-color 0.2s ease, background-color 0.2s ease',
 					'--Textarea-paddingBlock': 'calc(0.5rem - 1px)',

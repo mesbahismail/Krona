@@ -1,10 +1,12 @@
 'use client';
 
+import { KRONA_TITLE_FONT_WEIGHT } from '@/lib/kronaTypography';
+
 import * as React from 'react';
 import { Box, IconButton, Menu, MenuItem, Typography } from '@mui/joy';
 import {
 	BarChart3,
-	Bell,
+	CalendarDays,
 	FolderKanban,
 	Menu as MenuIcon,
 	Users,
@@ -18,7 +20,7 @@ import { kronaMenuSx } from '@/lib/kronaStyles';
 
 const TEAM_NAV_ICONS: Record<string, LucideIcon> = {
 	'/team/performance': BarChart3,
-	'/team/reminders': Bell,
+	'/team/reminders': CalendarDays,
 	'/team/projects': FolderKanban,
 	'/team/members': Users,
 };
@@ -105,8 +107,8 @@ export default function KronaPageNavDropdown({
 					title={title}
 					sx={{
 						color: 'var(--krona-text)',
-						fontSize: { xs: 17, sm: 22 },
-						fontWeight: 600,
+						fontSize: { xs: 15, sm: 20 },
+						fontWeight: KRONA_TITLE_FONT_WEIGHT,
 						overflow: 'hidden',
 						textOverflow: 'ellipsis',
 						whiteSpace: 'nowrap',
@@ -179,7 +181,7 @@ export default function KronaPageNavDropdown({
 							}}
 							sx={{
 								position: 'relative',
-								fontSize: { xs: 17, sm: 18 },
+								fontSize: { xs: 15, sm: 16 },
 								fontWeight: 600,
 								fontFamily: 'Poppins, sans-serif',
 								color: 'var(--krona-text)',

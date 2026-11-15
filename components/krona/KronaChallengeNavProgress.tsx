@@ -1,5 +1,7 @@
 'use client';
 
+import { KRONA_TITLE_FONT_WEIGHT } from '@/lib/kronaTypography';
+
 import * as React from 'react';
 import { Box, Menu, Tooltip, Typography } from '@mui/joy';
 import { Check, Trophy } from 'lucide-react';
@@ -318,7 +320,7 @@ export default function KronaChallengeNavProgress() {
 						/>
 						<Typography
 							level="title-sm"
-							sx={{ color: 'var(--krona-text)', fontWeight: 600 }}
+							sx={{ color: 'var(--krona-text)', fontWeight: KRONA_TITLE_FONT_WEIGHT }}
 						>
 							No challenge today
 						</Typography>

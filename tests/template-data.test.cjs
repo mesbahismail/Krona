@@ -217,6 +217,45 @@ test('quarterly and yearly reports load local employee and manager metrics', asy
 	}
 });
 
+test('analytics groups project time and retains members with no task activity', () => {
+	const { buildAnalyticsSummary } = load('lib/analyticsSummary.ts');
+	const summary = buildAnalyticsSummary({
+		totalWorkHours: 6, totalRestHours: 2,
+		taskBreakdown: [
+			{ taskId: '1', projectName: 'Design', hours: 2, workers: [{ userId: 'a', name: 'Alex', hours: 2 }] },
+			{ taskId: '2', projectName: 'Design', hours: 3, workers: [{ userId: 'a', name: 'Alex', hours: 1 }, { userId: 'b', name: 'Maya', hours: 2 }] },
+			{ taskId: '3', projectName: null, hours: 1 },
+		],
+	}, [{ userId: 'a', label: 'Alex' }, { userId: 'b', label: 'Maya' }, { userId: 'c', label: 'Noor' }]);
+	assert.equal(summary.workShare, 75);
+	assert.equal(summary.projectCount, 2);
+	assert.equal(summary.taskCount, 3);
+	assert.deepEqual(summary.projects, [['Design', 5], ['Unassigned', 1]]);
+	assert.deepEqual(summary.contributors.map((person) => [person.name, person.hours, person.tasks]), [['Alex', 3, 2], ['Maya', 2, 1], ['Noor', 0, 0]]);
+	assert.equal(summary.contributors[0].share, 50);
+	const empty = buildAnalyticsSummary({ totalWorkHours: 0, totalRestHours: 0, taskBreakdown: [] });
+	assert.equal(empty.workShare, 0);
+	assert.equal(empty.taskHours, 0);
+	assert.deepEqual(empty.projects, []);
+});
+
+test('employee completion counts use completion time and manager counts respect member filters', async () => {
+	const { localData } = load('lib/localData.ts');
+	const { fetchPerformanceExtendedMetrics, fetchTeamPerformanceExtendedMetrics } = load('lib/performanceData.ts');
+	const now = new Date(Date.now() - 1000).toISOString();
+	await localData.from('tasks').insert({ id: 'analytics-completion', user_id: 'analytics-user', status: 'done', completed_at: now, updated_at: '2020-01-01T00:00:00Z' });
+	const employee = await fetchPerformanceExtendedMetrics('week', 'analytics-user');
+	assert.equal(employee.tasksFinished, 1);
+	await localData.from('team_tasks').insert([
+		{ id: 'analytics-team-a', organization_id: 'analytics-org', assignee_user_id: 'analytics-a', status: 'done', completed_at: now },
+		{ id: 'analytics-team-b', organization_id: 'analytics-org', assignee_user_id: 'analytics-b', status: 'done', completed_at: now },
+	]);
+	const selected = await fetchTeamPerformanceExtendedMetrics('week', ['analytics-a'], { organizationId: 'analytics-org' });
+	assert.equal(selected.tasksFinished, 1);
+	const all = await fetchTeamPerformanceExtendedMetrics('week', ['analytics-a', 'analytics-b'], { organizationId: 'analytics-org' });
+	assert.equal(all.tasksFinished, 2);
+});
+
 
 test('portrait upgrade preserves custom photos and recorded activity', () => {
 	const original = `data:image/svg+xml,${encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="80" height="80"><rect width="80" height="80" rx="24" fill="#534fff"/><text x="40" y="49" text-anchor="middle" font-family="sans-serif" font-size="27" fill="white">AM</text></svg>')}`;

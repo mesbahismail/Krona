@@ -1,5 +1,7 @@
 'use client';
 
+import { kronaFontSizes, kronaTypography } from '@/lib/kronaTypography';
+
 import ProjectMetaDot from '@/components/krona/ProjectMetaDot';
 
 import * as React from 'react';
@@ -191,6 +193,8 @@ type DeletedTaskUndoSnapshot = {
 };
 
 const theme = extendTheme({
+	typography: kronaTypography,
+	fontSize: kronaFontSizes,
 	colorSchemes: {
 		light: {
 			palette: {
@@ -2593,7 +2597,7 @@ export default function App() {
 													sx={{
 														flex: 1,
 														color: 'var(--krona-text)',
-																fontSize: '14px',
+																fontSize: '13px',
 														overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', minWidth: 0,
 														fontWeight: 600,
 														fontFamily: 'Poppins, sans-serif',
@@ -2648,7 +2652,7 @@ export default function App() {
 														level="body-sm"
 														sx={{
 															color: 'var(--krona-text-64)',
-															fontSize: 13,
+															fontSize: 12,
 														}}
 													>
 														{formatDecimalHoursLabel(trackedHours)} /{' '}
@@ -2662,7 +2666,7 @@ export default function App() {
 																	daysLeft <= 3
 																		? '#f87171'
 																		: 'var(--krona-text-64)',
-																fontSize: 13,
+																fontSize: 12,
 															}}
 														>
 															• {daysLeft}d left
@@ -2715,7 +2719,7 @@ export default function App() {
 															sx={{
 																flex: 1,
 																color: 'var(--krona-text)',
-																fontSize: '14px',
+																fontSize: '13px',
 														overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', minWidth: 0,
 																fontWeight: 600,
 																fontFamily: 'Poppins, sans-serif',
@@ -2773,7 +2777,7 @@ export default function App() {
 																level="body-sm"
 																sx={{
 																	color: 'var(--krona-text-64)',
-																	fontSize: 13,
+																	fontSize: 12,
 																}}
 															>
 																{formatDecimalHoursLabel(trackedHours)} /{' '}
@@ -3536,7 +3540,7 @@ export default function App() {
 												'& input': {
 													color: 'var(--krona-text)',
 													fontWeight: 600,
-													fontSize: '1.25rem',
+													fontSize: '1.125rem',
 												},
 											}}
 										/>
@@ -3602,7 +3606,7 @@ export default function App() {
 												component="span"
 												sx={{
 													color: 'var(--krona-text)',
-													fontSize: 13,
+													fontSize: 12,
 													fontWeight: 500,
 													lineHeight: 1.35,
 												}}
@@ -3619,7 +3623,7 @@ export default function App() {
 												}
 												idleSx={{
 													color: 'var(--krona-text)',
-													fontSize: 13,
+													fontSize: 12,
 													fontWeight: 500,
 													lineHeight: 1.35,
 												}}
@@ -3639,7 +3643,7 @@ export default function App() {
 												level="body-sm"
 												sx={{
 													color: 'var(--krona-text)',
-													fontSize: 13,
+													fontSize: 12,
 													fontWeight: 500,
 													lineHeight: 1.35,
 												}}
@@ -3671,7 +3675,7 @@ export default function App() {
 											level="body-sm"
 											sx={{
 												color: 'var(--krona-text)',
-												fontSize: 13,
+												fontSize: 12,
 												fontWeight: 500,
 												lineHeight: 1.35,
 											}}
@@ -3697,7 +3701,7 @@ export default function App() {
 													(selectedProject?.tasks.done.length ?? 0) > 0
 														? '#4ade80'
 														: 'var(--krona-text)',
-												fontSize: 13,
+												fontSize: 12,
 												fontWeight: 500,
 												lineHeight: 1.35,
 											}}
@@ -3826,7 +3830,7 @@ export default function App() {
 											level="body-sm"
 											sx={{
 												fontWeight: 500,
-												fontSize: 14,
+												fontSize: 13,
 												textAlign: 'center',
 												mt: 0.5,
 												color: 'var(--krona-text-64)',
@@ -3858,7 +3862,7 @@ export default function App() {
 										level="body-sm"
 										sx={{
 											fontWeight: 500,
-											fontSize: 14,
+											fontSize: 13,
 											textAlign: 'center',
 											mt: 0.5,
 											color: 'var(--krona-text-64)',
@@ -4237,7 +4241,7 @@ function EditableAssignedHours({
 						...kronaNumberInputHideSpinnersSx,
 						'& input': {
 							textAlign: 'center',
-							fontSize: 13,
+							fontSize: 12,
 							py: 0.25,
 						},
 						...inputSx,
@@ -4454,13 +4458,13 @@ function TaskItem({
 										<>
 											<Typography
 												level="body-sm"
-												sx={{ color: 'inherit', fontSize: 13, lineHeight: 1.35 }}
+												sx={{ color: 'inherit', fontSize: 12, lineHeight: 1.35 }}
 											>
 												{formatDecimalHoursLabel(trackedHours)}
 											</Typography>
 											<Typography
 												level="body-sm"
-												sx={{ color: 'inherit', fontSize: 13, lineHeight: 1.35 }}
+												sx={{ color: 'inherit', fontSize: 12, lineHeight: 1.35 }}
 											>
 												/
 											</Typography>
@@ -4469,7 +4473,7 @@ function TaskItem({
 												onSave={(hours) => onSaveAssignedTime?.(hours)}
 												idleSx={{
 													color: 'inherit',
-													fontSize: 13,
+													fontSize: 12,
 													lineHeight: 1.35,
 												}}
 												inputSx={{
@@ -4482,7 +4486,7 @@ function TaskItem({
 											level="body-sm"
 											sx={{
 												color: 'inherit',
-												fontSize: 13,
+												fontSize: 12,
 												lineHeight: 1.35,
 												whiteSpace: 'nowrap',
 											}}
@@ -4509,7 +4513,7 @@ function TaskItem({
 										level="body-sm"
 										sx={{
 											color: 'inherit',
-											fontSize: 13,
+											fontSize: 12,
 											lineHeight: 1.35,
 											whiteSpace: 'nowrap',
 										}}
@@ -4534,7 +4538,7 @@ function TaskItem({
 										<Repeat2 size={13} aria-hidden />
 										<Typography
 											level="body-sm"
-											sx={{ color: 'inherit', fontSize: 13, lineHeight: 1.35 }}
+											sx={{ color: 'inherit', fontSize: 12, lineHeight: 1.35 }}
 										>
 											Daily
 										</Typography>

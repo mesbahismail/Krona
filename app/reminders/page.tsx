@@ -1,5 +1,7 @@
 'use client';
 
+import { kronaFontSizes, kronaTypography, KRONA_TITLE_FONT_WEIGHT } from '@/lib/kronaTypography';
+
 import * as React from 'react';
 import { useKronaLayoutMode } from '@/components/KronaLayoutModeProvider';
 import {
@@ -22,7 +24,7 @@ import {
 	Edit,
 	Trash2,
 	Undo2,
-	Bell,
+	CalendarDays,
 	ExternalLink,
 	ListFilter,
 } from 'lucide-react';
@@ -93,6 +95,8 @@ import { useTeamMode } from '@/components/teams/TeamModeContext';
 import { notifyManagersOfMemberCalendarItem } from '@/lib/teams/org';
 
 const theme = extendTheme({
+	typography: kronaTypography,
+	fontSize: kronaFontSizes,
 	colorSchemes: {
 		light: {
 			palette: {
@@ -1015,7 +1019,7 @@ export default function RemindersPage() {
 					<Button variant="plain" size="sm" aria-label="Previous month" onClick={() => setCurrent(current.subtract(1, 'month'))} sx={{ ...kronaSecondaryButtonSx, minWidth: 32, width: 32, px: 0, flexShrink: 0 }}><ChevronLeft size={16} /></Button>
 					<Typography
 						level="title-lg"
-						sx={{ color: 'var(--krona-text)', fontWeight: 600, fontSize: { xs: 14, md: 18 }, minWidth: 0, textAlign: 'center', mx: 1 }}
+						sx={{ color: 'var(--krona-text)', fontWeight: KRONA_TITLE_FONT_WEIGHT, fontSize: { xs: 13, md: 16 }, minWidth: 0, textAlign: 'center', mx: 1 }}
 					>
 						{current.format('MMMM YYYY')}
 					</Typography>
@@ -1200,7 +1204,7 @@ export default function RemindersPage() {
 						py: 4,
 					}}
 				>
-					<Bell
+					<CalendarDays
 						size={40}
 						strokeWidth={1.25}
 						color="var(--krona-text)"
@@ -1209,7 +1213,7 @@ export default function RemindersPage() {
 					/>
 					<Typography
 						level="title-sm"
-						sx={{ color: 'var(--krona-text)', fontWeight: 600 }}
+						sx={{ color: 'var(--krona-text)', fontWeight: KRONA_TITLE_FONT_WEIGHT }}
 					>
 						{search.trim() || typeFilter !== 'all'
 							? 'No matching reminders'
@@ -1275,7 +1279,7 @@ export default function RemindersPage() {
 										level="title-sm"
 										sx={{
 											color: 'var(--krona-text)',
-											fontWeight: 600,
+											fontWeight: KRONA_TITLE_FONT_WEIGHT,
 											overflow: 'hidden',
 											textOverflow: 'ellipsis',
 											whiteSpace: 'nowrap',
@@ -1402,7 +1406,7 @@ export default function RemindersPage() {
 	const renderCalendarPanel = () => (
 		<Box
 			role="tabpanel"
-			aria-label="Reminders calendar"
+			aria-label="Calendar"
 			sx={{
 				flex: 1,
 				minHeight: 0,
@@ -1453,7 +1457,7 @@ export default function RemindersPage() {
 						overflow: 'hidden',
 					}}
 				>
-					<Top title="Reminders" />
+					<Top title="Calendar" />
 					<Box
 						sx={{
 							flex: 1,
@@ -1504,7 +1508,7 @@ export default function RemindersPage() {
 										<Box
 											sx={kronaTabBarSx}
 											role="tablist"
-											aria-label="Reminders view"
+											aria-label="Calendar view"
 										>
 											<Box
 												component="button"
@@ -1515,7 +1519,7 @@ export default function RemindersPage() {
 												sx={{
 													...kronaTabButtonSx(viewTab === 'list'),
 													px: 1.5,
-													fontSize: 13,
+													fontSize: 12,
 												}}
 											>
 												List
@@ -1529,7 +1533,7 @@ export default function RemindersPage() {
 												sx={{
 													...kronaTabButtonSx(viewTab === 'calendar'),
 													px: 1.5,
-													fontSize: 13,
+													fontSize: 12,
 												}}
 											>
 												Calendar

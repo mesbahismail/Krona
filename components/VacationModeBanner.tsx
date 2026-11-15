@@ -64,7 +64,7 @@ export default function VacationModeBanner() {
 				<div
 					style={{
 						minWidth: 0,
-						fontSize: 14,
+						fontSize: 13,
 						fontWeight: 700,
 						lineHeight: 1.2,
 						color: 'var(--krona-vacation-text)',
@@ -87,7 +87,7 @@ export default function VacationModeBanner() {
 					borderRadius: 9999,
 					padding: '8px 18px',
 					minHeight: 34,
-					fontSize: 13,
+					fontSize: 12,
 					fontWeight: 600,
 					lineHeight: 1,
 					cursor: 'pointer',

@@ -1,5 +1,7 @@
 'use client';
 
+import { KRONA_TITLE_FONT_WEIGHT } from '@/lib/kronaTypography';
+
 import * as React from 'react';
 import { createPortal } from 'react-dom';
 import { useRouter, useSearchParams } from 'next/navigation';
@@ -496,7 +498,7 @@ export default function DashboardOnboardingTour({
 							px: 0.75,
 							py: 0.25,
 							color: 'var(--krona-text-muted)',
-							fontSize: '0.7rem',
+							fontSize: '0.6875rem',
 							fontWeight: 600,
 							'&:hover': {
 								bgcolor: 'var(--krona-secondary-bg)',
@@ -513,7 +515,7 @@ export default function DashboardOnboardingTour({
 					level="title-md"
 					sx={{
 						color: 'var(--krona-text)',
-						fontWeight: 600,
+						fontWeight: KRONA_TITLE_FONT_WEIGHT,
 						mb: 0.5,
 					}}
 				>

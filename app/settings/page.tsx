@@ -1,5 +1,7 @@
 'use client';
 
+import { kronaFontSizes, kronaTypography, KRONA_TITLE_FONT_WEIGHT } from '@/lib/kronaTypography';
+
 import * as React from 'react';
 import { Suspense, useEffect } from 'react';
 import { CssVarsProvider, extendTheme } from '@mui/joy/styles';
@@ -76,6 +78,8 @@ import {
 
 // Rename the MUI theme constant to avoid conflict
 const joyTheme = extendTheme({
+	typography: kronaTypography,
+	fontSize: kronaFontSizes,
 	colorSchemes: {
 		light: {
 			palette: {
@@ -756,7 +760,7 @@ export default function App() {
 
 											<Typography
 												level="title-md"
-												sx={{ color: 'var(--krona-text)', fontWeight: 600 }}
+												sx={{ color: 'var(--krona-text)', fontWeight: KRONA_TITLE_FONT_WEIGHT }}
 											>
 												Notifications
 											</Typography>
@@ -1123,7 +1127,7 @@ export default function App() {
 											>
 												<Typography
 													level="title-sm"
-													sx={{ color: 'var(--krona-text)', fontWeight: 600 }}
+													sx={{ color: 'var(--krona-text)', fontWeight: KRONA_TITLE_FONT_WEIGHT }}
 												>
 													Timer mode
 												</Typography>
@@ -1181,7 +1185,7 @@ export default function App() {
 															>
 																<Typography
 																	level="title-sm"
-																	sx={{ fontWeight: 700, mb: 0.5 }}
+																	sx={{ fontWeight: KRONA_TITLE_FONT_WEIGHT, mb: 0.5 }}
 																>
 																	{option.title}
 																</Typography>
@@ -1275,7 +1279,7 @@ export default function App() {
 															level="title-sm"
 															sx={{
 																color: 'var(--krona-text)',
-																fontWeight: 600,
+																fontWeight: KRONA_TITLE_FONT_WEIGHT,
 															}}
 														>
 															Auto-start next period

@@ -207,7 +207,7 @@ function TimerStatusLine({ children }: { children: React.ReactNode }) {
 	return (
 		<Typography
 			sx={{
-				fontSize: compact ? '0.95rem' : { xs: '1.1rem', sm: '1.2rem' },
+				fontSize: compact ? '0.875rem' : { xs: '1rem', sm: '1.0625rem' },
 				display: 'flex',
 				alignItems: 'center',
 				justifyContent: 'center',
@@ -241,11 +241,11 @@ function TimerDigits({
 				flexShrink: 0,
 				lineHeight: 1.05,
 				fontSize: tight
-					? '36px'
+					? '32px'
 					: compact
-						? '44px'
+						? '40px'
 						: compactFallback
-							? { xs: '48px', sm: '56px', md: '64px' }
+							? { xs: '43px', sm: '50px', md: '58px' }
 							: undefined,
 			}}
 		>
@@ -297,7 +297,7 @@ function TimerTaskChip({
 				level="body-sm"
 				sx={{
 					fontWeight: 600,
-					fontSize: tight ? 11 : 12,
+					fontSize: tight ? 11 : 11,
 					lineHeight: 1.2,
 					color: 'var(--krona-text)',
 					overflow: 'hidden',
@@ -343,7 +343,7 @@ function WorkTodayStats({
 					color: 'var(--krona-text-muted)',
 					fontWeight: 600,
 					lineHeight: 1.2,
-					fontSize: ringCompact ? 12 : undefined,
+					fontSize: ringCompact ? 11 : undefined,
 				}}
 			>
 				Work today{' '}
@@ -357,7 +357,7 @@ function WorkTodayStats({
 					color: 'var(--krona-text-muted)',
 					fontWeight: 600,
 					lineHeight: 1.2,
-					fontSize: ringCompact ? 12 : undefined,
+					fontSize: ringCompact ? 11 : undefined,
 				}}
 			>
 				Rest today{' '}
@@ -386,7 +386,7 @@ function ChallengeProgressStats({
 				color: 'var(--krona-text-muted)',
 				fontWeight: 600,
 				lineHeight: 1.2,
-				fontSize: compact ? 12 : undefined,
+				fontSize: compact ? 11 : undefined,
 				whiteSpace: 'nowrap',
 				flexShrink: 0,
 			}}

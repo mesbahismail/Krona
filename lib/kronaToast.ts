@@ -11,7 +11,7 @@ const kronaToastBaseStyle: Record<string, string | number> = {
 	boxShadow: '0 12px 40px rgba(0, 0, 0, 0.18)',
 	borderRadius: '20px',
 	padding: '16px',
-	fontSize: '14px',
+	fontSize: '13px',
 	fontFamily: 'Poppins, sans-serif',
 	maxWidth: 'min(440px, calc(100vw - 32px))',
 };

@@ -100,7 +100,6 @@ export default function TeamEffortWidget({
 						overflowY: 'auto',
 						flex: 1,
 						minHeight: 0,
-						pr: 0.5,
 					}}
 				>
 					{rows.map((row) => {

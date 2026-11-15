@@ -6,6 +6,7 @@ import { Box, IconButton, Tooltip, Typography } from '@mui/joy';
 import type { SxProps } from '@mui/joy/styles/types';
 import { ArrowUpRight, GripVertical } from 'lucide-react';
 import {
+	kronaWidgetHeaderInsetSx,
 	kronaMenuSx,
 	kronaSecondaryIconButtonSx,
 	kronaTitleSx,
@@ -240,8 +241,8 @@ function DashboardWidgetTitle({
 			component={href ? 'span' : 'div'}
 			sx={{
 				...kronaTitleSx,
-				/* Locked home widget headline — 16px. */
-				fontSize: '16px',
+				/* Locked home widget headline — 14px. */
+				fontSize: '14px',
 				color: 'var(--krona-text)',
 				fontFamily: 'Poppins, sans-serif',
 				lineHeight: 1.2,
@@ -300,8 +301,8 @@ function DashboardWidgetTitle({
 	);
 }
 
-/** Headline line box: 16px title at 1.2 line-height. */
-const WIDGET_TITLE_LINE_BOX = '19.2px';
+/** Headline line box: 14px title at 1.2 line-height. */
+const WIDGET_TITLE_LINE_BOX = '16.8px';
 
 /**
  * 20px of visible space under the headline text. The header row is as tall as
@@ -333,6 +334,7 @@ export function DashboardWidgetHeader({
 	return (
 		<Box
 			sx={{
+				...kronaWidgetHeaderInsetSx,
 				display: 'flex',
 				alignItems: 'center',
 				justifyContent: 'space-between',
@@ -364,7 +366,7 @@ export function DashboardWidgetHeader({
 				</Box>
 			</Box>
 			<Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, flexShrink: 0 }}>
-				<DashboardWidgetDragHandle id={widgetId} />
+				{widgetId !== 'performance' && <DashboardWidgetDragHandle id={widgetId} />}
 				{actions}
 			</Box>
 		</Box>

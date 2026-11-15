@@ -4,6 +4,14 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
+	--text-xs: 0.6875rem;
+	--text-sm: 0.8125rem;
+	--text-base: 0.875rem;
+	--text-lg: 1rem;
+	--text-xl: 1.125rem;
+	--text-2xl: 1.375rem;
+	--text-3xl: 1.6875rem;
+	--text-4xl: 2rem;
 	--color-background: var(--background);
 	--color-foreground: var(--foreground);
 	--font-sans: var(--font-geist-sans);
@@ -58,9 +66,9 @@
 	--krona-desktop-min: 1200px;
 	--krona-floating-offset: 0px;
 	--krona-control-height: 32px;
-	--krona-control-font-size: 14px;
-	--krona-page-nav-title-font-size: 20px;
-	--krona-note-editor-font-size: 14px;
+	--krona-control-font-size: 13px;
+	--krona-page-nav-title-font-size: 18px;
+	--krona-note-editor-font-size: 13px;
 	--krona-widget-blur: 20px;
 	--krona-shell-blur: 24px;
 	--krona-widget-saturate: 160%;
@@ -656,15 +664,15 @@ html.krona-theme-settle body {
 		word-break: break-word;
 	}
 	.krona-note-prose-editable .krona-note-tiptap-surface h1 {
-		font-size: 22px;
+		font-size: 20px;
 		font-weight: 600;
 	}
 	.krona-note-prose-editable .krona-note-tiptap-surface h2 {
-		font-size: 18px;
+		font-size: 16px;
 		font-weight: 600;
 	}
 	.krona-note-prose-editable .krona-note-tiptap-surface h3 {
-		font-size: 16px;
+		font-size: 14px;
 		font-weight: 600;
 	}
 	.krona-note-prose-editable .krona-note-tiptap-surface p,
@@ -737,15 +745,15 @@ html.krona-theme-settle body {
 		word-break: break-word;
 	}
 	.krona-note-prose-editable .krona-note-block[data-kind='header'] {
-		font-size: 22px;
+		font-size: 20px;
 		font-weight: 600;
 	}
 	.krona-note-prose-editable .krona-note-block[data-kind='subheader1'] {
-		font-size: 18px;
+		font-size: 16px;
 		font-weight: 600;
 	}
 	.krona-note-prose-editable .krona-note-block[data-kind='subheader2'] {
-		font-size: 16px;
+		font-size: 14px;
 		font-weight: 600;
 	}
 	.krona-note-prose-editable .krona-note-block[data-kind='body'] {
@@ -915,7 +923,7 @@ html.krona-theme-settle body {
 		-webkit-backdrop-filter: blur(var(--krona-shell-blur))
 			saturate(var(--krona-shell-saturate)) !important;
 		font-family: Poppins, system-ui, sans-serif !important;
-		font-size: 12px !important;
+		font-size: 11px !important;
 		font-weight: 600 !important;
 		padding: 6px 10px !important;
 		z-index: 1720 !important;
@@ -946,6 +954,13 @@ html.krona-theme-settle body {
 		--List-padding: 6px;
 		--List-radius: 20px;
 		--ListItem-radius: 14px;
+	}
+
+	/* Translucent profile surface keeps the workspace softly visible behind it. */
+	.krona-profile-menu[class*='MuiMenu-root'] {
+		background: color-mix(in srgb, var(--krona-dropdown-bg) 76%, transparent) !important;
+		backdrop-filter: blur(28px) saturate(160%) !important;
+		-webkit-backdrop-filter: blur(28px) saturate(160%) !important;
 	}
 
 	[class*='MuiSelect-listbox'],
@@ -1172,7 +1187,7 @@ html.krona-theme-settle body {
 
 @media (min-width: 600px) {
 	:root {
-		--krona-page-nav-title-font-size: 30px;
+		--krona-page-nav-title-font-size: 27px;
 	}
 }
 
@@ -1325,7 +1340,7 @@ textarea:not(:placeholder-shown)::placeholder,
 	gap: 16px;
 	padding: 10px 16px;
 	color: var(--krona-text);
-	font-size: 14px;
+	font-size: 13px;
 }
 .krona-theme-picker button:focus-visible {
 	outline: 2px solid var(--krona-accent);
@@ -1351,8 +1366,8 @@ textarea:not(:placeholder-shown)::placeholder,
 .krona-toast-icon--success { color: #168753; background: rgb(22 135 83 / 16%); }
 .krona-toast-icon--error { color: #e25555; background: rgb(226 85 85 / 16%); }
 .krona-toast-copy { flex: 1; min-width: 0; overflow-wrap: anywhere; }
-.krona-toast-copy strong { display: block; font-size: 13px; line-height: 1.5; font-weight: 600; }
-.krona-toast-copy p { margin: 4px 0 0; font-size: 12px; line-height: 1.6; color: var(--krona-text-muted); }
+.krona-toast-copy strong { display: block; font-size: 12px; line-height: 1.5; font-weight: 600; }
+.krona-toast-copy p { margin: 4px 0 0; font-size: 11px; line-height: 1.6; color: var(--krona-text-muted); }
 .krona-toast-close { display: grid; place-items: center; flex: 0 0 28px; width: 28px; height: 28px; border: 0; border-radius: 50%; background: transparent; color: var(--krona-text-muted); cursor: pointer; }
 .krona-toast-close:hover { background: var(--krona-overlay-hover); }
 .krona-toast-close:focus-visible { outline: 2px solid var(--krona-accent); outline-offset: 2px; }

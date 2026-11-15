@@ -64,7 +64,7 @@ export default function TaskDeleteUndoToast({
 			>
 				<Typography
 					level="body-sm"
-					sx={{ color: 'var(--krona-text)', fontWeight: 500, fontSize: '14px' }}
+					sx={{ color: 'var(--krona-text)', fontWeight: 500, fontSize: '13px' }}
 				>
 					{message}
 				</Typography>
@@ -79,7 +79,7 @@ export default function TaskDeleteUndoToast({
 						px: 1.5,
 						borderRadius: '999px',
 						fontWeight: 500,
-						fontSize: '14px',
+						fontSize: '13px',
 						textTransform: 'none',
 						'&:hover': {
 							bgcolor: 'var(--krona-secondary-bg)',

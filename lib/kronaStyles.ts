@@ -1,8 +1,8 @@
 import type { SxProps } from '@mui/joy/styles/types';
 import { kronaAccentColorMix } from '@/lib/kronaAccent';
 
-/** Semibold — unified weight for page, section, and widget titles. */
-export const KRONA_TITLE_FONT_WEIGHT = 600;
+import { KRONA_TITLE_FONT_WEIGHT } from '@/lib/kronaTypography';
+export { KRONA_TITLE_FONT_WEIGHT } from '@/lib/kronaTypography';
 
 export const kronaTitleSx: SxProps = {
 	fontWeight: KRONA_TITLE_FONT_WEIGHT,
@@ -35,6 +35,11 @@ export const kronaWidgetCardSx: SxProps = {
 	height: { md: '100%' },
 	color: 'var(--krona-text)',
 	transition: 'border-color 0.25s ease',
+	'& .MuiTypography-title-md': { fontSize: 14 },
+	'& .MuiTypography-title-lg': { fontSize: 15 },
+	'& .MuiTypography-body-md': { fontSize: 13 },
+	'& .MuiTypography-body-sm': { fontSize: 12 },
+	'& .MuiTypography-body-xs': { fontSize: 11 },
 	'&:hover': {
 		borderColor: 'var(--krona-widget-border-hover)',
 	},
@@ -108,7 +113,7 @@ export const kronaWidgetListScrollSx: SxProps = {
 	flexDirection: 'column',
 	gap: kronaWidgetListGap,
 	// Room for row box-shadows inside overflow-x: hidden scroll areas.
-	// Negative margin keeps cards aligned with the widget header/search.
+	// Negative margins preserve the content inset while leaving room for shadows.
 	px: '16px',
 	mx: '-16px',
 	width: 'calc(100% + 32px)',
@@ -116,7 +121,7 @@ export const kronaWidgetListScrollSx: SxProps = {
 	pt: '16px',
 	mt: '-8px',
 	pb: '24px',
-	mb: '-16px',
+	mb: '-24px',
 };
 
 /** Task completion checkbox in dashboard tasks widget. */
@@ -471,7 +476,7 @@ export const kronaShadowBleedSx = {
 	pl: '12px',
 	pr: '12px',
 	mt: '-8px',
-	mb: '-16px',
+	mb: '-24px',
 	ml: '-12px',
 	mr: '-12px',
 	width: 'calc(100% + 24px)',
@@ -538,13 +543,18 @@ export const kronaWidgetViewAllCardSx: SxProps = {
 	color: 'var(--krona-text-muted)',
 };
 
-/** Widget chrome padding (top reduced for tighter dashboard layout). */
-export const kronaWidgetPaddingSx: SxProps = {
+/** Content uses equal side and bottom insets; headings sit slightly further in. */
+export const kronaWidgetPaddingSx = {
 	pt: '16px',
-	px: { xs: '12px', md: '24px' },
-	pb: '24px',
+	px: { xs: '12px', md: '16px' },
+	pb: { xs: '12px', md: '16px' },
 	boxSizing: 'border-box',
-};
+} as const satisfies SxProps;
+
+/** Added to a header inside a padded widget: 16px total on mobile, 24px on desktop. */
+export const kronaWidgetHeaderInsetSx = {
+	px: { xs: '4px', md: '8px' },
+} as const satisfies SxProps;
 
 /** Unified dropdown / action menu surface — matches calendar popover (`--krona-dropdown-bg`). */
 export const KRONA_DROPDOWN_POPOVER_Z_INDEX = 1700;
@@ -856,7 +866,7 @@ export const kronaPlaceholderSx: SxProps = {
 
 /** Field title above Krona inputs (2px under Joy’s default ~14px label). */
 export const kronaFormLabelSx: SxProps = {
-	fontSize: 12,
+	fontSize: 11,
 	lineHeight: 1.35,
 	fontWeight: 500,
 	color: 'var(--krona-text)',
@@ -919,7 +929,7 @@ export const kronaDropdownControlSx: SxProps = {
 /** Shared nav-bar numeric/label type (timer countdown + date). */
 export const kronaNavBarTimeTextSx: SxProps = {
 	fontFamily: 'Poppins, sans-serif',
-	fontSize: 14,
+	fontSize: 13,
 	fontWeight: 600,
 	lineHeight: 1.25,
 	color: 'var(--krona-text)',
@@ -1395,21 +1405,21 @@ export const kronaMetricGradientTextSx: SxProps = {
 /** Pomodoro timer digits. */
 export const kronaTimerCounterSx: SxProps = {
 	...kronaMetricGradientTextSx,
-	fontSize: { xs: '56px', sm: '68px', md: '76px' },
+	fontSize: { xs: '50px', sm: '61px', md: '68px' },
 	letterSpacing: '-1px',
 };
 
 /** Single hero metric (e.g. performance widget). */
 export const kronaWidgetMetricValueSx: SxProps = {
 	...kronaMetricGradientTextSx,
-	fontSize: { xs: '36px', md: '44px' },
+	fontSize: { xs: '31px', md: '36px' },
 	letterSpacing: '-0.75px',
 };
 
 /** Compact metric in a multi-column widget (e.g. today's progress). */
 export const kronaWidgetMetricValueCompactSx: SxProps = {
 	...kronaMetricGradientTextSx,
-	fontSize: { xs: '30px', md: '36px' },
+	fontSize: { xs: '25px', md: '31px' },
 	letterSpacing: '-0.5px',
 };
 

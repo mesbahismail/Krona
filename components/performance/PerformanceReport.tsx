@@ -1,6 +1,9 @@
 'use client';
 
+import { KRONA_TITLE_FONT_WEIGHT } from '@/lib/kronaTypography';
+
 import * as React from 'react';
+import AnalyticsDetails from './AnalyticsDetails';
 import Box from '@mui/joy/Box';
 import Typography from '@mui/joy/Typography';
 import Sheet from '@mui/joy/Sheet';
@@ -14,6 +17,8 @@ import {
 	kronaTabBarSx,
 	kronaTabButtonSx,
 	kronaWidgetCardSx,
+	kronaWidgetPaddingSx,
+	kronaWidgetHeaderInsetSx,
 	kronaWidgetListScrollSx,
 	kronaWidgetMetricValueSx,
 	kronaPrimaryButtonSx,
@@ -33,15 +38,11 @@ import {
 	type PerformanceActivityBucket,
 	type PerformanceMetrics,
 	type PerformancePeriodKey,
+	type TeamPerformanceChartMember,
 } from '@/lib/performanceData';
 import { formatDecimalHours } from '@/lib/taskTime';
 
-const performanceWidgetPaddingSx = {
-	pt: '16px',
-	px: { xs: '12px', md: '24px' },
-	pb: '24px',
-	boxSizing: 'border-box',
-} as const;
+const performanceWidgetPaddingSx = kronaWidgetPaddingSx;
 
 type PeriodKey = PerformancePeriodKey;
 
@@ -71,6 +72,7 @@ function PerformanceWidgetTitle({
 	return (
 		<Box
 			sx={{
+				...kronaWidgetHeaderInsetSx,
 				display: 'flex',
 				alignItems: 'center',
 				justifyContent: 'space-between',
@@ -85,8 +87,8 @@ function PerformanceWidgetTitle({
 				sx={{
 					color: 'var(--krona-text)',
 					fontFamily: 'Poppins, sans-serif',
-					fontSize: '16px',
-					fontWeight: 600,
+					fontSize: '14px',
+					fontWeight: KRONA_TITLE_FONT_WEIGHT,
 					lineHeight: 1.2,
 					minWidth: 0,
 				}}
@@ -110,7 +112,7 @@ function TrendBadge({ delta }: { delta: number | null }) {
 				gap: 0.25,
 				ml: 0.75,
 				color: up ? '#4ade80' : '#f87171',
-				fontSize: 13,
+				fontSize: 12,
 				fontWeight: 600,
 			}}
 		>
@@ -418,7 +420,7 @@ function PerformanceMetricCard({
 					component="span"
 					sx={{
 						...kronaWidgetMetricValueSx,
-						fontSize: { xs: 26, md: 32 },
+						fontSize: { xs: 23, md: 29 },
 					}}
 				>
 					{value}
@@ -1069,7 +1071,7 @@ function TimeByProjectCard({
 						>
 							<Typography
 								level="title-lg"
-								sx={{ color: 'var(--krona-text)', fontWeight: 600, lineHeight: 1 }}
+								sx={{ color: 'var(--krona-text)', fontWeight: KRONA_TITLE_FONT_WEIGHT, lineHeight: 1 }}
 							>
 								{slices.length}
 							</Typography>
@@ -1283,6 +1285,7 @@ function TasksWorkedCard({
 export type PerformanceReportPeriod = PerformancePeriodKey;
 
 export type PerformanceReportProps = {
+	analyticsMembers?: TeamPerformanceChartMember[];
 	metrics: PerformanceMetrics | null | undefined;
 	selectedPeriod: PerformancePeriodKey;
 	onPeriodChange: (period: PerformancePeriodKey) => void;
@@ -1305,6 +1308,7 @@ export type PerformanceReportProps = {
 };
 
 export function PerformanceReport({
+	analyticsMembers,
 	metrics,
 	selectedPeriod,
 	onPeriodChange,
@@ -1406,7 +1410,7 @@ export function PerformanceReport({
 									flexShrink: 0,
 									minWidth: 'max-content',
 									px: 1.5,
-									fontSize: 13,
+									fontSize: 12,
 								}}
 							>
 								{period.label}
@@ -1586,6 +1590,7 @@ export function PerformanceReport({
 								/>
 							}
 						/>
+						{metrics.extendedReady && <AnalyticsDetails metrics={metrics} period={selectedPeriod} members={analyticsMembers} />}
 					</>
 				)}
 				</Box>

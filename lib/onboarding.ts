@@ -260,7 +260,7 @@ export const TEAM_ONBOARDING_STEPS: OnboardingStep[] = [
 		id: 'team-workspace',
 		icon: 'users',
 		title: 'Switch workspace',
-		body: 'Use Team / Individual here anytime. Team Mode keeps the bell and team pages; Individual Mode brings back your personal dashboard and challenges.',
+		body: 'Use Switch beside your name to move between Manager and Employee views. The role badge shows your current view.',
 		target: '[data-tour="dashboard-workspace"]',
 		placement: 'left',
 		openAccountMenu: true,

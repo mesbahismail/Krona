@@ -1,5 +1,7 @@
 'use client';
 
+import { KRONA_TITLE_FONT_WEIGHT } from '@/lib/kronaTypography';
+
 import * as React from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
@@ -254,7 +256,7 @@ export default function MobileAppTabBar() {
 						mb: 1.5,
 					}}
 				/>
-				<Typography level="title-sm" sx={{ mb: 1.5, px: 0.5, fontWeight: 700 }}>
+				<Typography level="title-sm" sx={{ mb: 1.5, px: 0.5, fontWeight: KRONA_TITLE_FONT_WEIGHT }}>
 					More
 				</Typography>
 				<Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.5 }}>

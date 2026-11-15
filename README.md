@@ -20,7 +20,9 @@ Open the local URL printed in the terminal (usually `http://localhost:3000`). No
 ## Included
 
 - Employee dashboard with a Pomodoro timer, task list, reminders, daily progress, and performance bars.
+- Employee-only Peak work graph below Timer and Tasks, aligned with My performance, showing the last seven days of timer activity and linking to Performance.
 - Manager dashboard, projects, member roster, reminders, and performance reports.
+- Employee and manager analytics include work/break balance, project and task totals, and period breakdowns; managers can also inspect task hours by member.
 - Week, Month, Quarterly, and Yearly performance selectors; Manager performance also includes Today and a member filter.
 - Dark and light modes with shared purple-to-cyan accents.
 - Icon sidebar, profile menu, and resizable Projects / Reminders list panels.

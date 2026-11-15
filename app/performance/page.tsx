@@ -1,5 +1,7 @@
 'use client';
 
+import { kronaFontSizes, kronaTypography } from '@/lib/kronaTypography';
+
 import * as React from 'react';
 import { CssVarsProvider, extendTheme } from '@mui/joy/styles';
 import CssBaseline from '@mui/joy/CssBaseline';
@@ -29,6 +31,8 @@ import { usePomodoroStats } from '@/components/PomodoroContext';
 import { isVacationModeActive } from '@/lib/vacationMode';
 
 const theme = extendTheme({
+	typography: kronaTypography,
+	fontSize: kronaFontSizes,
 	colorSchemes: {
 		light: {
 			palette: {

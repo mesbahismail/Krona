@@ -898,7 +898,7 @@ export default function TeamProjectsPageClient() {
 											flex: 1,
 											minWidth: 0,
 											color: 'var(--krona-text)',
-											fontSize: '16px',
+											fontSize: '14px',
 											fontWeight: 500,
 											fontFamily: 'Poppins, sans-serif',
 											overflow: 'hidden',
@@ -956,7 +956,7 @@ export default function TeamProjectsPageClient() {
 										level="body-sm"
 										sx={{
 											color: 'var(--krona-text-64)',
-											fontSize: 13,
+											fontSize: 12,
 											overflow: 'hidden',
 											textOverflow: 'ellipsis',
 											whiteSpace: 'nowrap',
@@ -977,7 +977,7 @@ export default function TeamProjectsPageClient() {
 													daysLeft <= 3
 														? '#f87171'
 														: 'var(--krona-text-64)',
-												fontSize: 13,
+												fontSize: 12,
 												flexShrink: 0,
 											}}
 										>
@@ -1049,7 +1049,7 @@ export default function TeamProjectsPageClient() {
 							'& input': {
 								color: 'var(--krona-text)',
 								fontWeight: 600,
-								fontSize: '1.25rem',
+								fontSize: '1.125rem',
 							},
 						}}
 					/>
@@ -1117,7 +1117,7 @@ export default function TeamProjectsPageClient() {
 												component="span"
 												sx={{
 													display: 'block',
-													fontSize: 12,
+													fontSize: 11,
 													fontWeight: 600,
 													lineHeight: 1.35,
 													color: 'var(--krona-text)',
@@ -1142,7 +1142,7 @@ export default function TeamProjectsPageClient() {
 										level="body-sm"
 										sx={{
 											color: 'var(--krona-text)',
-											fontSize: 13,
+											fontSize: 12,
 											fontWeight: 500,
 											lineHeight: 1.35,
 										}}
@@ -1158,7 +1158,7 @@ export default function TeamProjectsPageClient() {
 									level="body-sm"
 									sx={{
 										color: 'var(--krona-text)',
-										fontSize: 13,
+										fontSize: 12,
 										fontWeight: 500,
 										lineHeight: 1.35,
 									}}
@@ -1181,7 +1181,7 @@ export default function TeamProjectsPageClient() {
 									level="body-sm"
 									sx={{
 										color: 'var(--krona-text)',
-										fontSize: 13,
+										fontSize: 12,
 										fontWeight: 500,
 										lineHeight: 1.35,
 									}}
@@ -1213,7 +1213,7 @@ export default function TeamProjectsPageClient() {
 							level="body-sm"
 							sx={{
 								color: 'var(--krona-text)',
-								fontSize: 13,
+								fontSize: 12,
 								fontWeight: 500,
 								lineHeight: 1.35,
 							}}
@@ -1233,7 +1233,7 @@ export default function TeamProjectsPageClient() {
 							sx={{
 								color:
 									doneTasks.length > 0 ? '#4ade80' : 'var(--krona-text)',
-								fontSize: 13,
+								fontSize: 12,
 								fontWeight: 500,
 								lineHeight: 1.35,
 							}}
@@ -1422,7 +1422,7 @@ export default function TeamProjectsPageClient() {
 							level="body-sm"
 							sx={{
 								fontWeight: 500,
-								fontSize: 14,
+								fontSize: 13,
 								textAlign: 'center',
 								mt: 0.5,
 								color: 'var(--krona-text-64)',
@@ -1535,7 +1535,7 @@ export default function TeamProjectsPageClient() {
 															level="body-sm"
 															sx={{
 																color: 'var(--krona-text-64)',
-																fontSize: 13,
+																fontSize: 12,
 																lineHeight: 1.35,
 															}}
 														>
@@ -1553,7 +1553,7 @@ export default function TeamProjectsPageClient() {
 															level="body-sm"
 															sx={{
 																color: 'var(--krona-text-64)',
-																fontSize: 13,
+																fontSize: 12,
 																lineHeight: 1.35,
 															}}
 														>
@@ -1745,7 +1745,7 @@ export default function TeamProjectsPageClient() {
 														level="body-sm"
 														sx={{
 															color: 'var(--krona-text-64)',
-															fontSize: 13,
+															fontSize: 12,
 															lineHeight: 1.35,
 														}}
 													>

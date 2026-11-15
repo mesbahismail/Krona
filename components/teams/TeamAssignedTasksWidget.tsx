@@ -136,6 +136,7 @@ export default function TeamAssignedTasksWidget({
 		TeamProjectOption[]
 	>([]);
 	const [search, setSearch] = React.useState('');
+	const [showAllTasks, setShowAllTasks] = React.useState(false);
 	const canManage = Boolean(onCreate || onUpdate || onDelete);
 	const showNewProjectLink = Boolean(canCreateProjects && onCreateProject);
 	const projectOptions = React.useMemo(() => {
@@ -418,11 +419,16 @@ export default function TeamAssignedTasksWidget({
 							minHeight: 0,
 						}}
 					>
-						{pendingTasks.map(renderTask)}
+						{(showAllTasks || search.trim() ? pendingTasks : pendingTasks.slice(0, 2)).map(renderTask)}
 						{doneTasks.length > 0 ? (
 							<KronaListDivider label="Done" compact />
 						) : null}
-						{doneTasks.map(renderTask)}
+						{(showAllTasks || search.trim() ? doneTasks : doneTasks.slice(0, 2)).map(renderTask)}
+						{!search.trim() && (pendingTasks.length > 2 || doneTasks.length > 2) && (
+							<Button variant="plain" size="sm" onClick={() => setShowAllTasks((value) => !value)} aria-expanded={showAllTasks} sx={{ color: 'var(--krona-text-muted)', fontSize: 11, alignSelf: 'center', flexShrink: 0, mt: 0.5 }}>
+								{showAllTasks ? 'Show fewer tasks' : `Show all ${pendingTasks.length + doneTasks.length} tasks`}
+							</Button>
+						)}
 					</Box>
 				)}
 			</TeamWidgetShell>
@@ -499,7 +505,7 @@ export default function TeamAssignedTasksWidget({
 												cursor: 'pointer',
 												color: 'var(--krona-accent)',
 												fontWeight: 600,
-												fontSize: 13,
+												fontSize: 12,
 												lineHeight: 1.2,
 												'&:hover': { textDecoration: 'underline' },
 											}}

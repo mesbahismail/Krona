@@ -28,7 +28,7 @@ export const kronaCalendarDayPickerSx: SxProps = {
 		justifyContent: 'center',
 		alignItems: 'center',
 		fontWeight: 700,
-		fontSize: 15,
+		fontSize: 14,
 		mb: 0.75,
 		minHeight: 32,
 		color: 'var(--krona-text)',
@@ -59,7 +59,7 @@ export const kronaCalendarDayPickerSx: SxProps = {
 	'& .rdp-weekday': {
 		flex: 1,
 		textAlign: 'center',
-		fontSize: 12,
+		fontSize: 11,
 		color: 'var(--krona-text-48)',
 		fontWeight: 500,
 		textTransform: 'capitalize',
@@ -77,7 +77,7 @@ export const kronaCalendarDayPickerSx: SxProps = {
 		height: 36,
 		bgcolor: 'transparent',
 		color: 'var(--krona-text)',
-		fontSize: 14,
+		fontSize: 13,
 		fontWeight: 500,
 		cursor: 'pointer',
 		'&:hover': {

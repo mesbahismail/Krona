@@ -1,3 +1,4 @@
+import { KRONA_TITLE_FONT_WEIGHT } from '@/lib/kronaTypography';
 import Background from '@/components/Background';
 import Top from '@/components/Top';
 import HelpFaqsPanel from '@/components/help/HelpFaqsPanel';
@@ -11,10 +12,10 @@ export default function HelpPage() {
 				<Top title="Help Center" />
 
 				<div className="w-full min-w-0 pt-4 pb-8 text-center sm:pt-5 sm:pb-10">
-					<h1 className="text-[34px] font-semibold leading-tight text-[var(--krona-text)]">
+					<h1 style={{ fontWeight: KRONA_TITLE_FONT_WEIGHT }} className="text-[31px] leading-tight text-[var(--krona-text)]">
 						Help Center
 					</h1>
-					<p className="mx-auto mt-2 max-w-xl text-[16px] text-[var(--krona-text-muted)]">
+					<p className="mx-auto mt-2 max-w-xl text-[14px] text-[var(--krona-text-muted)]">
 						FAQs and a support request form for anything you need help with.
 					</p>
 				</div>
@@ -24,7 +25,7 @@ export default function HelpPage() {
 						<HelpFaqsPanel />
 
 						<section className="min-w-0 rounded-[24px] border border-[var(--krona-surface-border)] bg-[var(--krona-widget-bg)] p-5 shadow-[var(--krona-widget-shadow)] backdrop-blur-[var(--krona-widget-blur)] backdrop-saturate-150">
-							<h2 className="text-xl font-semibold">Send Help Request</h2>
+							<h2 style={{ fontWeight: KRONA_TITLE_FONT_WEIGHT }} className="text-xl">Send Help Request</h2>
 							<p className="mt-1 text-sm text-[var(--krona-text-muted)]">
 								Describe your issue and our team can review it.
 							</p>
