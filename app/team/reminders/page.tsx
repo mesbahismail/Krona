@@ -61,7 +61,10 @@ import {
 	kronaSecondaryButtonSx,
 	kronaSecondaryIconButtonSx,
 	kronaSelectedMenuItemProps,
+	kronaSideListPanelSx,
+	kronaStackedListPanelSx,
 	kronaSideListToolbarRowSx,
+	kronaWidgetCardSx,
 	kronaTabBarSx,
 	kronaTabButtonSx,
 	kronaToggleIconButtonSx,
@@ -802,14 +805,15 @@ export default function TeamRemindersPage() {
 			role="tabpanel"
 			aria-label="Calendar"
 			sx={{
+				...(stackedReminders ? {} : { ...kronaWidgetCardSx, p: 2 }),
 				flex: 1,
 				minHeight: 0,
 				minWidth: 0,
 				display: 'flex',
 				flexDirection: 'column',
 				overflow: 'hidden',
-				pt: { xs: 0.5, md: 1.5 },
-				pb: { xs: 0, md: 1.5 },
+				pt: stackedReminders ? 0.5 : 2,
+				pb: stackedReminders ? 0 : 2,
 			}}
 		>
 			<TeamRemindersCalendar
@@ -827,6 +831,7 @@ export default function TeamRemindersPage() {
 				<>
 					<Box
 						sx={{
+							...kronaStackedListPanelSx,
 							display: stackedReminders ? 'flex' : 'none',
 							flexDirection: 'column',
 							flex: 1,
@@ -929,6 +934,7 @@ export default function TeamRemindersPage() {
 
 					<KronaResizableSplitLayout
 						dividerAriaLabel="Resize reminders list and calendar"
+						sidebarSx={kronaSideListPanelSx}
 						detailSx={{ pl: { xs: 0, md: '28px' } }}
 						containerSx={{
 							flex: 1,

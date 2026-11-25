@@ -61,7 +61,7 @@ export function TaskCheckboxSkeleton() {
 	);
 }
 
-export function IconButtonSkeleton({ size = 32 }: { size?: number }) {
+export function IconButtonSkeleton({ size = 30 }: { size?: number }) {
 	return (
 		<Skeleton
 			variant="circular"
@@ -80,7 +80,7 @@ export function SearchFieldSkeleton({ sx }: { sx?: object }) {
 	return (
 		<LineSkeleton
 			width="100%"
-			height={32}
+			height={30}
 			sx={{ borderRadius: '999px', flex: 1, minWidth: 0, ...sx }}
 		/>
 	);
@@ -385,7 +385,7 @@ export function TimerWidgetSkeleton() {
 					<LineSkeleton
 						key={i}
 						width="100%"
-						height={32}
+						height={30}
 						sx={{ borderRadius: '999px', flex: 1, minWidth: 0 }}
 					/>
 				))}
@@ -412,9 +412,9 @@ export function TimerWidgetSkeleton() {
 					/>
 				</Box>
 				<Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
-					<IconButtonSkeleton size={48} />
-					<IconButtonSkeleton size={64} />
-					<IconButtonSkeleton size={48} />
+					<IconButtonSkeleton size={40} />
+					<IconButtonSkeleton size={56} />
+					<IconButtonSkeleton size={40} />
 				</Box>
 			</Box>
 		</Box>

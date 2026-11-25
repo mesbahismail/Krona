@@ -17,9 +17,7 @@ import {
 	kronaTabBarSx,
 	kronaTabButtonSx,
 	kronaWidgetCardSx,
-	kronaWidgetPaddingSx,
-	kronaWidgetHeaderInsetSx,
-	kronaWidgetListScrollSx,
+	kronaPerformanceWidgetPaddingSx,
 	kronaWidgetMetricValueSx,
 	kronaPrimaryButtonSx,
 } from '@/lib/kronaStyles';
@@ -42,7 +40,7 @@ import {
 } from '@/lib/performanceData';
 import { formatDecimalHours } from '@/lib/taskTime';
 
-const performanceWidgetPaddingSx = kronaWidgetPaddingSx;
+const performanceWidgetPaddingSx = kronaPerformanceWidgetPaddingSx;
 
 type PeriodKey = PerformancePeriodKey;
 
@@ -72,7 +70,6 @@ function PerformanceWidgetTitle({
 	return (
 		<Box
 			sx={{
-				...kronaWidgetHeaderInsetSx,
 				display: 'flex',
 				alignItems: 'center',
 				justifyContent: 'space-between',
@@ -1202,7 +1199,9 @@ function TasksWorkedCard({
 			) : (
 				<DashboardWidgetScrollArea
 					sx={{
-						...kronaWidgetListScrollSx,
+						display: 'flex',
+						flexDirection: 'column',
+						width: '100%',
 						mt: 0,
 						gap: 0,
 						flex: 1,

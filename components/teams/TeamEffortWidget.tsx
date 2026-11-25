@@ -10,6 +10,7 @@ import {
 	TeamWidgetShell,
 } from '@/components/teams/TeamWidgetChrome';
 import { useKronaLayoutMode } from '@/components/KronaLayoutModeProvider';
+import { secondsToDisplayHours } from '@/lib/taskTime';
 import { defaultAvatarUrl } from '@/lib/defaultAvatar';
 import type { MemberChallengeProgress } from '@/lib/teams/dashboard';
 import { organizationMemberLabel } from '@/lib/teams/org';
@@ -92,16 +93,18 @@ export default function TeamEffortWidget({
 					Invite teammates to see daily challenge progress.
 				</DashboardWidgetEmpty>
 			) : (
-				<Box
-					sx={{
-						display: 'flex',
-						flexDirection: 'column',
-						gap: 1.25,
-						overflowY: 'auto',
-						flex: 1,
-						minHeight: 0,
-					}}
-				>
+				<Box sx={{ position: 'relative', display: 'flex', flex: 1, minHeight: 0 }}>
+					<Box
+						sx={{
+							display: 'flex',
+							flexDirection: 'column',
+							gap: 1.25,
+							overflowY: 'auto',
+							flex: 1,
+							minHeight: 0,
+							pb: 1.5,
+						}}
+					>
 					{rows.map((row) => {
 						const challengeFinished =
 							row.challengeCount > 0 && row.percent >= 100;
@@ -112,6 +115,7 @@ export default function TeamEffortWidget({
 							href={`/team/members?member=${row.member.userId}`}
 							sx={{
 								...kronaWidgetListItemSx,
+								flexShrink: 0,
 								borderRadius: '20px',
 								p: 1.5,
 								display: 'flex',
@@ -229,10 +233,26 @@ export default function TeamEffortWidget({
 								>
 									{row.label}
 								</Typography>
+								<Typography level="body-xs" sx={{ color: 'var(--krona-text-muted)', mt: 0.25, fontSize: 11 }}>
+									{secondsToDisplayHours(row.workSeconds)}h worked · {secondsToDisplayHours(row.restSeconds)}h rested · {row.tasksFinished} done
+								</Typography>
 							</Box>
 						</Box>
 						);
 					})}
+					</Box>
+					<Box
+						aria-hidden
+						sx={{
+							position: 'absolute',
+							insetInline: 0,
+							bottom: 0,
+							height: 24,
+							pointerEvents: 'none',
+							background:
+								'linear-gradient(180deg, transparent 0%, var(--krona-widget-bg) 100%)',
+						}}
+					/>
 				</Box>
 			)}
 		</TeamWidgetShell>

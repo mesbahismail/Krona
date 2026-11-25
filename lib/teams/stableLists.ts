@@ -204,6 +204,10 @@ export function mergeChallengeRows(
 		next,
 		(row) => row.member.userId,
 		(a, b) =>
+			a.workSeconds === b.workSeconds &&
+			a.restSeconds === b.restSeconds &&
+			a.tasksFinished === b.tasksFinished &&
+			a.targetHours === b.targetHours &&
 			a.percent === b.percent &&
 			a.label === b.label &&
 			a.challengeCount === b.challengeCount &&

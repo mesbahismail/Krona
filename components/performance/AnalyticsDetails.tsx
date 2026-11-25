@@ -10,17 +10,16 @@ import type {
 	PerformancePeriodKey,
 	TeamPerformanceChartMember,
 } from '@/lib/performanceData';
-import { kronaWidgetCardSx, kronaWidgetPaddingSx, kronaWidgetHeaderInsetSx } from '@/lib/kronaStyles';
+import { kronaWidgetCardSx, kronaPerformanceWidgetPaddingSx } from '@/lib/kronaStyles';
 import { formatDecimalHours } from '@/lib/taskTime';
 
 const card = [
 	kronaWidgetCardSx,
-	kronaWidgetPaddingSx,
+	kronaPerformanceWidgetPaddingSx,
 	{ minWidth: 0 },
 ] as SxProps;
 const muted = { color: 'var(--krona-text-muted)' };
 const title = {
-	...kronaWidgetHeaderInsetSx,
 	color: 'var(--krona-text)',
 	fontSize: 14,
 	fontWeight: KRONA_TITLE_FONT_WEIGHT,
@@ -31,7 +30,10 @@ const tableStyle = {
 	'--TableCell-borderColor': 'var(--krona-surface-border)',
 	color: 'var(--krona-text)',
 	'& th': { color: 'var(--krona-text-muted)', fontWeight: 500 },
-	'& td, & th': { px: 1, py: 1.5, fontSize: 11 },
+	'& td, & th': { px: 1, py: 1.5, fontSize: 11, overflowWrap: 'anywhere' },
+	'& td:first-child, & th:first-child': { pl: 0 },
+	'& td:last-child, & th:last-child': { pr: 0 },
+	'& td:not(:first-child), & th:not(:first-child)': { textAlign: 'right' },
 };
 
 export default function AnalyticsDetails({
@@ -45,6 +47,14 @@ export default function AnalyticsDetails({
 }) {
 	const summary = buildAnalyticsSummary(metrics, members);
 	const team = members !== undefined;
+	const bucketLabel = team && period === 'today' ? 'members'
+		: period === 'quarter' || period === 'year' ? 'months' : 'days';
+	const comparisons = [
+		{ label: 'Work time', hours: metrics.totalWorkHours, change: metrics.trendWork },
+		{ label: 'Break time', hours: metrics.totalRestHours, change: metrics.trendRest },
+		{ label: 'Daily work average', hours: metrics.avgDailyWorkHours, change: metrics.trendAvgDaily },
+		{ label: 'Daily break average', hours: metrics.avgDailyRestHours, change: metrics.trendAvgDailyRest },
+	];
 	const cards = [
 		{
 			label: 'Tracked time',
@@ -67,6 +77,26 @@ export default function AnalyticsDetails({
 			label: team ? 'Team tasks worked on' : 'Tasks worked on',
 			value: String(summary.taskCount),
 			detail: `${formatDecimalHours(summary.taskHours)}h assigned to tasks`,
+		},
+		{
+			label: `Active ${bucketLabel}`,
+			value: `${summary.activeBuckets} / ${summary.totalBuckets}`,
+			detail: `${bucketLabel[0].toUpperCase() + bucketLabel.slice(1)} with recorded work`,
+		},
+		{
+			label: 'Average time per task',
+			value: summary.taskCount ? `${formatDecimalHours(summary.averageTaskHours)}h` : '—',
+			detail: 'Across tasks with tracked time',
+		},
+		{
+			label: team && period === 'today' ? 'Most recorded work' : 'Busiest period',
+			value: summary.busiestBucket?.label ?? '—',
+			detail: summary.busiestBucket ? `${formatDecimalHours(summary.busiestBucket.workHours)}h of work recorded` : 'No work recorded in this period',
+		},
+		{
+			label: 'Breaks per work hour',
+			value: summary.breakMinutesPerWorkHour === null ? '—' : `${Math.round(summary.breakMinutesPerWorkHour)}m`,
+			detail: 'Recorded break minutes for each work hour',
 		},
 	];
 	return (
@@ -93,6 +123,7 @@ export default function AnalyticsDetails({
 								color: 'var(--krona-text)',
 								my: 1.5,
 								fontSize: { xs: 22, lg: 25 },
+								overflowWrap: 'anywhere',
 							}}
 						>
 							{item.value}
@@ -244,6 +275,41 @@ export default function AnalyticsDetails({
 							</tbody>
 						</Table>
 					</Box>
+				</Box>
+			</Box>
+			<Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', lg: 'repeat(2, minmax(0, 1fr))' }, gap: '24px' }}>
+				<Box component="section" aria-label="Time-of-day breakdown" sx={card}>
+					<Typography level="title-md" sx={title}>Time-of-day breakdown</Typography>
+					<Typography level="body-xs" sx={{ ...muted, mb: 2 }}>
+						Daily averages for the selected period{team ? ', summed across selected members' : ''}.
+					</Typography>
+					<Table aria-label="Daily average work and breaks by time of day" sx={tableStyle}>
+						<thead><tr><th style={{ width: '40%' }}>Time of day</th><th>Work</th><th>Breaks</th><th>Work share</th></tr></thead>
+						<tbody>{summary.dayParts.map((part) => (
+							<tr key={part.label}>
+								<td>{part.label}<Typography level="body-xs" sx={muted}>{part.range}</Typography></td>
+								<td>{formatDecimalHours(part.workHours)}h</td>
+								<td>{formatDecimalHours(part.restHours)}h</td>
+								<td>{Math.round(part.share)}%</td>
+							</tr>
+						))}</tbody>
+					</Table>
+				</Box>
+				<Box component="section" aria-label="Period comparison" sx={card}>
+					<Typography level="title-md" sx={title}>Period comparison</Typography>
+					<Typography level="body-xs" sx={{ ...muted, mb: 2 }}>
+						Change against the previous comparable period. A dash means no comparison is available.
+					</Typography>
+					<Table aria-label="Current metrics and change from previous period" sx={tableStyle}>
+						<thead><tr><th style={{ width: '48%' }}>Metric</th><th>Current</th><th>Change</th></tr></thead>
+						<tbody>{comparisons.map((item) => (
+							<tr key={item.label}>
+								<td>{item.label}</td>
+								<td>{formatDecimalHours(item.hours)}h</td>
+								<td>{item.change === null ? '—' : `${item.change > 0 ? '+' : ''}${Math.round(item.change)}%`}</td>
+							</tr>
+						))}</tbody>
+					</Table>
 				</Box>
 			</Box>
 		</Box>

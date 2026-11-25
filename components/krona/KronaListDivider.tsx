@@ -24,7 +24,7 @@ export default function KronaListDivider({
 				sx={{
 					flex: 1,
 					height: '1px',
-					background: 'linear-gradient(90deg, transparent 0%, color-mix(in srgb, var(--krona-text) 22%, transparent) 35%, color-mix(in srgb, var(--krona-text) 22%, transparent) 65%, transparent 100%)',
+					background: 'var(--krona-divider-horizontal)',
 				}}
 			/>
 			<Typography
@@ -43,7 +43,7 @@ export default function KronaListDivider({
 				sx={{
 					flex: 1,
 					height: '1px',
-					background: 'linear-gradient(90deg, transparent 0%, color-mix(in srgb, var(--krona-text) 22%, transparent) 35%, color-mix(in srgb, var(--krona-text) 22%, transparent) 65%, transparent 100%)',
+					background: 'var(--krona-divider-horizontal)',
 				}}
 			/>
 		</Box>

@@ -52,6 +52,10 @@ export type TeamProjectOption = {
 
 export type MemberChallengeProgress = {
 	member: OrganizationMember;
+	workSeconds: number;
+	restSeconds: number;
+	tasksFinished: number;
+	targetHours: number;
 	percent: number;
 	label: string;
 	challengeCount: number;
@@ -359,7 +363,7 @@ export async function fetchMemberChallengeProgress(
 
 	const { dateKey, start, end } = localDayBoundsIso();
 	const userIds = members.map((m) => m.userId);
-	const [{ data }, { data: sessionRows }, presence] = await Promise.all([
+	const [{ data }, { data: sessionRows }, presence, { data: completedTasks }] = await Promise.all([
 		localData
 			.from('daily_challenges')
 			.select('*')
@@ -370,10 +374,17 @@ export async function fetchMemberChallengeProgress(
 			.from('sessions')
 			.select('user_id, session_kind, duration_seconds')
 			.in('user_id', userIds)
-			.eq('session_kind', 'work')
 			.gte('started_at', start)
 			.lte('started_at', end),
 		fetchTimerPresenceByUserIds(userIds),
+		localData
+			.from('team_tasks')
+			.select('assignee_user_id')
+			.eq('organization_id', organizationId)
+			.in('assignee_user_id', userIds)
+			.eq('status', 'done')
+			.gte('completed_at', start)
+			.lte('completed_at', end),
 	]);
 
 	const byUser = new Map<string, DailyChallenge[]>();
@@ -385,13 +396,21 @@ export async function fetchMemberChallengeProgress(
 	}
 
 	const workSecByUser = new Map<string, number>();
+	const restSecByUser = new Map<string, number>();
+	const tasksByUser = new Map<string, number>();
+	for (const task of completedTasks ?? []) {
+		const uid = String(task.assignee_user_id);
+		tasksByUser.set(uid, (tasksByUser.get(uid) ?? 0) + 1);
+	}
 	for (const row of sessionRows ?? []) {
 		const uid = String(row.user_id ?? '');
 		if (!uid) continue;
-		workSecByUser.set(
-			uid,
-			(workSecByUser.get(uid) ?? 0) + Number(row.duration_seconds ?? 0),
-		);
+		const target = row.session_kind === 'work' ? workSecByUser
+			: row.session_kind === 'rest' ? restSecByUser : null;
+		const seconds = Number(row.duration_seconds ?? 0);
+		if (target && Number.isFinite(seconds) && seconds > 0) {
+			target.set(uid, (target.get(uid) ?? 0) + seconds);
+		}
 	}
 
 	return members.map((member) => {
@@ -406,9 +425,16 @@ export async function fetchMemberChallengeProgress(
 			: Number.isFinite(fallbackHours) && fallbackHours > 0
 				? fallbackHours
 				: 0;
+		const effort = {
+			workSeconds: workSecByUser.get(member.userId) ?? 0,
+			restSeconds: restSecByUser.get(member.userId) ?? 0,
+			tasksFinished: tasksByUser.get(member.userId) ?? 0,
+			targetHours,
+		};
 		if (targetHours <= 0) {
 			return {
 				member,
+				...effort,
 				percent: 0,
 				label: 'No challenge today',
 				challengeCount: 0,
@@ -422,6 +448,7 @@ export async function fetchMemberChallengeProgress(
 		);
 		return {
 			member,
+			...effort,
 			percent: view.challengePercent,
 			label: view.challengeLabel,
 			challengeCount: 1,

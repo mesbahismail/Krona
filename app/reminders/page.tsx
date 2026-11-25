@@ -83,6 +83,7 @@ import {
 	kronaSelectedMenuItemProps,
 	kronaSecondaryButtonSx,
 	kronaSecondaryIconButtonSx,
+	kronaWidgetCardSx,
 	kronaTabBarSx,
 	kronaTabButtonSx,
 } from '@/lib/kronaStyles';
@@ -1408,14 +1409,15 @@ export default function RemindersPage() {
 			role="tabpanel"
 			aria-label="Calendar"
 			sx={{
+				...(stackedReminders ? {} : { ...kronaWidgetCardSx, p: 2 }),
 				flex: 1,
 				minHeight: 0,
 				minWidth: 0,
 				display: 'flex',
 				flexDirection: 'column',
 				overflow: 'hidden',
-				pt: { xs: 0.5, md: 1.5 },
-				pb: { xs: 0, md: 1.5 },
+				pt: stackedReminders ? 0.5 : 2,
+				pb: stackedReminders ? 0 : 2,
 			}}
 		>
 			<Box sx={{ display: stackedReminders ? 'none' : 'block', flexShrink: 0 }}>

@@ -34,6 +34,7 @@ const securityHeaders = [
 ];
 
 const nextConfig: NextConfig = {
+	allowedDevOrigins: ['127.0.0.1'],
 	images: {
 		qualities: [75, 88],
 	},

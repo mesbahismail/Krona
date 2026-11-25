@@ -80,7 +80,7 @@ const kronaMobileAccountMenuModifier: Modifier<
 		const popper = state.styles.popper;
 		const rootStyles = getComputedStyle(document.documentElement);
 		const topHeight = parseInt(
-			rootStyles.getPropertyValue('--krona-top-height') || '60',
+			rootStyles.getPropertyValue('--krona-top-height') || '56',
 			10,
 		);
 		const aiPanelWidth =
@@ -400,7 +400,7 @@ export default function UserAccountControls({
 							}
 						: {}),
 					'--List-padding': '10px',
-					maxHeight: 'calc(100dvh - var(--krona-top-height, 60px) - 32px)',
+					maxHeight: 'calc(100dvh - var(--krona-top-height, 56px) - 32px)',
 					overflowY: 'auto',
 				}}
 			>

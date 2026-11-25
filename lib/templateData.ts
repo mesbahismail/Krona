@@ -4,6 +4,13 @@ export const TEMPLATE_ORG_ID = 'demo-studio';
 export type TemplateRow = Record<string, unknown>;
 export type TemplateDatabase = Record<string, TemplateRow[]>;
 
+/** Display-only previews for an empty Today’s progress widget. */
+export const TEMPLATE_TODAY_PROGRESS = {
+	employee: { workHoursLabel: '3.8', restHoursLabel: '0.5', tasksFinished: 2 },
+	manager: { workHoursLabel: '18.6', restHoursLabel: '2.4', tasksFinished: 6 },
+} as const;
+
+
 export function createTemplateData(now = new Date()): TemplateDatabase {
 	const userId = TEMPLATE_USER_ID;
 	const orgId = TEMPLATE_ORG_ID;

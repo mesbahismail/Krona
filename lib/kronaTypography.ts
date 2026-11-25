@@ -1,6 +1,13 @@
 /** Shared medium weight for page, section, and widget headings. */
 export const KRONA_TITLE_FONT_WEIGHT = 500;
 
+/** Identical labels for the dashboard performance and peak-work chart axes. */
+export const kronaChartAxisTick = {
+	fill: 'var(--krona-text-muted)',
+	fontSize: 10,
+	fontWeight: 400,
+};
+
 /** Compact app-wide type scale; rem units preserve browser zoom and text sizing. */
 export const kronaFontSizes = {
 	xs: '0.6875rem',

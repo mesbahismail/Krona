@@ -243,7 +243,7 @@ function TeamActivityPanel({
 					gap: 1,
 					px: 2,
 					py: 1.5,
-					minHeight: 'var(--krona-top-height, 60px)',
+					minHeight: 'var(--krona-top-height, 56px)',
 					borderBottom: '1px solid var(--krona-surface-border)',
 					flexShrink: 0,
 				}}

@@ -40,6 +40,7 @@ export const kronaWidgetCardSx: SxProps = {
 	'& .MuiTypography-body-md': { fontSize: 13 },
 	'& .MuiTypography-body-sm': { fontSize: 12 },
 	'& .MuiTypography-body-xs': { fontSize: 11 },
+	'& .krona-widget-task-name': { fontSize: 12, fontWeight: KRONA_TITLE_FONT_WEIGHT },
 	'&:hover': {
 		borderColor: 'var(--krona-widget-border-hover)',
 	},
@@ -65,7 +66,7 @@ export const kronaTeamsOnboardingPageSx: SxProps = {
 	maxWidth: 520,
 	mx: 'auto',
 	px: 2,
-	pt: 'calc(var(--krona-top-height, 60px) + 12px)',
+	pt: 'calc(var(--krona-top-height, 56px) + 12px)',
 	pb: 0,
 	height: '100dvh',
 	maxHeight: '100dvh',
@@ -551,6 +552,12 @@ export const kronaWidgetPaddingSx = {
 	boxSizing: 'border-box',
 } as const satisfies SxProps;
 
+/** Performance titles and content share one inset on both edges. */
+export const kronaPerformanceWidgetPaddingSx = {
+	...kronaWidgetPaddingSx,
+	px: { xs: '16px', md: '24px' },
+} as const satisfies SxProps;
+
 /** Added to a header inside a padded widget: 16px total on mobile, 24px on desktop. */
 export const kronaWidgetHeaderInsetSx = {
 	px: { xs: '4px', md: '8px' },
@@ -791,6 +798,13 @@ export const kronaSideListCardSx = (selected = false): SxProps => ({
 	} : {}),
 });
 
+/** Compact project cards keep their metadata close to the title. */
+export const kronaProjectListCardSx = (selected = false): SxProps => ({
+	...kronaSideListCardSx(selected),
+	py: 1.25,
+	gap: 0.25,
+});
+
 /** Search + create row above a page side list. */
 export const kronaSideListToolbarRowSx: SxProps = {
 	position: 'relative',
@@ -836,7 +850,7 @@ export const kronaSettingsNavListSx: SxProps = {
 	justifyContent: 'flex-start',
 };
 
-/** Shared 14px type for buttons, inputs, tabs, and toolbar controls. */
+/** Shared compact type for buttons, inputs, tabs, and toolbar controls. */
 export const kronaControlTextSx: SxProps = {
 	fontSize: 'var(--krona-control-font-size)',
 	fontFamily: 'Poppins, sans-serif',
@@ -1134,10 +1148,12 @@ export const kronaSettingsTabButtonSx = (selected: boolean): SxProps => ({
 	alignItems: 'center',
 	justifyContent: 'center',
 	textAlign: 'center',
-	py: 1,
-	px: { xs: 1.25, md: 2 },
+	py: 0,
+	px: 1.5,
 	gap: 0.75,
-	minHeight: 40,
+	minHeight: 'var(--krona-control-height)',
+	height: 'var(--krona-control-height)',
+	'& svg': { width: 16, height: 16 },
 	boxShadow: 'none !important',
 	outline: 'none',
 	border: 'none',
@@ -1358,9 +1374,9 @@ export const kronaTabBarSx: SxProps = {
 	gap: 0.5,
 	borderRadius: '999px',
 	border: '1px solid var(--krona-surface-border)',
-	p: 0.5,
+	p: '3px',
 	boxSizing: 'border-box',
-	minHeight: 'calc(var(--krona-control-height) + 4px)',
+	minHeight: 'calc(var(--krona-control-height) + 8px)',
 	overflow: 'hidden',
 };
 
@@ -1374,13 +1390,21 @@ export const kronaTabButtonSx = (active: boolean): SxProps => ({
 	cursor: 'pointer',
 	fontWeight: 600,
 	borderRadius: '999px',
-	px: 1,
+	px: 1.5,
+	py: 0,
+	minHeight: 'var(--krona-control-height)',
+	height: 'var(--krona-control-height)',
+	boxSizing: 'border-box',
 	fontFamily: 'Poppins, sans-serif',
 	color: active ? '#fff' : 'var(--krona-text)',
 	background: active ? 'var(--krona-accent-gradient)' : 'transparent',
 	backgroundClip: 'border-box',
 	boxShadow: 'none',
 	transition: 'background 0.2s, color 0.2s',
+	'&:focus-visible': {
+		outline: '2px solid var(--krona-accent)',
+		outlineOffset: '-2px',
+	},
 	'&:hover': {
 		background: active
 			? 'var(--krona-accent-gradient-hover)'
@@ -1432,23 +1456,23 @@ export const kronaWidgetMetricUnitSx: SxProps = {
 
 export const kronaTimerPlayButtonSx: SxProps = {
 	...kronaPrimaryButtonSx,
-	minHeight: 64,
-	height: 64,
-	width: 64,
-	minWidth: 64,
-	maxHeight: 64,
-	maxWidth: 64,
+	minHeight: 'var(--krona-timer-play-size)',
+	height: 'var(--krona-timer-play-size)',
+	width: 'var(--krona-timer-play-size)',
+	minWidth: 'var(--krona-timer-play-size)',
+	maxHeight: 'var(--krona-timer-play-size)',
+	maxWidth: 'var(--krona-timer-play-size)',
 	borderRadius: '50%',
 	boxShadow: 'var(--krona-accent-shadow)',
 };
 
 export const kronaTimerSecondaryControlSx: SxProps = {
 	...kronaSecondaryIconButtonSx,
-	minHeight: 48,
-	height: 48,
-	width: 48,
-	minWidth: 48,
-	maxHeight: 48,
-	maxWidth: 48,
+	minHeight: 'var(--krona-timer-secondary-size)',
+	height: 'var(--krona-timer-secondary-size)',
+	width: 'var(--krona-timer-secondary-size)',
+	minWidth: 'var(--krona-timer-secondary-size)',
+	maxHeight: 'var(--krona-timer-secondary-size)',
+	maxWidth: 'var(--krona-timer-secondary-size)',
 	borderRadius: '50%',
 };

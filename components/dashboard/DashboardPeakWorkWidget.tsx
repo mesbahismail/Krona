@@ -1,6 +1,6 @@
 'use client';
 
-import { KRONA_TITLE_FONT_WEIGHT } from '@/lib/kronaTypography';
+import { KRONA_TITLE_FONT_WEIGHT, kronaChartAxisTick } from '@/lib/kronaTypography';
 
 import * as React from 'react';
 import type { SxProps } from '@mui/joy/styles/types';
@@ -16,21 +16,34 @@ import {
 	YAxis,
 } from 'recharts';
 import { useKronaLayoutMode } from '@/components/KronaLayoutModeProvider';
-import { useDashboardData } from './DashboardDataProvider';
+import { useDashboardDataOptional } from './DashboardDataProvider';
 import { useTeamMode } from '@/components/teams/TeamModeContext';
 import {
 	fetchPerformanceExtendedMetrics,
+	fetchTeamPerformanceExtendedMetrics,
 	type PerformanceActivityBucket,
 } from '@/lib/performanceData';
 import {
 	kronaWidgetCardSx,
 	kronaWidgetPaddingSx,
 	kronaWidgetHeaderInsetSx,
+	kronaSkeletonSx,
 } from '@/lib/kronaStyles';
 
+const METRICS_TIMEOUT_MS = 10_000;
+
 /** Timer activity is a proxy for intensity, not a measurement of productivity. */
-export default function DashboardPeakWorkWidget() {
-	const { userId } = useDashboardData();
+export default function DashboardPeakWorkWidget({
+	teamMemberIds,
+	organizationId,
+}: {
+	teamMemberIds?: string[];
+	organizationId?: string;
+} = {}) {
+	const dashboard = useDashboardDataOptional();
+	const userId = dashboard?.userId;
+	const team = teamMemberIds !== undefined;
+	const memberIdsKey = JSON.stringify([...(teamMemberIds ?? [])].sort());
 	const { isDesktopDashboard, isTabletDashboard } = useKronaLayoutMode();
 	const { mode } = useTeamMode();
 	const [buckets, setBuckets] = React.useState<PerformanceActivityBucket[]>([]);
@@ -39,20 +52,33 @@ export default function DashboardPeakWorkWidget() {
 	const gradientId = React.useId().replace(/:/g, '');
 
 	React.useEffect(() => {
-		if (!userId || mode !== 'individual') return;
+		if (team ? !organizationId : !userId || mode !== 'individual') return;
 		let cancelled = false;
 		let request = 0;
 		setLoading(true);
 		const refresh = async () => {
 			const current = ++request;
+			let timeoutId: number | undefined;
 			try {
-				const result = await fetchPerformanceExtendedMetrics('week', userId);
+				const metricsRequest = team
+					? fetchTeamPerformanceExtendedMetrics('week', JSON.parse(memberIdsKey), { organizationId })
+					: fetchPerformanceExtendedMetrics('week', userId!);
+				const result = await Promise.race([
+					metricsRequest,
+					new Promise<never>((_, reject) => {
+						timeoutId = window.setTimeout(
+							() => reject(new Error('Performance metrics request timed out')),
+							METRICS_TIMEOUT_MS,
+						);
+					}),
+				]);
 				if (cancelled || current !== request) return;
 				setBuckets(result.activityByHour);
 				setError(false);
 			} catch {
 				if (!cancelled && current === request) setError(true);
 			} finally {
+				if (timeoutId !== undefined) window.clearTimeout(timeoutId);
 				if (!cancelled && current === request) setLoading(false);
 			}
 		};
@@ -66,9 +92,9 @@ export default function DashboardPeakWorkWidget() {
 			window.removeEventListener('krona:sessions-updated', refresh);
 			window.removeEventListener('focus', refresh);
 		};
-	}, [userId, mode]);
+	}, [userId, mode, team, organizationId, memberIdsKey]);
 
-	if (mode !== 'individual') return null;
+	if (!team && mode !== 'individual') return null;
 	const data = buckets.map((bucket) => ({
 		time: bucket.label,
 		minutes: Math.round(bucket.workHours * 60 * 10) / 10,
@@ -84,7 +110,7 @@ export default function DashboardPeakWorkWidget() {
 		<Box
 			component="section"
 			className="krona-dashboard-widget"
-			aria-label="Peak work"
+			aria-label={team ? 'Team peak work' : 'Peak work'}
 			sx={
 				[
 					kronaWidgetCardSx,
@@ -119,8 +145,8 @@ export default function DashboardPeakWorkWidget() {
 			>
 				<Box
 					component={NextLink}
-					href="/performance"
-					aria-label="View weekly performance"
+					href={team ? '/team/performance' : '/performance'}
+					aria-label={team ? 'View weekly team performance' : 'View weekly performance'}
 					sx={{
 						display: 'inline-flex',
 						alignItems: 'center',
@@ -150,7 +176,7 @@ export default function DashboardPeakWorkWidget() {
 			{loading ? (
 				<Skeleton
 					variant="rectangular"
-					sx={{ flex: 1, minHeight: 0, borderRadius: 12 }}
+					sx={{ ...kronaSkeletonSx, flex: 1, minHeight: 0, borderRadius: 12 }}
 				/>
 			) : error ? (
 				<Typography role="status" level="body-sm" sx={{ my: 'auto' }}>
@@ -161,7 +187,7 @@ export default function DashboardPeakWorkWidget() {
 					role="img"
 					aria-label={
 						peak
-							? `Tracked work by time of day. Peak ${peak.time} to ${peakEnd}, ${peak.minutes} minutes per day on average over the last seven days.`
+							? `${team ? 'Team work' : 'Tracked work'} by time of day. Peak ${peak.time} to ${peakEnd}, ${peak.minutes} minutes per day on average over the last seven days.`
 							: 'No tracked work in this period.'
 					}
 					sx={{ flex: 1, minHeight: 0, minWidth: 0 }}
@@ -169,7 +195,7 @@ export default function DashboardPeakWorkWidget() {
 					<ResponsiveContainer width="100%" height="100%">
 						<AreaChart
 							data={data}
-							margin={{ top: 12, right: 12, bottom: 0, left: -15 }}
+							margin={{ top: 16, right: 20, bottom: 4, left: 4 }}
 							accessibilityLayer
 						>
 							<defs>
@@ -193,14 +219,21 @@ export default function DashboardPeakWorkWidget() {
 							/>
 							<XAxis
 								dataKey="time"
-								tick={{ fill: 'var(--krona-text-muted)', fontSize: 11 }}
+								tick={kronaChartAxisTick}
 								axisLine={false}
 								tickLine={false}
-								minTickGap={28}
+								tickMargin={16}
+								height={36}
+								padding={{ left: 24, right: 16 }}
+								minTickGap={20}
 							/>
 							<YAxis
-								tick={{ fill: 'var(--krona-text-muted)', fontSize: 10 }}
+								tick={kronaChartAxisTick}
 								tickFormatter={(value) => `${value}m`}
+								width={48}
+								tickMargin={12}
+								minTickGap={16}
+								interval="preserveEnd"
 								axisLine={false}
 								tickLine={false}
 								domain={[
@@ -218,7 +251,7 @@ export default function DashboardPeakWorkWidget() {
 								}}
 								formatter={(value: number) => [
 									`${value} min`,
-									'Daily average (last 7 days)',
+									team ? 'Team daily average (last 7 days)' : 'Daily average (last 7 days)',
 								]}
 							/>
 							<Area

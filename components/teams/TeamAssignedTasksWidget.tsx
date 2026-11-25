@@ -250,7 +250,7 @@ export default function TeamAssignedTasksWidget({
 					flex: 1,
 				}}
 			>
-				<Typography
+				<Typography className="krona-widget-task-name"
 					level="body-sm"
 					sx={{
 						color: 'var(--krona-text)',

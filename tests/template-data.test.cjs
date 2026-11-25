@@ -116,6 +116,21 @@ test('manager data loaders return named people, assigned tasks and nonzero metri
 	assert.notEqual(progress.workHoursLabel, '0');
 	const challenges = await fetchMemberChallengeProgress('demo-studio');
 	assert.ok(challenges.some((row) => row.percent > 0));
+	assert.equal(challenges.reduce((sum, row) => sum + row.workSeconds, 0), 750 * 60);
+	assert.equal(challenges.reduce((sum, row) => sum + row.restSeconds, 0), 100 * 60);
+	assert.equal(challenges.reduce((sum, row) => sum + row.tasksFinished, 0), 2);
+	const { mergeChallengeRows } = load('lib/teams/stableLists.ts');
+	const updatedEffort = challenges.map((row, index) => index === 0
+		? { ...row, restSeconds: row.restSeconds + 60, tasksFinished: row.tasksFinished + 1 }
+		: row);
+	const mergedEffort = mergeChallengeRows(challenges, updatedEffort);
+	assert.notEqual(mergedEffort[0], challenges[0]);
+	assert.equal(mergedEffort[0].restSeconds, challenges[0].restSeconds + 60);
+	assert.equal(mergedEffort[1], challenges[1]);
+	const { fetchTeamPerformanceExtendedMetrics } = load('lib/performanceData.ts');
+	const weekly = await fetchTeamPerformanceExtendedMetrics('week', members.map((member) => member.userId), { organizationId: 'demo-studio' });
+	assert.equal(weekly.activityByHour.length, 12);
+	assert.ok(weekly.activityByHour.some((bucket) => bucket.workHours > 0));
 	const { saveUserAppSettings, loadUserAppSettings } = load(
 		'lib/userAppSettings.ts',
 	);
@@ -237,6 +252,34 @@ test('analytics groups project time and retains members with no task activity', 
 	assert.equal(empty.workShare, 0);
 	assert.equal(empty.taskHours, 0);
 	assert.deepEqual(empty.projects, []);
+});
+
+test('analytics day parts partition every time bucket and handle empty work', () => {
+	const { buildAnalyticsSummary } = load('lib/analyticsSummary.ts');
+	const summary = buildAnalyticsSummary({
+		totalWorkHours: 12, totalRestHours: 3,
+		taskBreakdown: [{ taskId: 'a', hours: 2 }, { taskId: 'b', hours: 4 }],
+		chartDays: [
+			{ label: 'Mon', workHours: 4, restHours: 1 },
+			{ label: 'Tue', workHours: 0, restHours: 1 },
+			{ label: 'Wed', workHours: 8, restHours: 1 },
+		],
+		activityByHour: Array.from({ length: 12 }, (_, index) => ({
+			label: `${String(index * 2).padStart(2, '0')}:00`, workHours: 1, restHours: 0.25,
+		})),
+	});
+	assert.equal(summary.activeBuckets, 2);
+	assert.equal(summary.totalBuckets, 3);
+	assert.equal(summary.busiestBucket.label, 'Wed');
+	assert.equal(summary.averageTaskHours, 3);
+	assert.equal(summary.breakMinutesPerWorkHour, 15);
+	assert.deepEqual(summary.dayParts.map((part) => [part.workHours, part.restHours, part.share]),
+		Array.from({ length: 4 }, () => [3, 0.75, 25]));
+	const empty = buildAnalyticsSummary({ totalWorkHours: 0, totalRestHours: 2, chartDays: [], activityByHour: [], taskBreakdown: [] });
+	assert.equal(empty.busiestBucket, null);
+	assert.equal(empty.breakMinutesPerWorkHour, null);
+	assert.equal(empty.averageTaskHours, 0);
+	assert.ok(empty.dayParts.every((part) => part.share === 0));
 });
 
 test('employee completion counts use completion time and manager counts respect member filters', async () => {

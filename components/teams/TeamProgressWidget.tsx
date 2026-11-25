@@ -7,6 +7,7 @@ import {
 	TeamWidgetShell,
 } from '@/components/teams/TeamWidgetChrome';
 import { useKronaLayoutMode } from '@/components/KronaLayoutModeProvider';
+import { TEMPLATE_TODAY_PROGRESS } from '@/lib/templateData';
 import type { TeamTodayProgress } from '@/lib/teams/dashboard';
 import {
 	kronaWidgetMetricUnitSx,
@@ -65,7 +66,7 @@ function Divider() {
 				height: 40,
 				alignSelf: 'center',
 				flexShrink: 0,
-				bgcolor: 'var(--krona-surface-border)',
+				background: 'var(--krona-divider-vertical)',
 			}}
 		/>
 	);
@@ -79,6 +80,10 @@ export default function TeamProgressWidget({
 	loading?: boolean;
 }) {
 	const { isDesktopDashboard } = useKronaLayoutMode();
+	const showSample = !loading && progress != null &&
+		Number(progress.workHoursLabel) === 0 &&
+		Number(progress.restHoursLabel) === 0 && progress.tasksFinished === 0;
+	const displayProgress = showSample ? TEMPLATE_TODAY_PROGRESS.manager : progress;
 
 	return (
 		<TeamWidgetShell
@@ -91,8 +96,13 @@ export default function TeamProgressWidget({
 				title="Today's progress"
 				href="/team/performance"
 				navHint="View performance"
+				actions={showSample ? (
+					<Typography level="body-xs" sx={{ color: 'var(--krona-text-muted)' }}>
+						Sample
+					</Typography>
+				) : undefined}
 			/>
-			{!progress ? (
+			{!displayProgress ? (
 				<Typography level="body-sm" sx={{ color: 'var(--krona-text-muted)' }}>
 					Loading…
 				</Typography>
@@ -106,13 +116,13 @@ export default function TeamProgressWidget({
 						minHeight: 0,
 					}}
 				>
-					<Stat label="Time worked" value={progress.workHoursLabel} unit="hrs" />
+					<Stat label="Time worked" value={displayProgress.workHoursLabel} unit="hrs" />
 					<Divider />
-					<Stat label="Hours rested" value={progress.restHoursLabel} unit="hrs" />
+					<Stat label="Hours rested" value={displayProgress.restHoursLabel} unit="hrs" />
 					<Divider />
 					<Stat
 						label="Tasks finished"
-						value={String(progress.tasksFinished)}
+						value={String(displayProgress.tasksFinished)}
 					/>
 				</Box>
 			)}

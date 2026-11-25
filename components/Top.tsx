@@ -36,9 +36,9 @@ const topBarShellSx = {
 	top: 0,
 	left: 'var(--krona-sidebar-width)',
 	right: 'var(--krona-ai-panel-width, 0px)',
-	height: 'var(--krona-top-height, 60px)',
-	minHeight: 'var(--krona-top-height, 60px)',
-	maxHeight: 'var(--krona-top-height, 60px)',
+	height: 'var(--krona-top-height, 56px)',
+	minHeight: 'var(--krona-top-height, 56px)',
+	maxHeight: 'var(--krona-top-height, 56px)',
 	transition:
 		'var(--krona-ai-resize-transition, left 0.36s cubic-bezier(0.22, 1, 0.36, 1), right 0.36s cubic-bezier(0.22, 1, 0.36, 1))',
 	zIndex: 1300,

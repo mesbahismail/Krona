@@ -674,7 +674,7 @@ const DashboardTasksAndTimer = React.memo(function DashboardTasksAndTimer() {
 						}}
 					/>
 					<Box sx={{ minWidth: 0, flex: 1 }}>
-						<Typography
+						<Typography className="krona-widget-task-name"
 							level="title-sm"
 							sx={{
 								color: 'var(--krona-text)',
@@ -865,7 +865,7 @@ const DashboardTasksAndTimer = React.memo(function DashboardTasksAndTimer() {
 						}}
 					/>
 					<Box sx={{ minWidth: 0, flex: 1 }}>
-						<Typography
+						<Typography className="krona-widget-task-name"
 							level="title-sm"
 							sx={{
 								color: 'var(--krona-text)',
@@ -1806,7 +1806,7 @@ function DashboardHomeContent() {
 
 			<Box
 				sx={{
-					pt: 'calc(var(--krona-top-height, 60px) + var(--krona-page-padding))',
+					pt: 'calc(var(--krona-top-height, 56px) + var(--krona-page-padding))',
 					pb: isMobileNav
 						? 'calc(var(--krona-mobile-tab-height, 0px) + env(safe-area-inset-bottom, 0px) + var(--krona-page-padding))'
 						: 'var(--krona-page-padding)',

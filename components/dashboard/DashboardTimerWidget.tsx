@@ -419,13 +419,15 @@ function TimerControls({
 	onSkip: () => void;
 }) {
 	const { compact, tight } = useTimerRingLayout();
-	const playSize = tight ? 22 : compact ? 24 : 28;
-	const secondarySize = tight ? 14 : 18;
+	const playSize = tight ? 20 : compact ? 22 : 24;
+	const secondarySize = tight ? 14 : 16;
 	return (
 		<Box
 			sx={{
 				display: 'flex',
-				gap: tight ? 1 : 2,
+				'--krona-timer-play-size': tight ? '44px' : compact ? '50px' : '56px',
+				'--krona-timer-secondary-size': tight ? '32px' : compact ? '36px' : '40px',
+				gap: tight ? 1 : 1.5,
 				alignItems: 'center',
 				justifyContent: 'center',
 				flexShrink: 0,
@@ -435,12 +437,10 @@ function TimerControls({
 			{!workFree ? (
 				<IconButton
 					className="krona-timer-control"
+					aria-label="Reset timer"
 					onClick={onReset}
 					sx={{
 						...kronaTimerSecondaryControlSx,
-						...(tight
-							? { width: 36, height: 36, minWidth: 36, minHeight: 36 }
-							: null),
 					}}
 				>
 					<RotateCcw size={secondarySize} />
@@ -448,14 +448,10 @@ function TimerControls({
 			) : null}
 			<IconButton
 				className="krona-timer-control--primary"
+				aria-label={displayRunning ? 'Pause timer' : 'Start timer'}
 				onClick={displayRunning ? onPause : onStart}
 				sx={{
 					...kronaTimerPlayButtonSx,
-					...(tight
-						? { width: 52, height: 52, minWidth: 52, minHeight: 52 }
-						: compact
-							? { width: 58, height: 58, minWidth: 58, minHeight: 58 }
-							: null),
 				}}
 			>
 				{!displayRunning ? (
@@ -473,9 +469,6 @@ function TimerControls({
 					onClick={onSkip}
 					sx={{
 						...kronaTimerSecondaryControlSx,
-						...(tight
-							? { width: 36, height: 36, minWidth: 36, minHeight: 36 }
-							: null),
 					}}
 					aria-label="Skip"
 				>

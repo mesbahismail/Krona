@@ -128,7 +128,7 @@ export default function TeamTasksWidget({
 					gap: kronaTaskListNameDetailsGap,
 				}}
 			>
-				<Typography
+				<Typography className="krona-widget-task-name"
 					level="body-md"
 					sx={{
 						...kronaTaskListItemNameSx,

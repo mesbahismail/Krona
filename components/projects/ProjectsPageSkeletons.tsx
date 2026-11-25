@@ -20,9 +20,9 @@ export function ProjectsListSkeleton({ count = 5 }: { count?: number }) {
 						sx={{
 							display: 'flex',
 							flexDirection: 'column',
-							gap: 0.75,
+							gap: 0.25,
 							px: 1,
-							py: 0.5,
+							py: 0.25,
 							pointerEvents: 'none',
 						}}
 					>

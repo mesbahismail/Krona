@@ -225,7 +225,7 @@ export default function NavBarTimer({
 			{running ? (
 				<Tooltip title="Pause">
 					<IconButton size="sm" variant="plain" onClick={pause} sx={kronaNavTimerControlSx}>
-						<Pause size={18} />
+						<Pause size={16} />
 					</IconButton>
 				</Tooltip>
 			) : (
@@ -236,7 +236,7 @@ export default function NavBarTimer({
 						onClick={() => start()}
 						sx={kronaNavTimerControlSx}
 					>
-						<Play size={18} />
+						<Play size={16} />
 					</IconButton>
 				</Tooltip>
 			)}
@@ -250,13 +250,13 @@ export default function NavBarTimer({
 				}
 			>
 				<IconButton size="sm" variant="plain" onClick={skip} sx={kronaNavTimerControlSx}>
-					<SkipForward size={18} />
+					<SkipForward size={16} />
 				</IconButton>
 			</Tooltip>
 			{showReset ? (
 				<Tooltip title="Reset">
 					<IconButton size="sm" variant="plain" onClick={reset} sx={kronaNavTimerControlSx}>
-						<RotateCcw size={18} />
+						<RotateCcw size={16} />
 					</IconButton>
 				</Tooltip>
 			) : null}

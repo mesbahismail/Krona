@@ -1,6 +1,7 @@
 'use client';
 
 import * as React from 'react';
+import { kronaChartAxisTick } from '@/lib/kronaTypography';
 import { Box } from '@mui/joy';
 import { BarChart3, Palmtree } from 'lucide-react';
 import {
@@ -119,7 +120,7 @@ export default function DashboardPerformanceWidget() {
 									dataKey="day"
 									axisLine={false}
 									tickLine={false}
-									tick={{ fill: 'var(--krona-text-muted)', fontSize: 10 }}
+									tick={kronaChartAxisTick}
 									tickMargin={8}
 									minTickGap={0}
 									height={24}

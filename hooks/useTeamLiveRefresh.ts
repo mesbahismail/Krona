@@ -4,6 +4,7 @@ import * as React from 'react';
 import { localData } from '@/lib/localData';
 
 const LIVE_EVENTS = [
+	'krona:sessions-updated',
 	'krona:challenges-updated',
 	'krona:tasks-updated',
 	'krona:reminders-updated',

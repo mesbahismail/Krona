@@ -99,6 +99,7 @@ import {
 	kronaModalTitleSx,
 	kronaPrimaryButtonSx,
 	kronaPrimaryIconButtonSx,
+	kronaProjectListCardSx,
 	kronaSearchInputSx,
 	kronaToggleIconButtonSx,
 	kronaSelectSlotProps,
@@ -111,6 +112,7 @@ import {
 	kronaTaskListItemNameSx,
 	kronaTaskListNameDetailsGap,
 	kronaTaskListRowSx,
+	kronaSideListPanelSx,
 	kronaToolbarRowSx,
 } from '@/lib/kronaStyles';
 
@@ -845,7 +847,7 @@ export default function TeamProjectsPageClient() {
 						...kronaSideListScrollSx,
 						display: 'flex',
 						flexDirection: 'column',
-						gap: 1,
+						gap: 1.5,
 					}}
 				>
 					{filtered.map((project) => {
@@ -863,25 +865,7 @@ export default function TeamProjectsPageClient() {
 										selectProject(project.id);
 									}
 								}}
-								sx={{
-									display: 'flex',
-									flexDirection: 'column',
-									gap: 0.5,
-									width: '100%',
-									textAlign: 'left',
-									cursor: 'pointer',
-									px: 1,
-									py: 0.5,
-									border: 'none',
-									borderRadius: '12px',
-									bgcolor: active
-										? 'var(--krona-overlay-hover)'
-										: 'transparent',
-									'&:hover': {
-										bgcolor:
-											'color-mix(in srgb, var(--krona-text) 5%, transparent)',
-									},
-								}}
+								sx={kronaProjectListCardSx(active)}
 							>
 								<Box
 									sx={{
@@ -898,8 +882,8 @@ export default function TeamProjectsPageClient() {
 											flex: 1,
 											minWidth: 0,
 											color: 'var(--krona-text)',
-											fontSize: '14px',
-											fontWeight: 500,
+											fontSize: '13px',
+											fontWeight: 600,
 											fontFamily: 'Poppins, sans-serif',
 											overflow: 'hidden',
 											textOverflow: 'ellipsis',
@@ -1842,9 +1826,9 @@ export default function TeamProjectsPageClient() {
 					md: 'flex',
 				}}
 				sidebarSx={{
+					...kronaSideListPanelSx,
 					gap: 0,
-					pt: { xs: 1, md: 0 },
-					pb: { xs: 1, md: 0 },
+					position: 'relative',
 				}}
 				detailSx={{
 					gap: 0,

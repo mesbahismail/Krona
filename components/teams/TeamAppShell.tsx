@@ -99,7 +99,7 @@ export default function TeamAppShell({
 			<Box
 				sx={{
 					pt: fillViewport
-						? 'calc(var(--krona-top-height, 60px) + var(--krona-page-padding))'
+						? 'calc(var(--krona-top-height, 56px) + var(--krona-page-padding))'
 						: undefined,
 					px: 'var(--krona-page-padding)',
 					py: fillViewport ? undefined : 'var(--krona-page-padding)',

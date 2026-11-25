@@ -17,6 +17,7 @@ import {
 	kronaWidgetMetricUnitSx,
 	kronaWidgetMetricValueCompactSx,
 } from '@/lib/kronaStyles';
+import { TEMPLATE_TODAY_PROGRESS } from '@/lib/templateData';
 import { secondsToDisplayHours } from '@/lib/taskTime';
 import { useVacationMode } from '@/components/VacationModeContext';
 import { VACATION_MODE_EMPTY_MESSAGE } from '@/lib/vacationMode';
@@ -76,7 +77,7 @@ function TodayProgressDivider() {
 				height: 48,
 				alignSelf: 'center',
 				flexShrink: 0,
-				bgcolor: 'var(--krona-surface-border)',
+				background: 'var(--krona-divider-vertical)',
 			}}
 		/>
 	);
@@ -97,8 +98,14 @@ export default function DashboardTodayProgressWidget() {
 			? todayTotal
 			: { work: 0, rest: 0 };
 
-	const workHrs = secondsToDisplayHours(safeToday.work);
-	const restHrs = secondsToDisplayHours(safeToday.rest);
+	const showSample = safeToday.work === 0 && safeToday.rest === 0 && tasksFinished === 0;
+	const displayProgress = showSample
+		? TEMPLATE_TODAY_PROGRESS.employee
+		: {
+				workHoursLabel: secondsToDisplayHours(safeToday.work),
+				restHoursLabel: secondsToDisplayHours(safeToday.rest),
+				tasksFinished,
+			};
 
 	const summaryTasks = React.useMemo(() => {
 		const names = new Map<string, string>();
@@ -127,7 +134,11 @@ export default function DashboardTodayProgressWidget() {
 					widgetId="work-hours"
 					title="Today's Progress"
 					actions={
-						vacationActive ? null : (
+						vacationActive ? null : showSample ? (
+							<Typography level="body-xs" sx={{ color: 'var(--krona-text-muted)' }}>
+								Sample
+							</Typography>
+						) : (
 							<Tooltip title="Today summary">
 								<IconButton
 									size="sm"
@@ -156,13 +167,13 @@ export default function DashboardTodayProgressWidget() {
 							minHeight: 0,
 						}}
 					>
-						<TodayProgressStat label="Time worked" value={workHrs} unit="hrs" />
+						<TodayProgressStat label="Time worked" value={displayProgress.workHoursLabel} unit="hrs" />
 						<TodayProgressDivider />
-						<TodayProgressStat label="Hours rested" value={restHrs} unit="hrs" />
+						<TodayProgressStat label="Hours rested" value={displayProgress.restHoursLabel} unit="hrs" />
 						<TodayProgressDivider />
 						<TodayProgressStat
 							label="Tasks finished"
-							value={String(tasksFinished)}
+							value={String(displayProgress.tasksFinished)}
 						/>
 					</Box>
 				)}

@@ -53,7 +53,7 @@ import KronaResizableSplitLayout from '@/components/krona/KronaResizableSplitLay
 import {
 	kronaSideListPanelSx,
 	kronaSideListPanelBodySx,
-	kronaSideListCardSx,
+	kronaProjectListCardSx,
 } from '@/lib/kronaStyles';
 import KronaSearchCreateToolbar from '@/components/krona/KronaSearchCreateToolbar';
 import TaskSortToggleButton from '@/components/tasks/TaskSortToggleButton';
@@ -2582,7 +2582,7 @@ export default function App() {
 									return (
 										<Box
 											key={project.name + idx}
-											sx={kronaSideListCardSx(realIdx === selectedProjectIdx)}
+											sx={kronaProjectListCardSx(realIdx === selectedProjectIdx)}
 											onClick={() => {
 												setSelectedProjectIdx(realIdx);
 												setMobileDetails(true);
@@ -2700,7 +2700,7 @@ export default function App() {
 											return (
 												<Box
 													key={project.name + idx}
-													sx={kronaSideListCardSx(realIdx === selectedProjectIdx)}
+													sx={kronaProjectListCardSx(realIdx === selectedProjectIdx)}
 													onClick={() => {
 														setSelectedProjectIdx(realIdx);
 														setMobileDetails(true);

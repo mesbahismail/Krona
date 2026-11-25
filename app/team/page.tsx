@@ -6,6 +6,7 @@ import TeamAppShell from '@/components/teams/TeamAppShell';
 import TeamAssignedTasksWidget, {
 	type AssignTeamTaskInput,
 } from '@/components/teams/TeamAssignedTasksWidget';
+import DashboardPeakWorkWidget from '@/components/dashboard/DashboardPeakWorkWidget';
 import TeamEffortWidget from '@/components/teams/TeamEffortWidget';
 import TeamMetricsWidget from '@/components/teams/TeamMetricsWidget';
 import TeamProgressWidget from '@/components/teams/TeamProgressWidget';
@@ -361,7 +362,7 @@ export default function TeamEffortPage() {
 							minHeight: 0,
 							height: lock ? '100%' : 'auto',
 							gridColumn: lock ? '1' : '1 / -1',
-							gridRow: lock ? '1 / 4' : 'auto',
+							gridRow: lock ? '1 / 3' : 'auto',
 							order: lock ? undefined : 1,
 						}}
 					>
@@ -381,7 +382,7 @@ export default function TeamEffortPage() {
 							minHeight: 0,
 							height: lock ? '100%' : 'auto',
 							gridColumn: lock ? '2' : '1 / -1',
-							gridRow: lock ? '1 / 4' : 'auto',
+							gridRow: lock ? '1 / 3' : 'auto',
 							order: lock ? undefined : 2,
 						}}
 					>
@@ -405,6 +406,11 @@ export default function TeamEffortPage() {
 							}
 						/>
 					</Box>
+
+					<DashboardPeakWorkWidget
+						teamMemberIds={members.map((member) => member.userId)}
+						organizationId={orgId ?? undefined}
+					/>
 
 					{/* Compact stack: reminders / progress / performance */}
 					<Box

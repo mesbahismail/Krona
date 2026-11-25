@@ -75,10 +75,12 @@ const theme = extendTheme({
 			styleOverrides: {
 				root: ({ ownerState }) => ({
 					fontFamily: FONT_SANS,
+					fontSize: 'var(--krona-control-font-size)',
+					padding: '0 12px',
 					borderRadius: '999px',
-					minHeight: 'var(--krona-control-height, 32px)',
-					height: 'var(--krona-control-height, 32px)',
-					maxHeight: 'var(--krona-control-height, 32px)',
+					minHeight: 'var(--krona-control-height, 30px)',
+					height: 'var(--krona-control-height, 30px)',
+					maxHeight: 'var(--krona-control-height, 30px)',
 					...(ownerState.color === 'primary' &&
 						ownerState.variant === 'solid' && {
 							backgroundColor: '#34B3F1',
@@ -112,7 +114,7 @@ const theme = extendTheme({
 								backgroundColor: '#091D29',
 								borderColor: '#567691',
 							},
-							'&&': { fontWeight: 500 },
+							'&&': { fontWeight: 600 },
 						}),
 					...(ownerState.color === 'secondary' &&
 						ownerState.variant === 'outlined' &&
@@ -120,7 +122,7 @@ const theme = extendTheme({
 							border: '1px solid #444444',
 							color: '#ffffff',
 							backgroundColor: 'transparent',
-							minHeight: '32px',
+							minHeight: 'var(--krona-control-height)',
 							padding: '0px 8px',
 							minWidth: 'unset',
 							transition: 'border-color 0.2s ease, background-color 0.2s ease',
@@ -128,7 +130,7 @@ const theme = extendTheme({
 								backgroundColor: 'var(--krona-overlay-hover)',
 								borderColor: 'var(--krona-widget-border-hover)',
 							},
-							'&&': { fontWeight: 500 },
+							'&&': { fontWeight: 600 },
 						}),
 					...(ownerState.color === 'secondary' &&
 						ownerState.variant === 'plain' && {
@@ -164,10 +166,12 @@ const theme = extendTheme({
 			styleOverrides: {
 				root: {
 					fontFamily: FONT_SANS,
+					fontSize: 'var(--krona-control-font-size)',
+					padding: '0 12px',
 					borderRadius: '999px',
-					minHeight: 'var(--krona-control-height, 32px)',
-					height: 'var(--krona-control-height, 32px)',
-					maxHeight: 'var(--krona-control-height, 32px)',
+					minHeight: 'var(--krona-control-height, 30px)',
+					height: 'var(--krona-control-height, 30px)',
+					maxHeight: 'var(--krona-control-height, 30px)',
 				},
 			},
 		},
@@ -197,8 +201,8 @@ const theme = extendTheme({
 			styleOverrides: {
 				root: () => ({
 					borderRadius: '20px',
-						fontSize: 'var(--krona-control-font-size, 14px)',
-					minHeight: 'var(--krona-control-height, 32px)',
+						fontSize: 'var(--krona-control-font-size, 12px)',
+					minHeight: 'var(--krona-control-height, 30px)',
 					border: '1px solid var(--krona-input-border)',
 					background: 'var(--krona-dropdown-bg)',
 					padding: '0 12px',
@@ -285,7 +289,7 @@ const theme = extendTheme({
 						borderRadius: '14px',
 						color: 'var(--krona-text)',
 						fontFamily: FONT_SANS,
-						fontSize: 'var(--krona-control-font-size, 14px)',
+						fontSize: 'var(--krona-control-font-size, 12px)',
 						outline: 'none',
 					'&:hover': {
 						backgroundColor: 'var(--krona-secondary-bg)',
@@ -314,7 +318,7 @@ const theme = extendTheme({
 			styleOverrides: {
 				root: {
 						color: 'var(--krona-text)',
-						fontSize: 'var(--krona-control-font-size, 14px)',
+						fontSize: 'var(--krona-control-font-size, 12px)',
 						padding: '8px 12px',
 						borderRadius: '14px',
 						fontFamily: FONT_SANS,

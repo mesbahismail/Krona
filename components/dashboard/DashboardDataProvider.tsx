@@ -56,6 +56,7 @@ const EMPTY_NOTES: NoteRow[] = [];
 const EMPTY_REMINDERS: DashboardReminderRow[] = [];
 const EMPTY_ROUTINE: RoutineItem[] = [];
 const EMPTY_CHALLENGES: DailyChallenge[] = [];
+const INITIAL_DASHBOARD_LOAD_TIMEOUT_MS = 12_000;
 
 function normalizeDashboardBundle(raw: DashboardBundle): DashboardBundle {
 	return {
@@ -117,19 +118,32 @@ export function DashboardDataProvider({ children }: { children: React.ReactNode 
 		if (initialLoadRef.current) {
 			setLoading(true);
 		}
+		let timeoutId: number | undefined;
 		try {
-			const { data: userRes, error: authError } = await localData.auth.getUser();
-			if (authError || !userRes.user) {
-				console.warn('[dashboard] auth unavailable', authError?.message);
-				return;
-			}
+			const load = async () => {
+				const { data: userRes, error: authError } = await localData.auth.getUser();
+				if (authError || !userRes.user) {
+					console.warn('[dashboard] auth unavailable', authError?.message);
+					return null;
+				}
 
-			await flushPendingTaskDeletes(userRes.user.id);
-			const data = await loadDashboardBundle(localData, userRes.user.id);
-			applyBundle(data);
+				await flushPendingTaskDeletes(userRes.user.id);
+				return loadDashboardBundle(localData, userRes.user.id);
+			};
+			const data = await Promise.race([
+				load(),
+				new Promise<null>((_, reject) => {
+					timeoutId = window.setTimeout(
+						() => reject(new Error('Initial dashboard load timed out')),
+						INITIAL_DASHBOARD_LOAD_TIMEOUT_MS,
+					);
+				}),
+			]);
+			if (data) applyBundle(data);
 		} catch (error) {
 			console.warn('[dashboard] load failed', error);
 		} finally {
+			if (timeoutId !== undefined) window.clearTimeout(timeoutId);
 			loadingRef.current = false;
 			initialLoadRef.current = false;
 			setLoading(false);
